@@ -1,0 +1,122 @@
+service:
+  name: blog-api
+
+plugins:
+  - serverless-plugin-scripts
+  - serverless-webpack
+  - serverless-prune-plugin
+  - serverless-offline
+
+custom:
+  webpack:
+    includeModules:
+      forceExclude:
+        - aws-sdk
+        - better-sqlite3
+  prune:
+    automatic: true
+    number: 7
+  scripts:
+    hooks:
+      "webpack:package:packExternalModules": /bin/bash .prepackage.sh
+
+package:
+  excludeDevDependencies: true
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northeast-2
+  apiGateway:
+    minimumCompressionSize: 1024
+    binaryMediaTypes:
+      - "image/*"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+        - "s3:GetObjectAcl"
+        - "s3:PutObject"
+        - "s3:PutObjectAcl"
+        - "s3:HeadObject"
+        - "s3:DeleteObject"
+      Resource:
+        - "arn:aws:s3:::${env:FILES_BUCKET}/*"
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource:
+        - "arn:aws:s3:::${env:FILES_BUCKET}"
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    REDIS_HOST: ${env:REDIS_HOST}
+    REDIS_PASSWORD: ${env:REDIS_PASSWORD}
+    FILES_BUCKET: ${env:FILES_BUCKET}
+    DB_KEY: ${env:DB_KEY}
+    CONSOLE_LOG_LEVEL: ${env:CONSOLE_LOG_LEVEL}
+    SLACK_WEBHOOK_URL: ${env:SLACK_WEBHOOK_URL}
+    SLACK_CHANNEL: ${env:SLACK_CHANNEL}
+    SLACK_LOG_LEVEL: ${env:SLACK_LOG_LEVEL}
+
+functions:
+  getUploadUrl:
+    handler: src/handlers/getUploadUrl.handle
+    memorySize: 256
+    timeout: 5
+    events:
+      - http: GET /api/image/upload
+  optimizeImage:
+    handler: src/handlers/optimizeImage.handle
+    memorySize: 1024
+    timeout: 30
+    events:
+      - http: POST /api/image/{uploadKey}
+  getImage:
+    handler: src/handlers/getImage.handle
+    memorySize: 256
+    timeout: 5
+    events:
+      - http: GET /image/{imageKey}
+  queryDatabase:
+    handler: src/handlers/queryDatabase.handle
+    memorySize: 1024
+    timeout: 15
+    events:
+      - http: GET /api/{resource}
+      - http: GET /api/{resource}/{id}
+    layers:
+      - arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4
+  upsertArticle:
+    handler: src/handlers/upsertArticle.handle
+    memorySize: 1024
+    timeout: 15
+    events:
+      - http: PUT /api/article/{id}
+    layers:
+      - arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4
+  serveHtml:
+    handler: src/handlers/serveHtml.handle
+    memorySize: 256
+    timeout: 5
+    events:
+      - http: GET /
+      - http: GET /{file}
+      - http: GET /static/css/{file}
+      - http: GET /static/js/{file}
+      - http: GET /static/media/{file}
+
+resources:
+  Resources:
+    FilesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${env:FILES_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+                - PUT
+              AllowedHeaders:
+                - "*"
+              AllowedOrigins:
+                - ${env:SERVICE_URL}
