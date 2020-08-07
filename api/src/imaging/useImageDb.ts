@@ -21,10 +21,7 @@ export default function useImageDb({
   }: {
     imageKeys: string[];
   }): Promise<boolean> {
-    const images =
-      ((await inLock(getDb, {
-        lockRedisKey: dbRedisLock,
-      })({ dbId: dbKey })) as string[]) ?? [];
+    const images = ((await getDb({ dbId: dbKey })) as string[]) ?? [];
     return imageKeys.every((imageKey) => images.includes(imageKey));
   }
 

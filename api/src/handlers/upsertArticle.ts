@@ -5,8 +5,9 @@ import Article, { validateArticle } from "../db/article";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
+import insertArticle from "../db/insertArticle";
 import { logger } from "../logger/logger";
-import upsertArticle from "../db/upsertArticle";
+import updateArticle from "../db/updateArticle";
 import useRedisLock from "../redis/useRedisLock";
 import useS3 from "../aws/useS3";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
@@ -22,7 +23,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     const slug = (event.pathParameters ?? {}).id ?? throwError(404);
     const article = { ...(JSON.parse(event.body ?? "{}") as Article), slug };
     log.debug({ slug, article }, "Article to upsert");
-    if (!validateArticle(article)) {
+    if (!validateArticle(article, { withoutSerial: true })) {
       throw new ApiError(404);
     }
 
@@ -35,7 +36,11 @@ export const handle: APIGatewayProxyHandler = handleApi({
       createTableQuery: createTables,
       autoCommit: true,
       doIn: ({ db }) => {
-        upsertArticle({ db, article });
+        if ("serial" in article) {
+          updateArticle({ db, article });
+        } else {
+          insertArticle({ db, article });
+        }
       },
     });
     return {

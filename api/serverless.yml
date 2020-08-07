@@ -119,4 +119,5 @@ resources:
               AllowedHeaders:
                 - "*"
               AllowedOrigins:
-                - ${env:SERVICE_URL}
+                - "*"
+                # - ${env:SERVICE_URL}
