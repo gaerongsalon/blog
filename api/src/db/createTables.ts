@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS article (
   excerpt TEXT NOT NULL,
   category TEXT NOT NULL,
   tags TEXT NOT NULL,
+  content TEXT NOT NULL,
   written TEXT NOT NULL,
   draft INTEGER NOT NULL DEFAULT 0
 );

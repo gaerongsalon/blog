@@ -5,7 +5,7 @@ import Article, { articlePropertyKeys } from "./article";
 const UpdateArticleSQL = `UPDATE article
 SET ${articlePropertyKeys
   .filter((p) => p !== "serial")
-  .map((p) => `${p} = excluded.${p}`)
+  .map((p) => `${p} = @${p}`)
   .join(",")}
 WHERE
   serial = @serial

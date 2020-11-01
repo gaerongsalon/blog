@@ -92,7 +92,15 @@ functions:
     memorySize: 1024
     timeout: 15
     events:
-      - http: PUT /api/article/{id}
+      - http: PUT /api/article/{slug}
+    layers:
+      - arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4
+  deleteArticle:
+    handler: src/handlers/deleteArticle.handle
+    memorySize: 1024
+    timeout: 15
+    events:
+      - http: DELETE /api/article/{slug}
     layers:
       - arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4
   serveHtml:

@@ -1,13 +1,11 @@
 import "source-map-support/register";
 
-import { ApiError, handleApi, throwError } from "./base";
-import Article, { validateArticle } from "../db/article";
+import { handleApi, throwError } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
-import insertArticle from "../db/insertArticle";
+import deleteArticle from "../db/deleteArticle";
 import { logger } from "../logger/logger";
-import updateArticle from "../db/updateArticle";
 import useRedisLock from "../redis/useRedisLock";
 import useS3 from "../aws/useS3";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
@@ -21,11 +19,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
   log,
   handle: async (event) => {
     const slug = (event.pathParameters ?? {}).slug ?? throwError(404);
-    const article = { ...(JSON.parse(event.body ?? "{}") as Article), slug };
-    log.debug({ slug, article }, "Article to upsert");
-    if (!validateArticle(article, { withoutSerial: true })) {
-      throw new ApiError(404);
-    }
+    log.debug({ slug }, "Article to delete");
 
     const { inLock } = useRedisLock();
     const { withDb } = useS3Sqlite(useS3());
@@ -36,11 +30,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
       createTableQuery: createTables,
       autoCommit: true,
       doIn: ({ db }) => {
-        if ("serial" in article && article.serial > 0) {
-          updateArticle({ db, article });
-        } else {
-          insertArticle({ db, article });
-        }
+        deleteArticle({ db, article: { slug } });
       },
     });
     return {
