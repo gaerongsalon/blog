@@ -7,6 +7,7 @@ export default interface Article {
   excerpt: string;
   category: string;
   tags: string;
+  content: string;
   written: string;
   draft: number;
 }
@@ -20,6 +21,7 @@ export const articlePropertyKeys: (keyof Article)[] = [
   "excerpt",
   "category",
   "tags",
+  "content",
   "written",
   "draft",
 ];

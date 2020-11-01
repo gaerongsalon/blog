@@ -2,7 +2,7 @@ import * as BetterSqlite3 from "better-sqlite3";
 
 import Article from "./article";
 
-const GetArticlesSQL = `SELECT * FROM article ORDER BY writeDate DESC LIMIT @limit OFFSET @offset`;
+const GetArticlesSQL = `SELECT * FROM article ORDER BY written DESC LIMIT @limit OFFSET @offset`;
 
 export default function getArticles({
   db,
