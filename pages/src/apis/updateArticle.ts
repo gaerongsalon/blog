@@ -1,9 +1,6 @@
 import Article from "../models/article/Article";
+import OkResponse from "./OkResponse";
 import requestToServer from "./requestToServer";
-
-interface OkResponse {
-  ok: boolean;
-}
 
 export default async function updateArticle(
   article: Article

@@ -1,7 +1,7 @@
-import { logger } from "../logger/logger";
+import { getLogger } from "@yingyeothon/slack-logger";
 import sharp from "sharp";
 
-const log = logger.get("resizeImage", __filename);
+const log = getLogger("resizeImage", __filename);
 
 export default async function resizeImage({
   inputFile,

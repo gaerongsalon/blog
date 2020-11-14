@@ -1,8 +1,8 @@
 import execa from "execa";
-import { logger } from "../logger/logger";
+import { getLogger } from "@yingyeothon/slack-logger";
 import prepareExternals from "./prepareExternals";
 
-const log = logger.get("pngquant", __filename);
+const log = getLogger("pngquant", __filename);
 
 export default async function pngquant({
   pngFiles,

@@ -8,7 +8,7 @@ module.exports = {
   mode: slsw.lib.webpack.isLocal ? "development" : "production",
   entry: slsw.lib.entries,
   devtool: slsw.lib.webpack.isLocal
-    ? "cheap-module-eval-source-map"
+    ? "eval-cheap-module-source-map"
     : "source-map",
   resolve: {
     extensions: [".mjs", ".json", ".ts", ".js"],
@@ -29,7 +29,7 @@ module.exports = {
     /aws-sdk/,
     /better-sqlite3/,
     nodeExternals({
-      whitelist: (moduleName) => moduleName !== "sharp",
+      allowlist: (moduleName) => moduleName !== "sharp",
       modulesFromFile: true,
     }),
   ],

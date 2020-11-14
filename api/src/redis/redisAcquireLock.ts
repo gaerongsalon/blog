@@ -1,5 +1,5 @@
 import DeadlineTimer from "../utils/deadlineTimer";
-import { IRedisConnection } from "@yingyeothon/naive-redis/lib/connection";
+import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import { nanoid } from "nanoid";
 import redisSet from "@yingyeothon/naive-redis/lib/set";
 import sleep from "../utils/sleep";
@@ -16,7 +16,7 @@ export type AcquireLock = (params: AcquireParams) => Promise<Acquired>;
 function redisAcquireLock({
   connection,
 }: {
-  connection: IRedisConnection;
+  connection: RedisConnection;
 }): AcquireLock {
   return async function acquireLock({
     lockRedisKey,

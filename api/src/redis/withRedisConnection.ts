@@ -1,10 +1,10 @@
-import { IRedisConnection } from "@yingyeothon/naive-redis/lib/connection";
+import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import getCacheOrConnectNew from "./getCacheOrConnectNew";
 
 async function withRedisConnection<R>({
   doIn,
 }: {
-  doIn: (redisConnection: IRedisConnection) => Promise<R>;
+  doIn: (redisConnection: RedisConnection) => Promise<R>;
 }): Promise<R> {
   return await doIn(getCacheOrConnectNew());
 }

@@ -1,6 +1,6 @@
 import redisAcquireLock, { AcquireParams } from "./redisAcquireLock";
 
-import { IRedisConnection } from "@yingyeothon/naive-redis/lib/connection";
+import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import getCacheOrConnectNew from "./getCacheOrConnectNew";
 import redisReleaseLock from "./redisReleaseLock";
 import withRedisLock from "./withRedisLock";
@@ -9,7 +9,7 @@ import withRedisLock from "./withRedisLock";
 export default function useRedisLock({
   redisConnection = getCacheOrConnectNew(),
 }: {
-  redisConnection?: IRedisConnection;
+  redisConnection?: RedisConnection;
 } = {}) {
   const acquireLock = redisAcquireLock({ connection: redisConnection });
   const releaseLock = redisReleaseLock({ connection: redisConnection });

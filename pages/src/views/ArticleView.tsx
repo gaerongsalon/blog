@@ -5,6 +5,7 @@ import ArticleContent from "../components/ArticleContent";
 import { Link } from "react-router-dom";
 import fetchArticle from "../apis/fetchArticle";
 import handleError from "../utils/handleError";
+import hasWritePermission from "../apis/credential/hasWritePermission";
 
 export default function ArticleView({ slug }: { slug: string }) {
   const [article, setArticle] = React.useState<Article | null>(null);
@@ -27,9 +28,11 @@ export default function ArticleView({ slug }: { slug: string }) {
       <div>{tags}</div>
       <div>{written}</div>
       <ArticleContent content={content} />
-      <div>
-        <Link to={`/article/${slug}/edit`}>Go to Edit</Link>
-      </div>
+      {hasWritePermission() ? (
+        <div>
+          <Link to={`/article/${slug}/edit`}>Go to Edit</Link>
+        </div>
+      ) : null}
       <div>
         <Link to={`/articles`}>Go to List</Link>
       </div>
