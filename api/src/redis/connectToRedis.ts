@@ -1,11 +1,13 @@
 import redisConnect, {
-  IRedisConnection,
+  RedisConnection,
 } from "@yingyeothon/naive-redis/lib/connection";
 
-function connectToRedis(): IRedisConnection {
+import secrets from "../env/secrets";
+
+function connectToRedis(): RedisConnection {
   return redisConnect({
-    host: process.env.REDIS_HOST!,
-    password: process.env.REDIS_PASSWORD,
+    host: secrets.redis.host,
+    password: secrets.redis.password,
     timeoutMillis: 3000,
   });
 }

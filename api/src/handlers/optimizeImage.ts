@@ -3,14 +3,14 @@ import "source-map-support/register";
 import { handleApi, throwError } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { logger } from "../logger/logger";
+import { getLogger } from "@yingyeothon/slack-logger";
 import processImage from "../imaging/processImage";
 
-const log = logger.get("handle:optimizeImage", __filename);
+const logger = getLogger("handle:optimizeImage", __filename);
 type Size = "all" | "sm" | "lg";
 
 export const handle: APIGatewayProxyHandler = handleApi({
-  log,
+  logger,
   handle: async (event) => {
     const uploadKey = (event.pathParameters ?? {}).uploadKey ?? throwError(404);
     const size = ((event.queryStringParameters ?? {}).size ?? "lg") as Size;
@@ -20,5 +20,8 @@ export const handle: APIGatewayProxyHandler = handleApi({
         size === "all" ? [600, 1200] : size === "lg" ? [1200] : [600],
     });
     return { statusCode: 200, body: JSON.stringify(imageKeys) };
+  },
+  options: {
+    authorization: true,
   },
 });

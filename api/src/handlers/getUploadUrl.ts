@@ -3,15 +3,15 @@ import "source-map-support/register";
 import { ApiError, handleApi, throwError } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { logger } from "../logger/logger";
+import { getLogger } from "@yingyeothon/slack-logger";
 import { nanoid } from "nanoid";
 import useS3 from "../aws/useS3";
 
-const log = logger.get("handle:getUploadUrl", __filename);
+const logger = getLogger("handle:getUploadUrl", __filename);
 const allowedTypes = [".png", ".jpg"];
 
 export const handle: APIGatewayProxyHandler = handleApi({
-  log,
+  logger,
   handle: async (event) => {
     const type = (event.queryStringParameters ?? {}).type ?? throwError(404);
     if (!allowedTypes.includes(type)) {
@@ -32,6 +32,9 @@ export const handle: APIGatewayProxyHandler = handleApi({
       statusCode: 200,
       body: JSON.stringify({ uploadKey, url: signedUrl }),
     };
+  },
+  options: {
+    authorization: true,
   },
 });
 

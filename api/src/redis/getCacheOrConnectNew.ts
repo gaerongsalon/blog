@@ -1,16 +1,16 @@
-import { IRedisConnection } from "@yingyeothon/naive-redis/lib/connection";
+import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import connectToRedis from "./connectToRedis";
 
 const expirationMillis = 3 * 60 * 1000;
 const connectionCache: {
-  connection: IRedisConnection | null;
+  connection: RedisConnection | null;
   expired: number;
 } = {
   connection: null,
   expired: 0,
 };
 
-export function getCacheOrConnectNew(): IRedisConnection {
+export function getCacheOrConnectNew(): RedisConnection {
   if (
     connectionCache.connection !== null &&
     connectionCache.expired > Date.now()

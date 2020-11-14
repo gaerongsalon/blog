@@ -3,8 +3,9 @@ import {
   APIGatewayProxyHandler,
   APIGatewayProxyResult,
 } from "aws-lambda";
-import { Logger, flushSlack } from "../logger/logger";
 
+import { Logger } from "@yingyeothon/slack-logger";
+import { authorize } from "./auth";
 import { serializeError } from "serialize-error";
 
 export class ApiError {
@@ -15,10 +16,11 @@ export class ApiError {
 }
 
 interface HandleWithLogger<H> {
-  log: Logger;
+  logger: Logger;
   handle: H;
   options?: {
     accesslog?: boolean;
+    authorization?: boolean;
   };
 }
 
@@ -29,9 +31,9 @@ export function throwError(statusCode = 400, body = "") {
 }
 
 export function handleApi({
-  log,
+  logger,
   handle: delegate,
-  options: { accesslog = false } = {},
+  options: { accesslog = false, authorization = false } = {},
 }: HandleWithLogger<
   (event: APIGatewayProxyEvent) => Promise<APIGatewayProxyResult>
 >): APIGatewayProxyHandler {
@@ -41,24 +43,33 @@ export function handleApi({
       query: event.queryStringParameters,
     };
     try {
-      (accesslog ? log.info : log.trace)(
+      if (authorization) {
+        authorize(event);
+      }
+      (accesslog ? logger.info : logger.trace)(
         logContext,
         "Start to handle API event"
       );
       const result = await delegate(event);
-      (accesslog ? log.info : log.trace)(logContext, "API event is completed");
+      (accesslog ? logger.info : logger.trace)(
+        logContext,
+        "API event is completed"
+      );
       return result;
     } catch (error) {
       if (error instanceof ApiError) {
-        log.trace({ ...logContext, error }, "Error occurred in " + event.path);
+        logger.trace(
+          { ...logContext, error },
+          "Error occurred in " + event.path
+        );
         return { statusCode: error.statusCode, body: error.body };
       }
-      log.warn(
+      logger.warn(
         { ...logContext, error: serializeError(error) },
         "Error occurred in handling API event"
       );
     } finally {
-      await flushSlack();
+      await logger.flushSlack();
     }
     return { statusCode: 404, body: "Not Found" };
   };

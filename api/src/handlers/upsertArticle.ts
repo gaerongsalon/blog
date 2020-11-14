@@ -5,24 +5,24 @@ import Article, { validateArticle } from "../db/article";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
+import { getLogger } from "@yingyeothon/slack-logger";
 import insertArticle from "../db/insertArticle";
-import { logger } from "../logger/logger";
+import secrets from "../env/secrets";
 import updateArticle from "../db/updateArticle";
 import useRedisLock from "../redis/useRedisLock";
 import useS3 from "../aws/useS3";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
 
-const log = logger.get("handle:upsertArticle", __filename);
+const logger = getLogger("handle:upsertArticle", __filename);
 
-const dbKey = process.env.DB_KEY ?? "articles";
 const dbLockRedisKey = "blog:lock:articles-db";
 
 export const handle: APIGatewayProxyHandler = handleApi({
-  log,
+  logger,
   handle: async (event) => {
     const slug = (event.pathParameters ?? {}).slug ?? throwError(404);
     const article = { ...(JSON.parse(event.body ?? "{}") as Article), slug };
-    log.debug({ slug, article }, "Article to upsert");
+    logger.debug({ slug, article }, "Article to upsert");
     if (!validateArticle(article, { withoutSerial: true })) {
       throw new ApiError(404);
     }
@@ -32,7 +32,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,
     })({
-      dbId: dbKey,
+      dbId: secrets.dbKey,
       createTableQuery: createTables,
       autoCommit: true,
       doIn: ({ db }) => {
@@ -50,5 +50,6 @@ export const handle: APIGatewayProxyHandler = handleApi({
   },
   options: {
     accesslog: true,
+    authorization: true,
   },
 });

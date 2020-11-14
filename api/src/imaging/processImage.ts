@@ -4,14 +4,14 @@ import * as fs from "fs";
 import * as path from "path";
 
 import getImageFileNameWithDesiredWidth from "./getImageFileNameWithDesiredWidth";
+import { getLogger } from "@yingyeothon/slack-logger";
 import hashFile from "./hashFile";
-import { logger } from "../logger/logger";
 import resizeAndOptimize from "./resizeAndOptimize";
 import tempy from "tempy";
 import useImageDb from "./useImageDb";
 import useS3 from "../aws/useS3";
 
-const log = logger.get("handle:processImage", __filename);
+const log = getLogger("handle:processImage", __filename);
 
 export default async function processImage({
   uploadKey,

@@ -1,4 +1,4 @@
-import { IRedisConnection } from "@yingyeothon/naive-redis/lib/connection";
+import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import redisDel from "@yingyeothon/naive-redis/lib/del";
 import redisGet from "@yingyeothon/naive-redis/lib/get";
 
@@ -11,7 +11,7 @@ export type ReleaseLock = (params: ReleaseParams) => Promise<void>;
 function redisReleaseLock({
   connection,
 }: {
-  connection: IRedisConnection;
+  connection: RedisConnection;
 }): ReleaseLock {
   return async function releaseLock({
     lockRedisKey,

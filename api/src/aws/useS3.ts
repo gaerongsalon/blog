@@ -1,16 +1,17 @@
 import * as fs from "fs";
 
 import { S3 } from "aws-sdk";
-import { logger } from "../logger/logger";
+import { getLogger } from "@yingyeothon/slack-logger";
+import secrets from "../env/secrets";
 
-const log = logger.get("useS3", __filename);
+const log = getLogger("useS3", __filename);
 
 export type UseS3Params = { bucketName?: string };
 export type UseS3 = ReturnType<typeof useS3>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function useS3({
-  bucketName = process.env.FILES_BUCKET!,
+  bucketName = secrets.s3BucketName,
 }: UseS3Params = {}) {
   const s3 = new S3();
 
