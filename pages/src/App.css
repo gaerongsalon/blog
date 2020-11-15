@@ -29,6 +29,23 @@ hr {
   padding-bottom: 4rem;
 }
 
+@media (max-width: 1280px) {
+  .App {
+    width: 72vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .App {
+    width: 90vw;
+    min-width: auto;
+    padding-bottom: 2rem;
+  }
+  .ql-editor {
+    padding: 0px !important;
+  }
+}
+
 .ArticleList {
   display: flex;
   flex-wrap: wrap;
@@ -45,6 +62,18 @@ hr {
   padding-left: 2rem;
 }
 
+@media (max-width: 800px) {
+  .SubArticleItem {
+    width: 100%;
+  }
+  .SubArticleItem:nth-child(odd) {
+    padding: 0;
+  }
+  .SubArticleItem:nth-child(even) {
+    padding: 0;
+  }
+}
+
 .ArticleItem {
   margin-bottom: 2rem;
 }
@@ -52,7 +81,7 @@ hr {
 .ArticleItem .ArticleWritten {
   text-align: right;
   color: gray;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .ArticleItem .ArticleHeadImage {
@@ -88,24 +117,9 @@ hr {
   color: #c39f76;
 }
 
-@media (max-width: 1280px) {
-  .App {
-    width: 72vw;
-  }
-}
-
-@media (max-width: 800px) {
-  .App {
-    width: 96vw;
-    min-width: auto;
-  }
-  .ql-editor {
-    padding: 0px !important;
-  }
-}
-
 .BlogTitle {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
 .Admin {
@@ -120,11 +134,11 @@ hr {
 }
 
 .NewArticle {
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+.NewArticle a {
   font-size: 2rem;
-  text-decoration: none;
   border-radius: 50%;
   background-color: yellow;
 }
@@ -148,7 +162,7 @@ hr {
 }
 
 .ArticleEdit {
-  margin: 2rem 0rem;
+  margin: 1rem 0rem;
 }
 
 .ArticleEdit .ArticleTitle,

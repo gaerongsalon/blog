@@ -14,12 +14,12 @@ export default function ArticleListPage() {
   }, []);
   return (
     <>
-      {hasWritePermission() ? (
-        <Link className="NewArticle" to="/article/new">
-          ✏️
-        </Link>
-      ) : null}
       <Articles articles={articles} />
+      {hasWritePermission() ? (
+        <div className="NewArticle">
+          <Link to="/article/new">✏️</Link>
+        </div>
+      ) : null}
     </>
   );
 }
