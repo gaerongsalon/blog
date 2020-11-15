@@ -33,7 +33,7 @@ export default function ArticleEditor({
     [quillRef]
   );
   return (
-    <div>
+    <div className="ArticleEditor">
       <ReactQuill
         theme={preview ? "bubble" : "snow"}
         ref={quillRef}

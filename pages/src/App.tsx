@@ -7,6 +7,7 @@ import ArticleListPage from "./pages/ArticleListPage";
 import ArticleNewPage from "./pages/ArticleNewPage";
 import ArticleViewPage from "./pages/ArticleViewPage";
 import FirstPage from "./pages/FirstPage";
+import LoginPage from "./pages/LoginPage";
 import React from "react";
 
 export default function App() {
@@ -25,6 +26,9 @@ export default function App() {
           </Route>
           <Route path="/article/:slug">
             <ArticleViewPage />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
           </Route>
           <Route path="/">
             <FirstPage />

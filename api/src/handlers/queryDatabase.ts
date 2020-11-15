@@ -4,6 +4,7 @@ import { ApiError, handleApi } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
+import encodeSlug from "../utils/encodeSlug";
 import getAllTags from "../db/getAllTags";
 import getArticle from "../db/getArticle";
 import getArticles from "../db/getArticles";
@@ -37,7 +38,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
           case "tags":
             return getAllTags({ db });
           case "article":
-            return getArticle({ db, slug: id });
+            return getArticle({ db, slug: encodeSlug(id) });
         }
         return true;
       },

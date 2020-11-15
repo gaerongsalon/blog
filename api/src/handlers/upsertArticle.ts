@@ -5,6 +5,7 @@ import Article, { validateArticle } from "../db/article";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
+import encodeSlug from "../utils/encodeSlug";
 import { getLogger } from "@yingyeothon/slack-logger";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
@@ -25,7 +26,9 @@ type ArticlePayload = Omit<Article, "serial" | "slug" | "writer"> & {
 export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
-    const slug = (event.pathParameters ?? {}).slug ?? throwError(404);
+    const slug = encodeSlug(
+      (event.pathParameters ?? {}).slug ?? throwError(404)
+    );
     const article = {
       ...(JSON.parse(event.body ?? "{}") as ArticlePayload),
       slug,

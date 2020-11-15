@@ -9,12 +9,13 @@ const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID!;
 export default function LoginButton() {
   return (
     <GoogleLogin
+      className="Login"
       clientId={googleClientId}
       buttonText="Login"
       onSuccess={async (result) => {
         try {
           await handleGoogleResponse(result);
-          window.location.reload();
+          window.location.replace("/");
         } catch (error) {
           handleError(error);
         }

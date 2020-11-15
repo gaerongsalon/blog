@@ -1,38 +1,221 @@
+* {
+  word-break: keep-all;
+  transition: all 0.3s;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+  color: #c39f76;
+}
+a:hover {
+  color: #444444;
+}
+
+hr {
+  border: 0;
+  border-bottom: 0.5px solid #cccccc;
+  margin: 3rem 0rem 4rem 0rem;
+}
+
 .App {
+  width: 60vw;
+  max-width: 1280px;
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+}
+
+.ArticleList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.SubArticleItem {
+  flex-grow: 1;
+  width: calc(50% - 2rem);
+}
+.SubArticleItem:nth-child(odd) {
+  padding-right: 2rem;
+}
+.SubArticleItem:nth-child(even) {
+  padding-left: 2rem;
+}
+
+.ArticleItem {
+  margin-bottom: 2rem;
+}
+
+.ArticleItem .ArticleWritten {
+  text-align: right;
+  color: gray;
+  margin-top: 4px;
+}
+
+.ArticleItem .ArticleHeadImage {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.ArticleItem .ArticleTitle {
+  font-size: 1.2rem;
+}
+
+.ArticleItem .ArticleHeadImage img {
+  max-width: 90%;
+  max-height: 24vh;
+}
+
+.Article .ArticleTitle {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Article .ArticleHeadImage {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.Article .ArticleWritten {
+  text-align: center;
+  color: gray;
+}
+
+.Article .ArticleCategory {
+  text-align: right;
+  color: #c39f76;
+}
+
+@media (max-width: 1280px) {
+  .App {
+    width: 72vw;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+@media (max-width: 800px) {
+  .App {
+    width: 96vw;
+    min-width: auto;
+  }
+  .ql-editor {
+    padding: 0px !important;
+  }
+}
+
+.BlogTitle {
+  text-align: center;
+}
+
+.Admin {
+  text-align: right;
+}
+
+.LoginPage {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 90vh;
 }
 
-.App-link {
-  color: #61dafb;
+.NewArticle {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  font-size: 2rem;
+  text-decoration: none;
+  border-radius: 50%;
+  background-color: yellow;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ArticleEditor p,
+.ArticleEditor ul li,
+.ArticleEditor ol li {
+  font-size: 0.99rem;
+  line-height: 1.6rem;
+}
+
+.ArticleEditor p,
+.ArticleEditor ul,
+.ArticleEditor ol {
+  margin-bottom: 1.5rem !important;
+}
+
+.NavigationButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ArticleEdit {
+  margin: 2rem 0rem;
+}
+
+.ArticleEdit .ArticleTitle,
+.ArticleEdit .ArticleHeadImage,
+.ArticleEdit .ArticleExcerpt,
+.ArticleEdit .ArticleCategory,
+.ArticleEdit .ArticleTags {
+  margin-bottom: 1rem;
+}
+
+.ArticleEdit .ArticleTitle label,
+.ArticleEdit .ArticleHeadImage label,
+.ArticleEdit .ArticleExcerpt label,
+.ArticleEdit .ArticleCategory label,
+.ArticleEdit .ArticleTags label {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.ArticleEdit .ArticleTitle input,
+.ArticleEdit .ArticleHeadImage div,
+.ArticleEdit .ArticleHeadImage img,
+.ArticleEdit .ArticleExcerpt textarea,
+.ArticleEdit .ArticleCategory input,
+.ArticleEdit .ArticleTags input {
+  width: calc(100% - 16px);
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 6px;
+  border: 1px solid #dddddd;
+}
+
+.ArticleEdit .ArticleHeadImage img {
+  width: auto;
+  max-width: 50vw;
+}
+
+.ArticleEditor img {
+  max-width: 50vw !important;
+  max-height: 50vh !important;
+}
+
+.ImageUploadPanel {
+  margin: 2rem 0rem;
+  border: 1px solid #dddddd;
+  padding: 1rem;
+}
+.ImageSelector {
+  display: flex;
+  flex-wrap: wrap;
+}
+.ImageSelector img {
+  width: calc(33% - 2rem);
+  padding: 1rem;
+  object-fit: contain;
+}
+
+.DropZone {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.ArticleEdit .NavigationButtons button {
+  border: 0;
+  background: transparent;
+  font-size: 1rem;
+  color: #c39f76;
+  font-weight: bold;
 }
