@@ -2,10 +2,14 @@ import * as React from "react";
 
 import Article from "../models/article/Article";
 import ArticleContent from "../components/ArticleContent";
+import CategoryLink from "../components/CategoryLink";
 import { Link } from "react-router-dom";
+import TagsLink from "../components/TagsLink";
 import fetchArticle from "../apis/fetchArticle";
+import formatWritten from "../utils/formatWritten";
 import handleError from "../utils/handleError";
 import hasWritePermission from "../apis/credential/hasWritePermission";
+import metadata from "../metadata.json";
 
 export default function ArticleView({ slug }: { slug: string }) {
   const [article, setArticle] = React.useState<Article | null>(null);
@@ -16,28 +20,34 @@ export default function ArticleView({ slug }: { slug: string }) {
     [slug]
   );
   if (!article) {
-    return <div>Loading...</div>;
+    return <div className="Loading">Loading...</div>;
   }
   const { writer, title, image, category, tags, written, content } = article;
   return (
-    <div>
-      <div>{writer}</div>
-      <div>{title}</div>
-      {image ? <img src={image} alt={title} /> : null}
-      <div>{category}</div>
-      <div>{tags}</div>
-      <div>{written}</div>
-      <ArticleContent content={content} />
-      {hasWritePermission() ? (
-        <div>
-          <Link to={`/article/${slug}/edit`}>Go to Edit</Link>
+    <div className="Article">
+      <h1 className="ArticleTitle">{title}</h1>
+      {image ? (
+        <div className="ArticleHeadImage">
+          <img src={image} alt={title} />
         </div>
       ) : null}
-      <div>
-        <Link to={`/articles`}>Go to List</Link>
-      </div>
-      <div>
-        <Link to={`/`}>Go to Home</Link>
+      {!metadata.options?.hideWriter ? (
+        <div className="ArticleWriter">{writer}</div>
+      ) : null}
+      <div className="ArticleWritten">{formatWritten(written)}</div>
+      <CategoryLink category={category} />
+      <ArticleContent content={content} />
+      <TagsLink tags={tags} />
+      <hr />
+      <div className="NavigationButtons">
+        {hasWritePermission() ? (
+          <div className="GotoEdit">
+            <Link to={`/article/${slug}/edit`}>Go to Edit</Link>
+          </div>
+        ) : null}
+        <div className="GotoHome">
+          <Link to={`/`}>Go to Home</Link>
+        </div>
       </div>
     </div>
   );

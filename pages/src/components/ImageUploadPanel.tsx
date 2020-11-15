@@ -18,9 +18,9 @@ export default function ImageUploadPanel({
     [setImages]
   );
   return (
-    <>
+    <div className="ImageUploadPanel">
       <ImageDropZone updateImages={updateImages} />
       <ImageSelector images={images} onImageClick={onImageClick} />
-    </>
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Article from "../models/article/Article";
 import ArticleEditor from "../components/ArticleEditor";
+import BindedLabelInput from "../components/BindedLabelInput";
 import ImageDropZone from "../components/ImageDropZone";
 import { Link } from "react-router-dom";
 import deleteArticle from "../apis/deleteArticle";
@@ -23,7 +24,12 @@ export default function ArticleEditView({
   }
 
   function upload() {
-    article.written = article.written ?? new Date().toISOString();
+    if (!article.written) {
+      article.written = new Date().toISOString();
+    }
+    article.slug = article.title
+      .replace(/[-!$%^&*()_+|~=`{}[\]:";'<>?,./]/g, "")
+      .replace(/\s+/g, "-");
     article.draft++;
     updateArticle(article)
       .then((result) => {
@@ -43,72 +49,69 @@ export default function ArticleEditView({
   }
 
   return (
-    <div>
-      <BindedLabelInput property="slug" article={article} />
-      <BindedLabelInput property="title" article={article} />
+    <div className="ArticleEdit">
+      <BindedLabelInput
+        className="ArticleTitle"
+        property="title"
+        article={article}
+      />
       <ImageDropZone
         updateImages={updateHeadImage}
         maxFiles={1}
         DropZoneComponent={
-          headImage ? <img src={headImage} alt="Head" /> : <p>Drop</p>
+          headImage ? (
+            <div className="ArticleHeadImage">
+              <label>Head Image</label>
+              <img src={headImage} alt="Head" />
+            </div>
+          ) : (
+            <div className="ArticleHeadImage">
+              <label>Head Image</label>
+              <div>CHOOSE AN IMAGE</div>
+            </div>
+          )
         }
       />
-      <BindedLabelInput property="excerpt" article={article} />
-      <BindedLabelInput property="category" article={article} />
-      <BindedLabelInput property="tags" article={article} />
+      <BindedLabelInput
+        className="ArticleExcerpt"
+        property="excerpt"
+        article={article}
+        textarea={true}
+      />
+      <BindedLabelInput
+        className="ArticleCategory"
+        property="category"
+        article={article}
+      />
+      <BindedLabelInput
+        className="ArticleTags"
+        property="tags"
+        article={article}
+      />
       <ArticleEditor
         preview={false}
         content={article.content}
         updateValue={(newValue) => (article.content = newValue)}
       />
-      <button onClick={upload}>Save</button>
-      {article.serial ? <button onClick={remove}>Delete</button> : null}
-      {article.serial ? (
-        <Link to={() => `/article/${article.slug}`}>Return to View</Link>
-      ) : (
-        <Link to="/">Go to home</Link>
-      )}
-    </div>
-  );
-}
-
-function BindedLabelInput<T extends keyof Article>({
-  property,
-  article,
-  fromString = (v) => v as any,
-}: {
-  property: T;
-  article: Article;
-  fromString?: (input: string) => Article[T];
-}) {
-  return (
-    <LabelInput
-      label={property}
-      initialValue={article[property].toString()}
-      setValue={(newValue) => (article[property] = fromString(newValue))}
-    />
-  );
-}
-
-function LabelInput({
-  label,
-  initialValue,
-  setValue,
-}: {
-  label: string;
-  initialValue: string;
-  setValue: (newValue: string) => void;
-}) {
-  return (
-    <div>
-      <label>
-        {label}
-        <input
-          type="text"
-          defaultValue={initialValue}
-          onChange={(e) => setValue(e.target.value)}
-        />
-      </label>
+      <div className="NavigationButtons">
+        <button className="ArticleSave" onClick={upload}>
+          Save
+        </button>
+        {article.serial ? (
+          <button className="ArticleDelete" onClick={remove}>
+            Delete
+          </button>
+        ) : null}
+        {article.serial ? (
+          <Link className="GotoView" to={() => `/article/${article.slug}`}>
+            Return to View
+          </Link>
+        ) : (
+          <Link className="GotoHome" to="/">
+            Go to home
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

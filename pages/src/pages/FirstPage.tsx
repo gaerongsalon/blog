@@ -1,23 +1,16 @@
 import * as React from "react";
 
 import ArticleListPage from "./ArticleListPage";
-import LoginButton from "../components/LoginButton";
-import isLogged from "../apis/credential/isLogged";
-import logout from "../apis/credential/logout";
+import { Link } from "react-router-dom";
+import metadata from "../metadata.json";
 
 export default function FirstPage() {
-  function logoutAndReload() {
-    logout();
-    window.location.reload();
-  }
   return (
-    <div>
-      <h1>Blog</h1>
-      {isLogged() ? (
-        <button onClick={logoutAndReload}>Logout</button>
-      ) : (
-        <LoginButton />
-      )}
+    <div className="Blog">
+      <div className="Admin">
+        <Link to="/login">Login</Link>
+      </div>
+      <h1 className="BlogTitle">{metadata.title}</h1>
       <ArticleListPage />
     </div>
   );

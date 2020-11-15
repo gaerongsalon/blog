@@ -10,13 +10,12 @@ export default function ImageSelector({
   onImageClick: OnImageClick;
 }) {
   return (
-    <div>
+    <div className="ImageSelector">
       {images.map((image) => (
         <img
           key={image}
           src={image}
           alt={image}
-          style={{ width: 400 }}
           onClick={() => onImageClick(image)}
         />
       ))}

@@ -5,10 +5,7 @@ import { useDropzone } from "react-dropzone";
 
 export default function ImageDropZone({
   maxFiles,
-  DragActiveComponent = <p>Drop the files here ...</p>,
-  DropZoneComponent = (
-    <p>Drag 'n' drop some files here, or click to select files</p>
-  ),
+  DropZoneComponent = <div className="DropZone">CHOOSE IMAGE FILES</div>,
   updateImages,
 }: {
   maxFiles?: number;
@@ -25,7 +22,7 @@ export default function ImageDropZone({
     },
     [updateImages]
   );
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     maxFiles,
     onDrop,
     accept: ["image/jpg", "image/jpeg", "image/png"],
@@ -34,7 +31,7 @@ export default function ImageDropZone({
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? DragActiveComponent : DropZoneComponent}
+      {DropZoneComponent}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { handleApi, throwError } from "./base";
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
 import deleteArticle from "../db/deleteArticle";
+import encodeSlug from "../utils/encodeSlug";
 import { getLogger } from "@yingyeothon/slack-logger";
 import secrets from "../env/secrets";
 import useRedisLock from "../redis/useRedisLock";
@@ -18,7 +19,9 @@ const dbLockRedisKey = "blog:lock:articles-db";
 export const handle: APIGatewayProxyHandler = handleApi({
   logger: logger,
   handle: async (event) => {
-    const slug = (event.pathParameters ?? {}).slug ?? throwError(404);
+    const slug = encodeSlug(
+      (event.pathParameters ?? {}).slug ?? throwError(404)
+    );
     logger.debug({ slug }, "Article to delete");
 
     const { inLock } = useRedisLock();

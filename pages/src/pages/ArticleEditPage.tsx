@@ -23,7 +23,7 @@ export default function ArticleEditPage() {
     return <Redirect to="/" />;
   }
   if (!article) {
-    return <div>Loading...</div>;
+    return <div className="Loading">Loading...</div>;
   }
   return <ArticleEditView mode="edit" article={article} />;
 }
