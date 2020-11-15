@@ -146,7 +146,9 @@ functions:
       - http: GET /article/{articleId}
       - http: GET /article/{articleId}/{action}
       - http: GET /articles
+      - http: GET /category/{category}
       - http: GET /categories
+      - http: GET /tag/{tag}
       - http: GET /tags
       - http: GET /static/css/{file}
       - http: GET /static/js/{file}
