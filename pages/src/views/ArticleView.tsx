@@ -23,7 +23,7 @@ export default function ArticleView({ slug }: { slug: string }) {
     <div>
       <div>{writer}</div>
       <div>{title}</div>
-      <div>{image}</div>
+      {image ? <img src={image} alt={title} /> : null}
       <div>{category}</div>
       <div>{tags}</div>
       <div>{written}</div>

@@ -10,8 +10,10 @@ export default function ArticleListItem({
 }) {
   return (
     <div>
-      <Link to={`/article/${slug}`}>{title}</Link>
-      <div>{image}</div>
+      <Link to={`/article/${slug}`}>
+        {title}
+        {image ? <img src={image} alt={title} /> : null}
+      </Link>
       <div>{excerpt}</div>
       <div>{written}</div>
     </div>

@@ -7,6 +7,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
 import { getLogger } from "@yingyeothon/slack-logger";
 import insertArticle from "../db/insertArticle";
+import readWriter from "./authorization/readWriter";
 import secrets from "../env/secrets";
 import updateArticle from "../db/updateArticle";
 import useRedisLock from "../redis/useRedisLock";
@@ -17,16 +18,24 @@ const logger = getLogger("handle:upsertArticle", __filename);
 
 const dbLockRedisKey = "blog:lock:articles-db";
 
+type ArticlePayload = Omit<Article, "serial" | "slug" | "writer"> & {
+  serial?: number;
+};
+
 export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
     const slug = (event.pathParameters ?? {}).slug ?? throwError(404);
-    const article = { ...(JSON.parse(event.body ?? "{}") as Article), slug };
+    const article = {
+      ...(JSON.parse(event.body ?? "{}") as ArticlePayload),
+      slug,
+    };
     logger.debug({ slug, article }, "Article to upsert");
     if (!validateArticle(article, { withoutSerial: true })) {
       throw new ApiError(404);
     }
 
+    const writer = readWriter(event);
     const { inLock } = useRedisLock();
     const { withDb } = useS3Sqlite(useS3());
     await inLock(withDb, {
@@ -36,10 +45,23 @@ export const handle: APIGatewayProxyHandler = handleApi({
       createTableQuery: createTables,
       autoCommit: true,
       doIn: ({ db }) => {
-        if ("serial" in article && article.serial > 0) {
-          updateArticle({ db, article });
+        if (article.serial !== undefined && article.serial > 0) {
+          updateArticle({
+            db,
+            article: {
+              ...article,
+              serial: article.serial,
+              writer: writer.name,
+            },
+          });
         } else {
-          insertArticle({ db, article });
+          insertArticle({
+            db,
+            article: {
+              ...article,
+              writer: writer.name,
+            },
+          });
         }
       },
     });

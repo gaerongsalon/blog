@@ -5,7 +5,7 @@ import {
 } from "aws-lambda";
 
 import { Logger } from "@yingyeothon/slack-logger";
-import { authorize } from "./auth";
+import authorize from "./authorization/authorize";
 import { serializeError } from "serialize-error";
 
 export class ApiError {
@@ -15,7 +15,7 @@ export class ApiError {
   ) {}
 }
 
-interface HandleWithLogger<H> {
+interface HandlerContext<H> {
   logger: Logger;
   handle: H;
   options?: {
@@ -34,7 +34,7 @@ export function handleApi({
   logger,
   handle: delegate,
   options: { accesslog = false, authorization = false } = {},
-}: HandleWithLogger<
+}: HandlerContext<
   (event: APIGatewayProxyEvent) => Promise<APIGatewayProxyResult>
 >): APIGatewayProxyHandler {
   return async (event) => {

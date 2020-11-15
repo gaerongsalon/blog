@@ -1,23 +1,12 @@
 import * as jwt from "jsonwebtoken";
 
-import {
-  APIGatewayAuthorizerHandler,
-  APIGatewayAuthorizerResultContext,
-  APIGatewayProxyEvent,
-} from "aws-lambda";
-
+import { APIGatewayAuthorizerHandler } from "aws-lambda";
+import Authorization from "./models/Authorization";
 import { getLogger } from "@yingyeothon/slack-logger";
-import writers from "../env/writers";
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY!;
 
 const logger = getLogger("handle:auth", __filename);
-
-interface Authorization extends APIGatewayAuthorizerResultContext {
-  name: string;
-  email: string;
-  application: string;
-}
 
 export const handle: APIGatewayAuthorizerHandler = async (event) => {
   const token =
@@ -71,40 +60,4 @@ function buildScopedMethodArn({ methodArn }: { methodArn: string }): string {
     "/" +
     [stage, /* method= */ "*", /* function= */ "*"].join("/")
   );
-}
-
-interface Permission {
-  readable: boolean;
-  writable: boolean;
-}
-
-export function checkPermission(event: APIGatewayProxyEvent): Permission {
-  const context = event.requestContext.authorizer as
-    | Authorization
-    | null
-    | undefined;
-  if (!context) {
-    return { readable: true, writable: false };
-  }
-  return {
-    readable: true,
-    writable: writers.some((writer) => writer.email === context.email),
-  };
-}
-
-export function authorize(event: APIGatewayProxyEvent): void {
-  logger.debug(
-    {
-      url: event.path,
-      headers: event.headers,
-      context: event.requestContext.authorizer,
-    },
-    "Check authorization"
-  );
-  const grant = checkPermission(event);
-  if (!grant.writable) {
-    throw new Error(
-      "Not authorized: " + JSON.stringify(event.requestContext.authorizer)
-    );
-  }
 }

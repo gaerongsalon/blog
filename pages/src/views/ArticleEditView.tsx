@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Article from "../models/article/Article";
 import ArticleEditor from "../components/ArticleEditor";
+import ImageDropZone from "../components/ImageDropZone";
 import { Link } from "react-router-dom";
 import deleteArticle from "../apis/deleteArticle";
 import handleError from "../utils/handleError";
@@ -13,7 +14,14 @@ export default function ArticleEditView({
   mode: "new" | "edit";
   article: Article;
 }) {
-  console.log(article);
+  const [headImage, setHeadImage] = React.useState<string>(article.image);
+
+  function updateHeadImage(images: string[]) {
+    const [image] = images;
+    article.image = image;
+    setHeadImage(image);
+  }
+
   function upload() {
     article.written = article.written ?? new Date().toISOString();
     article.draft++;
@@ -33,12 +41,18 @@ export default function ArticleEditView({
       })
       .catch(handleError);
   }
+
   return (
     <div>
       <BindedLabelInput property="slug" article={article} />
-      <BindedLabelInput property="writer" article={article} />
       <BindedLabelInput property="title" article={article} />
-      <BindedLabelInput property="image" article={article} />
+      <ImageDropZone
+        updateImages={updateHeadImage}
+        maxFiles={1}
+        DropZoneComponent={
+          headImage ? <img src={headImage} alt="Head" /> : <p>Drop</p>
+        }
+      />
       <BindedLabelInput property="excerpt" article={article} />
       <BindedLabelInput property="category" article={article} />
       <BindedLabelInput property="tags" article={article} />
@@ -48,8 +62,12 @@ export default function ArticleEditView({
         updateValue={(newValue) => (article.content = newValue)}
       />
       <button onClick={upload}>Save</button>
-      <button onClick={remove}>Delete</button>
-      <Link to={() => `/article/${article.slug}`}>Return to View</Link>
+      {article.serial ? <button onClick={remove}>Delete</button> : null}
+      {article.serial ? (
+        <Link to={() => `/article/${article.slug}`}>Return to View</Link>
+      ) : (
+        <Link to="/">Go to home</Link>
+      )}
     </div>
   );
 }

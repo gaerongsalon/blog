@@ -1,7 +1,7 @@
 import "source-map-support/register";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { checkPermission } from "./auth";
+import checkPermission from "./authorization/checkPermission";
 import { getLogger } from "@yingyeothon/slack-logger";
 import { handleApi } from "./base";
 

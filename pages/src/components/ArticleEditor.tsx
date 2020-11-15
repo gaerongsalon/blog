@@ -20,14 +20,12 @@ export default function ArticleEditor({
   const [value, setValue] = React.useState(content ?? "");
   const quillRef = React.useRef<ReactQuill>(null);
 
-  console.log(content);
   const addImage = React.useCallback(
     function (imageUrl: string) {
       const quill = quillRef.current?.getEditor();
       if (!quill) {
         return;
       }
-      console.log(imageUrl);
       const range = quill.getSelection();
       quill.insertEmbed(range?.index ?? 0, "image", imageUrl);
       quill.focus();
