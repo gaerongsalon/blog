@@ -3,6 +3,7 @@ import * as React from "react";
 import Article from "../models/article/Article";
 import { Link } from "react-router-dom";
 import formatWritten from "../utils/formatWritten";
+import prefetchArticle from "../utils/prefetchArticle";
 
 export default function ArticleListItem({
   article: { slug, title, image, excerpt, written },
@@ -13,7 +14,10 @@ export default function ArticleListItem({
 }) {
   return (
     <div className={`ArticleItem ${className ?? ""}`}>
-      <Link to={`/article/${slug}`}>
+      <Link
+        to={`/article/${slug}`}
+        onMouseMove={() => prefetchArticle(decodeURIComponent(slug))}
+      >
         <h2 className="ArticleTitle">{title}</h2>
         {image ? (
           <div className="ArticleHeadImage">

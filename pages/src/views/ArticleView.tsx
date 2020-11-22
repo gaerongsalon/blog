@@ -20,7 +20,7 @@ export default function ArticleView({ slug }: { slug: string }) {
     [slug]
   );
   if (!article) {
-    return <div className="Loading">Loading...</div>;
+    return <div className="Loading"></div>;
   }
   const { writer, title, image, category, tags, written, content } = article;
   return (
