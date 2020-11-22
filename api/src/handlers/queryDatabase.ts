@@ -3,16 +3,8 @@ import "source-map-support/register";
 import { ApiError, handleApi } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
-import createTables from "../db/createTables";
-import encodeSlug from "../utils/encodeSlug";
-import getAllTags from "../db/getAllTags";
-import getArticle from "../db/getArticle";
-import getArticles from "../db/getArticles";
-import getCategories from "../db/getCategories";
 import { getLogger } from "@yingyeothon/slack-logger";
-import getPrivateS3cb from "../support/getPrivateS3cb";
-import secrets from "../env/secrets";
-import useS3Sqlite from "../sqlite/useS3Sqlite";
+import queryResource from "./query/queryResource";
 
 const logger = getLogger("handle:queryDatabase", __filename);
 
@@ -23,29 +15,15 @@ export const handle: APIGatewayProxyHandler = handleApi({
     if (!resource || (resource === "article" && !id)) {
       throw new ApiError(404);
     }
-    const { withDb } = useS3Sqlite(getPrivateS3cb());
-    const data = await withDb({
-      dbId: secrets.dbKey,
-      createTableQuery: createTables,
-      doIn: ({ db }) => {
-        switch (resource) {
-          case "articles":
-            const { offset = "0", limit = "100" } =
-              event.queryStringParameters ?? {};
-            return getArticles({ db, offset, limit });
-          case "categories":
-            return getCategories({ db });
-          case "tags":
-            return getAllTags({ db });
-          case "article":
-            return getArticle({ db, slug: encodeSlug(id) });
-        }
-        return true;
-      },
-    });
     return {
       statusCode: 200,
-      body: JSON.stringify(data),
+      body: JSON.stringify(
+        await queryResource({
+          resource,
+          id,
+          queryParams: event.queryStringParameters ?? {},
+        })
+      ),
     };
   },
   options: {
