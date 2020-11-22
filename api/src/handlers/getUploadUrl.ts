@@ -4,8 +4,8 @@ import { ApiError, handleApi, throwError } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { getLogger } from "@yingyeothon/slack-logger";
+import getPrivateS3 from "../support/getPrivateS3";
 import { nanoid } from "nanoid";
-import useS3 from "../aws/useS3";
 
 const logger = getLogger("handle:getUploadUrl", __filename);
 const allowedTypes = [".png", ".jpg"];
@@ -18,14 +18,11 @@ export const handle: APIGatewayProxyHandler = handleApi({
       throw new ApiError(400);
     }
 
-    const { s3, bucketName } = useS3();
+    const { getSignedUrl } = getPrivateS3();
     const uploadKey = newFileKey(type);
-    const signedUrl = s3.getSignedUrl("putObject", {
-      Bucket: bucketName,
-      Key: `image-upload/${uploadKey}`,
-      Expires: 60 * 10,
-      ContentType: `application/${type.substring(1)}`,
-      ACL: "public-read",
+    const signedUrl = getSignedUrl({
+      s3ObjectKey: `image-upload/${uploadKey}`,
+      contentType: `application/${type.substring(1)}`,
     });
 
     return {

@@ -1,4 +1,4 @@
-import { UseS3 } from "../aws/useS3";
+import S3 from "../aws/S3";
 import closeSqliteDatabase from "./closeSqliteDatabase";
 import getSqliteDatabase from "./getSqliteDatabase";
 import putSqliteDatabase from "./putSqliteDatabase";
@@ -13,7 +13,7 @@ export default function useS3Sqlite({
   uploadLocalFile,
 }: {
   dbIdToS3Key?: (dbId: string) => string;
-} & Pick<UseS3, "exists" | "downloadToLocal" | "uploadLocalFile">) {
+} & Pick<S3, "exists" | "downloadToLocal" | "uploadLocalFile">) {
   async function getDbFile({ dbId }: { dbId: string }) {
     const s3ObjectKey = dbIdToS3Key(dbId);
     const localDbFile = tempy.file({ extension: ".db" });

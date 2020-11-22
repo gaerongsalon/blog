@@ -42,18 +42,25 @@ provider:
         - "s3:HeadObject"
         - "s3:DeleteObject"
       Resource:
-        - "arn:aws:s3:::${env:FILES_BUCKET}/*"
+        - "arn:aws:s3:::${env:INTERNAL_FILE_BUCKET}/*"
+        - "arn:aws:s3:::${env:STATIC_FILE_BUCKET}/*"
     - Effect: "Allow"
       Action:
         - "s3:ListBucket"
       Resource:
-        - "arn:aws:s3:::${env:FILES_BUCKET}"
+        - "arn:aws:s3:::${env:INTERNAL_FILE_BUCKET}"
+        - "arn:aws:s3:::${env:STATIC_FILE_BUCKET}"
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     REDIS_HOST: ${env:REDIS_HOST}
     REDIS_PASSWORD: ${env:REDIS_PASSWORD}
     JWT_SECRET_KEY: ${env:JWT_SECRET_KEY}
-    FILES_BUCKET: ${env:FILES_BUCKET}
+    S3CB_URL: ${env:S3CB_URL}
+    S3CB_ID: ${env:S3CB_ID}
+    S3CB_PASSWORD: ${env:S3CB_PASSWORD}
+    INTERNAL_FILE_BUCKET: ${env:INTERNAL_FILE_BUCKET}
+    INTERNAL_FILE_S3_PREFIX: ${env:INTERNAL_FILE_S3_PREFIX}
+    STATIC_FILE_BUCKET: ${env:STATIC_FILE_BUCKET}
     DB_KEY: ${env:DB_KEY}
     BLOG_WRITERS: ${env:BLOG_WRITERS}
     CONSOLE_LOG_LEVEL: ${env:CONSOLE_LOG_LEVEL}
@@ -153,18 +160,3 @@ functions:
       - http: GET /static/css/{file}
       - http: GET /static/js/{file}
       - http: GET /static/media/{file}
-# resources:
-#   Resources:
-#     FilesBucket:
-#       Type: AWS::S3::Bucket
-#       Properties:
-#         BucketName: ${env:FILES_BUCKET}
-#         CorsConfiguration:
-#           CorsRules:
-#             - AllowedMethods:
-#                 - PUT
-#               AllowedHeaders:
-#                 - "*"
-#               AllowedOrigins:
-#                 - "*"
-# - ${env:SERVICE_URL}

@@ -196,6 +196,7 @@ hr {
   border: 1px solid #dddddd;
 }
 
+.Article .ArticleHeadImage img,
 .ArticleEdit .ArticleHeadImage img {
   width: auto;
   max-width: 50vw;

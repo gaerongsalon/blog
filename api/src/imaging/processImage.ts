@@ -5,11 +5,13 @@ import * as path from "path";
 
 import getImageFileNameWithDesiredWidth from "./getImageFileNameWithDesiredWidth";
 import { getLogger } from "@yingyeothon/slack-logger";
+import getPrivateS3 from "../support/getPrivateS3";
+import getPrivateS3cb from "../support/getPrivateS3cb";
+import getPublicS3 from "../support/getPublicS3";
 import hashFile from "./hashFile";
 import resizeAndOptimize from "./resizeAndOptimize";
 import tempy from "tempy";
 import useImageDb from "./useImageDb";
-import useS3 from "../aws/useS3";
 
 const log = getLogger("handle:processImage", __filename);
 
@@ -22,14 +24,9 @@ export default async function processImage({
   desiredWidths: number[];
   timeout?: number;
 }): Promise<{ imageKey: string; desiredWidths: number[] }> {
-  const {
-    downloadToLocal,
-    uploadLocalFile,
-    deleteKey,
-    exists,
-    getJSON,
-    putJSON,
-  } = useS3();
+  const { exists, getJSON, putJSON } = getPrivateS3cb();
+  const { downloadToLocal, deleteKey } = getPrivateS3();
+  const { uploadLocalFile } = getPublicS3();
   const workspacePath = tempy.directory();
 
   // Step 1. Download an image file from S3.

@@ -10,8 +10,8 @@ import getArticle from "../db/getArticle";
 import getArticles from "../db/getArticles";
 import getCategories from "../db/getCategories";
 import { getLogger } from "@yingyeothon/slack-logger";
+import getPrivateS3cb from "../support/getPrivateS3cb";
 import secrets from "../env/secrets";
-import useS3 from "../aws/useS3";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
 
 const logger = getLogger("handle:queryDatabase", __filename);
@@ -23,7 +23,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     if (!resource || (resource === "article" && !id)) {
       throw new ApiError(404);
     }
-    const { withDb } = useS3Sqlite(useS3());
+    const { withDb } = useS3Sqlite(getPrivateS3cb());
     const data = await withDb({
       dbId: secrets.dbKey,
       createTableQuery: createTables,
