@@ -12,7 +12,9 @@ export default function ArticleListPage() {
   React.useEffect(function () {
     listArticles({}).then(setArticles).catch(handleError);
   }, []);
-  return (
+  return articles === null ? (
+    <div></div>
+  ) : (
     <>
       <Articles articles={articles} />
       {hasWritePermission() ? (
@@ -24,10 +26,7 @@ export default function ArticleListPage() {
   );
 }
 
-function Articles({ articles }: { articles: Article[] | null }) {
-  if (articles === null) {
-    return <div></div>;
-  }
+function Articles({ articles }: { articles: Article[] }) {
   if (articles.length === 0) {
     return <div>No articles</div>;
   }
