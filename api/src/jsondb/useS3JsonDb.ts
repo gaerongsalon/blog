@@ -1,4 +1,4 @@
-import { UseS3 } from "../aws/useS3";
+import S3 from "../aws/S3";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function useS3JsonDb({
@@ -8,7 +8,7 @@ export default function useS3JsonDb({
   putJSON,
 }: {
   dbIdToS3Key?: (dbId: string) => string;
-} & Pick<UseS3, "exists" | "getJSON" | "putJSON">) {
+} & Pick<S3, "exists" | "getJSON" | "putJSON">) {
   async function getDb<T>({ dbId }: { dbId: string }): Promise<T | null> {
     if (await exists({ s3ObjectKey: dbIdToS3Key(dbId) })) {
       return await getJSON<T>({ s3ObjectKey: dbIdToS3Key(dbId) });

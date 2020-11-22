@@ -7,12 +7,12 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
 import encodeSlug from "../utils/encodeSlug";
 import { getLogger } from "@yingyeothon/slack-logger";
+import getPrivateS3cb from "../support/getPrivateS3cb";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
 import secrets from "../env/secrets";
 import updateArticle from "../db/updateArticle";
 import useRedisLock from "../redis/useRedisLock";
-import useS3 from "../aws/useS3";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
 
 const logger = getLogger("handle:upsertArticle", __filename);
@@ -40,7 +40,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
 
     const writer = readWriter(event);
     const { inLock } = useRedisLock();
-    const { withDb } = useS3Sqlite(useS3());
+    const { withDb } = useS3Sqlite(getPrivateS3cb());
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,
     })({

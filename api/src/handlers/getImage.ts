@@ -7,7 +7,7 @@ import { handleApi, throwError } from "./base";
 import { APIGatewayProxyHandler } from "aws-lambda";
 import getImageFileNameWithDesiredWidth from "../imaging/getImageFileNameWithDesiredWidth";
 import { getLogger } from "@yingyeothon/slack-logger";
-import useS3 from "../aws/useS3";
+import getPublicS3 from "../support/getPublicS3";
 
 const logger = getLogger("handle:getImage", __filename);
 
@@ -17,7 +17,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     const imageKey = (event.pathParameters ?? {}).imageKey ?? throwError(404);
     const imageWidth = +((event.queryStringParameters ?? {}).w ?? "1200");
 
-    const { s3, bucketName } = useS3();
+    const { s3, bucketName } = getPublicS3();
     const s3ObjectKey = `image/${getImageFileNameWithDesiredWidth({
       inputFile: imageKey,
       desiredWidth: imageWidth,
