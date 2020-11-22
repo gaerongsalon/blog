@@ -25,17 +25,17 @@ export default function ArticleView({ slug }: { slug: string }) {
   const { writer, title, image, category, tags, written, content } = article;
   return (
     <div className="Article">
+      <CategoryLink category={category} />
       <h1 className="ArticleTitle">{title}</h1>
+      {!metadata.options?.hideWriter ? (
+        <div className="ArticleWriter">{writer}</div>
+      ) : null}
+      <div className="ArticleWritten">{formatWritten(written)}</div>
       {image ? (
         <div className="ArticleHeadImage">
           <img src={image} alt={title} />
         </div>
       ) : null}
-      {!metadata.options?.hideWriter ? (
-        <div className="ArticleWriter">{writer}</div>
-      ) : null}
-      <div className="ArticleWritten">{formatWritten(written)}</div>
-      <CategoryLink category={category} />
       <ArticleContent content={content} />
       <TagsLink tags={tags} />
       <hr />

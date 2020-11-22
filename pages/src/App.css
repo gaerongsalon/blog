@@ -6,6 +6,10 @@
 body {
   display: flex;
   justify-content: center;
+  color: #444444;
+  font-family: "Crimson Text", serif;
+  line-height: 1.8;
+  font-size: 0.99em;
 }
 
 a {
@@ -22,11 +26,36 @@ hr {
   margin: 3rem 0rem 4rem 0rem;
 }
 
+.Head {
+  width: 100vw;
+  text-align: center;
+}
+
+.Head .NavigationShortcuts {
+  margin: 1vh 4vw;
+  text-align: left;
+}
+
+.Head img {
+  margin: 2vh 0;
+}
+
+.Head hr {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
 .App {
+  margin: auto;
   width: 60vw;
   max-width: 1280px;
   padding-top: 1rem;
   padding-bottom: 4rem;
+}
+
+h1 {
+  font-size: 1.6rem;
 }
 
 @media (max-width: 1280px) {
@@ -91,6 +120,7 @@ hr {
 
 .ArticleItem .ArticleTitle {
   font-size: 1.2rem;
+  font-weight: normal;
 }
 
 .ArticleItem .ArticleHeadImage img {
@@ -100,6 +130,8 @@ hr {
 
 .Article .ArticleTitle {
   text-align: center;
+  margin: 0;
+  font-weight: normal;
 }
 
 .Article .ArticleHeadImage {
@@ -110,11 +142,14 @@ hr {
 .Article .ArticleWritten {
   text-align: center;
   color: gray;
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
 }
 
 .Article .ArticleCategory {
-  text-align: right;
+  text-align: center;
   color: #c39f76;
+  font-size: 0.85rem;
 }
 
 .BlogTitle {
