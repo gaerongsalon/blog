@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "lzutf8": "^0.5.6",
+    "quick-lru": "^5.1.1",
     "quill": "^1.3.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
