@@ -1,6 +1,5 @@
+import articleRepository from "../../repository/articleRepository";
 import encodeSlug from "../../utils/encodeSlug";
-import queryArticle from "./queryArticle";
-import queryArticles from "./queryArticles";
 import queryCategories from "./queryCategories";
 import queryTags from "./queryTags";
 
@@ -15,13 +14,16 @@ export default async function queryResource({
 }): Promise<unknown> {
   switch (resource) {
     case "articles":
-      return await queryArticles({ queryParams });
+      return await articleRepository().fetchArticles({
+        offset: +(queryParams?.offset ?? 0),
+        limit: +(queryParams?.limit ?? 100),
+      });
     case "categories":
       return await queryCategories();
     case "tags":
       return await queryTags();
     case "article":
-      return await queryArticle({ slug: encodeSlug(id) });
+      return await articleRepository().fetchArticle({ slug: encodeSlug(id) });
   }
   return true;
 }
