@@ -18,9 +18,13 @@ export default async function requestToServer<T>({
     headers["Authorization"] = `Bearer ${loginSecret}`;
   }
 
-  return await fetch(`/api${apiUrl}`, {
+  const response = await fetch(`/api${apiUrl}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
-  }).then((r) => r.json());
+  });
+  if (response.status !== 200) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+  return await response.json();
 }
