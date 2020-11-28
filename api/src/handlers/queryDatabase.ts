@@ -26,7 +26,6 @@ export const handle: APIGatewayProxyHandler = handleApi({
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": `public, max-age=${10 * 60}`,
       },
       body,
     };
