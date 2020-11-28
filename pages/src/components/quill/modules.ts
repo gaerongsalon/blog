@@ -10,10 +10,9 @@ const modules = {
         { indent: "+1" },
         { align: [] },
       ],
-      ["link", "video"],
+      ["link"],
       ["clean"],
     ],
-    handlers: { video: console.log },
   },
   clipboard: { matchVisual: false },
 };

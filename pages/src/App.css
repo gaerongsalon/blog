@@ -197,7 +197,15 @@ h1 {
 }
 
 .ArticleEdit {
-  margin: 1rem 0rem;
+  margin: 1rem -2vw;
+}
+
+.ArticleEdit .ql-container.ql-snow {
+  height: auto;
+}
+.ArticleEdit .ql-editor {
+  max-height: 80vh;
+  overflow-y: scroll;
 }
 
 .ArticleEdit .ArticleTitle,
@@ -229,6 +237,9 @@ h1 {
   margin-bottom: 1rem;
   padding: 6px;
   border: 1px solid #dddddd;
+}
+.ArticleEdit .ArticleEditor {
+  margin: 4vh auto;
 }
 
 .Article .ArticleHeadImage img,
