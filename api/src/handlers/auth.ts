@@ -48,7 +48,10 @@ function decodeJWT(
     const payload = jwt.verify(token, jwtSecretKey) as Authorization;
     return payload;
   } catch (error) {
-    logger.warn({ authorizationToken, error }, `Invalid JWT`);
+    (/jwt expired/.test(error.message) ? logger.debug : logger.warn)(
+      { authorizationToken, error },
+      `Invalid JWT`
+    );
     return null;
   }
 }
