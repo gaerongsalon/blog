@@ -1,11 +1,17 @@
 import * as React from "react";
 
+import styled from "styled-components";
 import uploadImage from "../apis/uploadImage";
 import { useDropzone } from "react-dropzone";
 
+const DropZoneDiv = styled.div`
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
 export default function ImageDropZone({
   maxFiles,
-  DropZoneComponent = <div className="DropZone">CHOOSE IMAGE FILES</div>,
+  DropZoneComponent = <DropZoneDiv>CHOOSE IMAGE FILES</DropZoneDiv>,
   updateImages,
 }: {
   maxFiles?: number;

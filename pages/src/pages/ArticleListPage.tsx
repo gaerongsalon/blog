@@ -2,28 +2,22 @@ import * as React from "react";
 
 import Article from "../models/article/Article";
 import ArticleListItem from "../components/ArticleListItem";
-import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 import handleError from "../utils/handleError";
-import hasWritePermission from "../apis/credential/hasWritePermission";
-import listArticles from "../apis/listArticles";
+import listArticles from "../apis/article/listArticles";
+import styled from "styled-components";
+
+const ArticleListDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 export default function ArticleListPage() {
   const [articles, setArticles] = React.useState<Article[] | null>(null);
   React.useEffect(function () {
     listArticles({}).then(setArticles).catch(handleError);
   }, []);
-  return articles === null ? (
-    <div></div>
-  ) : (
-    <>
-      <Articles articles={articles} />
-      {hasWritePermission() ? (
-        <div className="NewArticle">
-          <Link to="/article/new">✏️</Link>
-        </div>
-      ) : null}
-    </>
-  );
+  return articles === null ? <Loading /> : <Articles articles={articles} />;
 }
 
 function Articles({ articles }: { articles: Article[] }) {
@@ -33,16 +27,12 @@ function Articles({ articles }: { articles: Article[] }) {
   const [first, ...remain] = articles;
   return (
     <>
-      <ArticleListItem article={first} className="FirstArticleItem" />
-      <div className="ArticleList">
+      <ArticleListItem article={first} cols={1} />
+      <ArticleListDiv>
         {remain.map((article) => (
-          <ArticleListItem
-            key={article.slug}
-            article={article}
-            className="SubArticleItem"
-          />
+          <ArticleListItem key={article.slug} article={article} cols={2} />
         ))}
-      </div>
+      </ArticleListDiv>
     </>
   );
 }

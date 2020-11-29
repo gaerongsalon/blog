@@ -4,6 +4,13 @@ import ImageDropZone from "./ImageDropZone";
 import ImageSelector from "./ImageSelector";
 import { OnImageClick } from "./ImageSelector";
 import mergeList from "../utils/mergeList";
+import styled from "styled-components";
+
+const ImageUploadPanelDiv = styled.div`
+  margin: 2rem 0rem;
+  border: 1px solid #dddddd;
+  padding: 1rem;
+`;
 
 export default function ImageUploadPanel({
   onImageClick,
@@ -18,9 +25,9 @@ export default function ImageUploadPanel({
     [setImages]
   );
   return (
-    <div className="ImageUploadPanel">
+    <ImageUploadPanelDiv>
       <ImageDropZone updateImages={updateImages} />
       <ImageSelector images={images} onImageClick={onImageClick} />
-    </div>
+    </ImageUploadPanelDiv>
   );
 }

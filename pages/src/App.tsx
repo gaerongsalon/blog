@@ -9,12 +9,31 @@ import ArticleViewPage from "./pages/ArticleViewPage";
 import FirstPage from "./pages/FirstPage";
 import Head from "./components/Head";
 import React from "react";
+import styled from "styled-components";
+
+const AppDiv = styled.div`
+  margin: auto;
+  width: 60vw;
+  max-width: 1280px;
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+
+  @media (max-width: 1280px) {
+    width: 72vw;
+  }
+
+  @media (max-width: 800px) {
+    width: 90vw;
+    min-width: auto;
+    padding-bottom: 2rem;
+  }
+`;
 
 export default function App() {
   return (
     <Router>
       <Head />
-      <div className="App">
+      <AppDiv>
         <Switch>
           <Route path="/articles">
             <ArticleListPage />
@@ -32,7 +51,7 @@ export default function App() {
             <FirstPage />
           </Route>
         </Switch>
-      </div>
+      </AppDiv>
     </Router>
   );
 }
