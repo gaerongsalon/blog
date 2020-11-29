@@ -33,7 +33,7 @@ export default function ArticleEditor({
     [quillRef]
   );
   return (
-    <div className="ArticleEditor">
+    <>
       <ReactQuill
         theme={preview ? "bubble" : "snow"}
         ref={quillRef}
@@ -50,6 +50,6 @@ export default function ArticleEditor({
         readOnly={preview}
       />
       {!preview ? <ImageUploadPanel onImageClick={addImage} /> : null}
-    </div>
+    </>
   );
 }

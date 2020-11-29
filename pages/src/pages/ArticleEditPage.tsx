@@ -4,7 +4,7 @@ import { Redirect, useParams } from "react-router-dom";
 
 import Article from "../models/article/Article";
 import ArticleEditView from "../views/ArticleEditView";
-import fetchArticle from "../apis/fetchArticle";
+import fetchArticle from "../apis/article/fetchArticle";
 import handleError from "../utils/handleError";
 import hasWritePermission from "../apis/credential/hasWritePermission";
 

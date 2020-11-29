@@ -1,6 +1,6 @@
-import Article from "../models/article/Article";
-import OkResponse from "./OkResponse";
-import requestToServer from "./requestToServer";
+import Article from "../../models/article/Article";
+import OkResponse from "../OkResponse";
+import requestToServer from "../requestToServer";
 
 export default async function deleteArticle(
   article: Article

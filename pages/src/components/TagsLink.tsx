@@ -1,10 +1,15 @@
 import * as React from "react";
 
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const ArticleTagsDiv = styled.div`
+  font-size: 0.8rem;
+`;
 
 export default function TagsLink({ tags }: { tags: string }) {
   return (
-    <div className="ArticleTags">
+    <ArticleTagsDiv>
       {(tags ?? "")
         .trim()
         .split(/\s+/g)
@@ -14,6 +19,6 @@ export default function TagsLink({ tags }: { tags: string }) {
             #{tag}
           </Link>
         ))}
-    </div>
+    </ArticleTagsDiv>
   );
 }

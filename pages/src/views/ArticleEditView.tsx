@@ -1,13 +1,16 @@
 import * as React from "react";
 
+import { Link, useHistory } from "react-router-dom";
+
 import Article from "../models/article/Article";
 import ArticleEditor from "../components/ArticleEditor";
 import BindedLabelInput from "../components/BindedLabelInput";
 import ImageDropZone from "../components/ImageDropZone";
-import { Link } from "react-router-dom";
-import deleteArticle from "../apis/deleteArticle";
+import LinkStyledButton from "../components/LinkStyledButton";
+import NavigationButtons from "../components/NavigationButtons";
+import deleteArticle from "../apis/article/deleteArticle";
 import handleError from "../utils/handleError";
-import updateArticle from "../apis/updateArticle";
+import updateArticle from "../apis/article/updateArticle";
 
 export default function ArticleEditView({
   article,
@@ -16,6 +19,7 @@ export default function ArticleEditView({
   article: Article;
 }) {
   const [headImage, setHeadImage] = React.useState<string>(article.image);
+  const { replace: historyReplace } = useHistory();
 
   function updateHeadImage(images: string[]) {
     const [image] = images;
@@ -34,7 +38,7 @@ export default function ArticleEditView({
     updateArticle(article)
       .then((result) => {
         console.log(result);
-        window.location.replace(`/article/${article.slug}`);
+        historyReplace(`/article/${article.slug}`);
       })
       .catch(handleError);
   }
@@ -43,7 +47,7 @@ export default function ArticleEditView({
     deleteArticle(article)
       .then((result) => {
         console.log(result);
-        window.location.replace(`/`);
+        historyReplace(`/`);
       })
       .catch(handleError);
   }
@@ -93,25 +97,17 @@ export default function ArticleEditView({
         content={article.content}
         updateValue={(newValue) => (article.content = newValue)}
       />
-      <div className="NavigationButtons">
-        <button className="ArticleSave" onClick={upload}>
-          Save
-        </button>
+      <NavigationButtons>
+        <LinkStyledButton onClick={upload}>SAVE</LinkStyledButton>
         {article.serial ? (
-          <button className="ArticleDelete" onClick={remove}>
-            Delete
-          </button>
+          <LinkStyledButton onClick={remove}>DELETE</LinkStyledButton>
         ) : null}
         {article.serial ? (
-          <Link className="GotoView" to={() => `/article/${article.slug}`}>
-            Return to View
-          </Link>
+          <Link to={() => `/article/${article.slug}`}>CANCEL</Link>
         ) : (
-          <Link className="GotoHome" to="/">
-            Go to home
-          </Link>
+          <Link to="/">HOME</Link>
         )}
-      </div>
+      </NavigationButtons>
     </div>
   );
 }

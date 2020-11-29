@@ -5,6 +5,7 @@ body {
   font-family: "Crimson Text", serif;
   line-height: 1.8rem;
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 a {
@@ -15,189 +16,42 @@ a:hover {
   color: #444444;
 }
 
-span,
-p,
-a,
-input,
-label {
-  font-size: 1.2rem;
-}
-
-hr {
-  border: 0;
-  border-bottom: 0.5px solid #cccccc;
-  margin: 3rem 0rem 4rem 0rem;
-}
-
-.Head {
-  width: 100vw;
-  text-align: center;
-}
-
-.Head .NavigationShortcuts {
-  margin: 1vh 4vw;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-}
-
-.Head .NavigationShortcuts button {
-  background-color: transparent;
-  border: 0;
-  color: #c39f76;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.Head img {
-  margin: 2vh 0;
-}
-
-.Head hr {
-  margin: 0;
-  border: 0;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.App {
-  margin: auto;
-  width: 60vw;
-  max-width: 1280px;
-  padding-top: 1rem;
-  padding-bottom: 4rem;
-}
-
-@media (max-width: 1280px) {
-  .App {
-    width: 72vw;
-  }
-}
-
 @media (max-width: 800px) {
-  .App {
-    width: 90vw;
-    min-width: auto;
-    padding-bottom: 2rem;
-  }
   .ql-editor {
     padding: 0px !important;
   }
 }
 
-.ArticleList {
-  display: flex;
-  flex-wrap: wrap;
+.ql-editor h2 {
+  margin-top: 2rem !important;
+  margin-bottom: 0.8rem !important;
 }
-
-.SubArticleItem {
-  flex-grow: 1;
-  width: calc(50% - 2rem);
+.ql-editor h2:first-child {
+  margin-top: 0 !important;
 }
-.SubArticleItem:nth-child(odd) {
-  padding-right: 2rem;
+.ql-editor p {
+  text-indent: 1rem;
+  text-align: justify;
 }
-.SubArticleItem:nth-child(even) {
-  padding-left: 2rem;
-}
-
-@media (max-width: 800px) {
-  .SubArticleItem {
-    width: 100%;
-  }
-  .SubArticleItem:nth-child(odd) {
-    padding: 0;
-  }
-  .SubArticleItem:nth-child(even) {
-    padding: 0;
-  }
-}
-
-.ArticleItem {
-  margin-bottom: 2rem;
-}
-
-.ArticleItem .ArticleWritten {
-  text-align: right;
-  color: gray;
-  margin-top: 8px;
-}
-
-.ArticleItem .ArticleHeadImage {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.ArticleItem .ArticleTitle {
-  font-weight: normal;
-}
-
-.ArticleItem .ArticleHeadImage img {
-  max-width: 90%;
-  max-height: 24vh;
-}
-
-.Article .ArticleTitle {
-  text-align: center;
-  margin: 0;
-  font-weight: normal;
-}
-
-.Article .ArticleHeadImage {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.Article .ArticleWritten {
-  text-align: center;
-  color: gray;
-  margin-bottom: 2rem;
-}
-
-.Article .ArticleCategory {
-  text-align: center;
-  color: #c39f76;
-}
-
-.BlogTitle {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.LoginPage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 90vh;
-}
-
-.NewArticle {
-  margin-top: 1rem;
-  text-align: center;
-}
-.NewArticle a {
-  border-radius: 50%;
-  background-color: yellow;
-}
-
-.ArticleEditor p,
-.ArticleEditor ul li,
-.ArticleEditor ol li {
+.ql-editor p,
+.ql-editor ul li,
+.ql-editor ol li {
   line-height: 1.6rem;
 }
-
-.ArticleEditor p,
-.ArticleEditor ul,
-.ArticleEditor ol {
-  margin-bottom: 1.5rem !important;
+.ql-editor p,
+.ql-editor ul,
+.ql-editor ol {
+  margin-bottom: 1rem !important;
+  font-size: 0.95rem;
 }
 
-.NavigationButtons {
-  display: flex;
-  justify-content: space-between;
+.ql-editor img {
+  max-width: 50vw !important;
+  max-height: 50vh !important;
 }
 
-.ArticleEdit {
-  margin: 1rem -2vw;
+.ql-container {
+  margin: 4vh auto;
 }
 
 .ArticleEdit .ql-container.ql-snow {
@@ -206,6 +60,10 @@ hr {
 .ArticleEdit .ql-editor {
   max-height: 80vh;
   overflow-y: scroll;
+}
+
+.ArticleEdit {
+  margin: 1rem -2vw;
 }
 
 .ArticleEdit .ArticleTitle,
@@ -238,44 +96,8 @@ hr {
   padding: 6px;
   border: 1px solid #dddddd;
 }
-.ArticleEdit .ArticleEditor {
-  margin: 4vh auto;
-}
 
-.Article .ArticleHeadImage img,
 .ArticleEdit .ArticleHeadImage img {
   width: auto;
   max-width: 50vw;
-}
-
-.ArticleEditor img {
-  max-width: 50vw !important;
-  max-height: 50vh !important;
-}
-
-.ImageUploadPanel {
-  margin: 2rem 0rem;
-  border: 1px solid #dddddd;
-  padding: 1rem;
-}
-.ImageSelector {
-  display: flex;
-  flex-wrap: wrap;
-}
-.ImageSelector img {
-  width: calc(33% - 2rem);
-  padding: 1rem;
-  object-fit: contain;
-}
-
-.DropZone {
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.ArticleEdit .NavigationButtons button {
-  border: 0;
-  background: transparent;
-  color: #c39f76;
-  font-weight: bold;
 }

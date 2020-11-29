@@ -1,5 +1,18 @@
 import * as React from "react";
 
+import styled from "styled-components";
+
+const ImageSelectorDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const ImageSelectorImage = styled.img`
+  width: calc(33% - 2rem);
+  padding: 1rem;
+  object-fit: contain;
+`;
+
 export type OnImageClick = (image: string) => void;
 
 export default function ImageSelector({
@@ -10,15 +23,15 @@ export default function ImageSelector({
   onImageClick: OnImageClick;
 }) {
   return (
-    <div className="ImageSelector">
+    <ImageSelectorDiv>
       {images.map((image) => (
-        <img
+        <ImageSelectorImage
           key={image}
           src={image}
           alt={image}
           onClick={() => onImageClick(image)}
         />
       ))}
-    </div>
+    </ImageSelectorDiv>
   );
 }
