@@ -23,7 +23,7 @@ export default async function requestToServer<T>({
     headers,
     body: body ? JSON.stringify(body) : undefined,
   });
-  if (response.status !== 200) {
+  if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
   return await response.json();
