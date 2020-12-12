@@ -42,7 +42,19 @@ a:hover {
 .ql-editor ul,
 .ql-editor ol {
   margin-bottom: 1rem !important;
-  font-size: 0.95rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 800px) {
+  .ql-editor {
+    padding: 0px !important;
+  }
+
+  .ql-editor p,
+  .ql-editor ul,
+  .ql-editor ol {
+    font-size: 0.95rem;
+  }
 }
 
 .ql-editor img {
@@ -59,6 +71,7 @@ a:hover {
 }
 .ArticleEdit .ql-editor {
   max-height: 80vh;
+  height: 80vh;
   overflow-y: scroll;
 }
 
