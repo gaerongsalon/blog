@@ -45,6 +45,11 @@ a:hover {
   font-size: 1rem;
 }
 
+.ql-editor img {
+  max-width: 65vw !important;
+  max-height: 50vh !important;
+}
+
 @media (max-width: 800px) {
   .ql-editor {
     padding: 0px !important;
@@ -55,11 +60,11 @@ a:hover {
   .ql-editor ol {
     font-size: 0.95rem;
   }
-}
 
-.ql-editor img {
-  max-width: 50vw !important;
-  max-height: 50vh !important;
+  .ql-editor img {
+    max-width: 95% !important;
+    max-height: 50vh !important;
+  }
 }
 
 .ql-container {
@@ -77,40 +82,4 @@ a:hover {
 
 .ArticleEdit {
   margin: 1rem -2vw;
-}
-
-.ArticleEdit .ArticleTitle,
-.ArticleEdit .ArticleHeadImage,
-.ArticleEdit .ArticleExcerpt,
-.ArticleEdit .ArticleCategory,
-.ArticleEdit .ArticleTags {
-  margin-bottom: 1rem;
-}
-
-.ArticleEdit .ArticleTitle label,
-.ArticleEdit .ArticleHeadImage label,
-.ArticleEdit .ArticleExcerpt label,
-.ArticleEdit .ArticleCategory label,
-.ArticleEdit .ArticleTags label {
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.ArticleEdit .ArticleTitle input,
-.ArticleEdit .ArticleHeadImage div,
-.ArticleEdit .ArticleHeadImage img,
-.ArticleEdit .ArticleExcerpt textarea,
-.ArticleEdit .ArticleCategory input,
-.ArticleEdit .ArticleTags input {
-  width: calc(100% - 16px);
-  display: block;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  padding: 6px;
-  border: 1px solid #dddddd;
-}
-
-.ArticleEdit .ArticleHeadImage img {
-  width: auto;
-  max-width: 50vw;
 }

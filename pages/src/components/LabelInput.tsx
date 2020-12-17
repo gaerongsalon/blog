@@ -2,13 +2,31 @@ import * as React from "react";
 
 import styled from "styled-components";
 
-const LabelInputDiv = styled.div`
+export const LabelInputDiv = styled.div`
   margin-bottom: 1rem;
 `;
 
-const StyledLabel = styled.label`
+export const StyledLabel = styled.label`
   font-weight: bold;
   text-transform: uppercase;
+`;
+
+const StyledInput = styled.input`
+  width: calc(100% - 16px);
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 6px;
+  border: 1px solid #dddddd;
+`;
+
+const StyledTextarea = styled.textarea`
+  width: calc(100% - 16px);
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 6px;
+  border: 1px solid #dddddd;
 `;
 
 export default function LabelInput({
@@ -16,26 +34,24 @@ export default function LabelInput({
   initialValue,
   setValue,
   textarea,
-  className,
 }: {
   label: string;
   initialValue: string;
   setValue: (newValue: string) => void;
   textarea?: boolean;
-  className?: string;
 }) {
   return (
-    <LabelInputDiv className={className}>
+    <LabelInputDiv>
       <StyledLabel>{label}</StyledLabel>
       {textarea ? (
-        <textarea
+        <StyledTextarea
           defaultValue={initialValue}
           onChange={(e) => setValue(e.target.value)}
           rows={4}
           cols={80}
-        ></textarea>
+        ></StyledTextarea>
       ) : (
-        <input
+        <StyledInput
           type="text"
           defaultValue={initialValue}
           onChange={(e) => setValue(e.target.value)}
