@@ -6,23 +6,22 @@ import LabelInput from "./LabelInput";
 export default function BindedLabelInput<T extends keyof Article>({
   property,
   article,
+  asString = (v) => v.toString(),
   fromString = (v) => v as any,
   textarea,
-  className,
 }: {
   property: T;
   article: Article;
+  asString?: (input: Article[T]) => string;
   fromString?: (input: string) => Article[T];
   textarea?: boolean;
-  className?: string;
 }) {
   return (
     <LabelInput
       label={property}
-      initialValue={article[property].toString()}
+      initialValue={asString(article[property])}
       setValue={(newValue) => (article[property] = fromString(newValue))}
       textarea={textarea}
-      className={className}
     />
   );
 }

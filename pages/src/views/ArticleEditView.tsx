@@ -1,11 +1,12 @@
 import * as React from "react";
+import * as dateFns from "date-fns";
 
 import { Link, useHistory } from "react-router-dom";
 
 import Article from "../models/article/Article";
 import ArticleEditor from "../components/ArticleEditor";
+import ArticleHeadImageEditor from "../components/ArticleHeadImageEditor";
 import BindedLabelInput from "../components/BindedLabelInput";
-import ImageDropZone from "../components/ImageDropZone";
 import LinkStyledButton from "../components/LinkStyledButton";
 import NavigationButtons from "../components/NavigationButtons";
 import deleteArticle from "../apis/article/deleteArticle";
@@ -54,49 +55,32 @@ export default function ArticleEditView({
 
   return (
     <div className="ArticleEdit">
-      <BindedLabelInput
-        className="ArticleTitle"
-        property="title"
-        article={article}
-      />
-      <ImageDropZone
-        updateImages={updateHeadImage}
-        maxFiles={1}
-        DropZoneComponent={
-          headImage ? (
-            <div className="ArticleHeadImage">
-              <label>Head Image</label>
-              <img src={headImage} alt="Head" />
-            </div>
-          ) : (
-            <div className="ArticleHeadImage">
-              <label>Head Image</label>
-              <div>CHOOSE AN IMAGE</div>
-            </div>
-          )
-        }
-      />
-      <BindedLabelInput
-        className="ArticleExcerpt"
-        property="excerpt"
-        article={article}
-        textarea={true}
-      />
-      <BindedLabelInput
-        className="ArticleCategory"
-        property="category"
-        article={article}
-      />
-      <BindedLabelInput
-        className="ArticleTags"
-        property="tags"
-        article={article}
-      />
+      <BindedLabelInput property="title" article={article} />
       <ArticleEditor
         preview={false}
         content={article.content}
         updateValue={(newValue) => (article.content = newValue)}
       />
+      <ArticleHeadImageEditor
+        headImage={headImage}
+        updateHeadImage={updateHeadImage}
+      />
+      <BindedLabelInput
+        property="written"
+        article={article}
+        asString={(date: string) =>
+          dateFns.format(
+            date ? dateFns.parseISO(date) : new Date(),
+            "yyyy-MM-dd"
+          )
+        }
+        fromString={(input: string) =>
+          dateFns.formatISO(dateFns.parse(input, "yyyy-MM-dd", new Date()))
+        }
+      />
+      <BindedLabelInput property="excerpt" article={article} textarea={true} />
+      <BindedLabelInput property="category" article={article} />
+      <BindedLabelInput property="tags" article={article} />
       <NavigationButtons>
         <LinkStyledButton onClick={upload}>SAVE</LinkStyledButton>
         {article.serial ? (
