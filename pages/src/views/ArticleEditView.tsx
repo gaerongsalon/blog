@@ -68,6 +68,7 @@ export default function ArticleEditView({
       <BindedLabelInput
         property="written"
         article={article}
+        type="date"
         asString={(date: string) =>
           dateFns.format(
             date ? dateFns.parseISO(date) : new Date(),
@@ -78,7 +79,7 @@ export default function ArticleEditView({
           dateFns.formatISO(dateFns.parse(input, "yyyy-MM-dd", new Date()))
         }
       />
-      <BindedLabelInput property="excerpt" article={article} textarea={true} />
+      <BindedLabelInput property="excerpt" article={article} type="textarea" />
       <BindedLabelInput property="category" article={article} />
       <BindedLabelInput property="tags" article={article} />
       <NavigationButtons>

@@ -8,20 +8,20 @@ export default function BindedLabelInput<T extends keyof Article>({
   article,
   asString = (v) => v.toString(),
   fromString = (v) => v as any,
-  textarea,
+  type = "text",
 }: {
   property: T;
   article: Article;
   asString?: (input: Article[T]) => string;
   fromString?: (input: string) => Article[T];
-  textarea?: boolean;
+  type?: "text" | "date" | "textarea";
 }) {
   return (
     <LabelInput
       label={property}
       initialValue={asString(article[property])}
       setValue={(newValue) => (article[property] = fromString(newValue))}
-      textarea={textarea}
+      type={type}
     />
   );
 }

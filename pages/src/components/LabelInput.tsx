@@ -33,17 +33,17 @@ export default function LabelInput({
   label,
   initialValue,
   setValue,
-  textarea,
+  type,
 }: {
   label: string;
   initialValue: string;
   setValue: (newValue: string) => void;
-  textarea?: boolean;
+  type: "text" | "textarea" | "date";
 }) {
   return (
     <LabelInputDiv>
       <StyledLabel>{label}</StyledLabel>
-      {textarea ? (
+      {type === "textarea" ? (
         <StyledTextarea
           defaultValue={initialValue}
           onChange={(e) => setValue(e.target.value)}
@@ -52,7 +52,7 @@ export default function LabelInput({
         ></StyledTextarea>
       ) : (
         <StyledInput
-          type="text"
+          type={type}
           defaultValue={initialValue}
           onChange={(e) => setValue(e.target.value)}
         />
