@@ -28,7 +28,7 @@ export default async function resizeAndOptimize({
       })
     )
   );
-  if (ext === ".jpg") {
+  if ([".jpg", ".jpeg"].includes(ext)) {
     await jpegoptim({
       jpgFiles: resizedFiles,
       timeout,
