@@ -26,7 +26,10 @@ export default function useImageDb({
   }
 
   async function add({ imageKeys }: { imageKeys: string[] }): Promise<void> {
-    await inLock(editDb, { lockRedisKey: dbRedisLock })({
+    await inLock(editDb, {
+      lockRedisKey: dbRedisLock,
+      expiredMillis: 3 * 1000, // S3 can be very slow.
+    })({
       dbId: dbKey,
       doIn: async (images: string[] | null) => {
         return [...new Set([...(images ?? []), ...imageKeys])].sort((a, b) =>
