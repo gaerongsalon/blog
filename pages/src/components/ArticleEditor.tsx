@@ -48,6 +48,7 @@ export default function ArticleEditor({
           }
         }}
         readOnly={preview}
+        scrollingContainer="#root"
       />
       {!preview ? <ImageUploadPanel onImageClick={addImage} /> : null}
     </>

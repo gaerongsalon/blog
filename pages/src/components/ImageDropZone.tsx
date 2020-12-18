@@ -1,10 +1,11 @@
 import * as React from "react";
 
+import { BeatLoader } from "react-spinners";
 import styled from "styled-components";
 import uploadImage from "../apis/uploadImage";
 import { useDropzone } from "react-dropzone";
 
-const DropZoneDiv = styled.div`
+export const DropZoneDiv = styled.div`
   font-weight: bold;
   margin-bottom: 1rem;
 `;
@@ -19,14 +20,26 @@ export default function ImageDropZone({
   DropZoneComponent?: React.ReactElement;
   updateImages: (images: string[]) => unknown;
 }) {
+  const [uploading, setUploading] = React.useState<boolean>(false);
   const onDrop = React.useCallback(
-    (acceptedFiles: File[]) => {
-      // Do something with the files
-      Promise.all(acceptedFiles.map((file) => uploadImage(file))).then(
-        updateImages
-      );
+    async (acceptedFiles: File[]) => {
+      if (uploading) {
+        alert("Alreay uploading!");
+        return;
+      }
+      setUploading(true);
+      try {
+        // Do something with the files
+        const result: string[] = [];
+        for (const file of acceptedFiles) {
+          result.push(await uploadImage(file));
+        }
+        updateImages(result);
+      } finally {
+        setUploading(false);
+      }
     },
-    [updateImages]
+    [updateImages, uploading, setUploading]
   );
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,
@@ -34,7 +47,9 @@ export default function ImageDropZone({
     accept: ["image/jpg", "image/jpeg", "image/png"],
   });
 
-  return (
+  return uploading ? (
+    <BeatLoader />
+  ) : (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
       {DropZoneComponent}

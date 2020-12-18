@@ -40,8 +40,10 @@ const ArticleHeadImageDiv = styled.div`
   text-align: center;
 `;
 
-const ArticleHeadImage = styled.img`
+const OneInRowArticleHeadImage = styled.img`
   max-width: 100%;
+`;
+const TwoInRowArticleHeadImage = styled(OneInRowArticleHeadImage)`
   max-height: 24vh;
 `;
 
@@ -65,6 +67,8 @@ export default function ArticleListItem({
   cols: 1 | 2;
 }) {
   const ArticleItem = cols === 1 ? OneInRowArticleItem : TwoInRowArticleItem;
+  const ArticleHeadImage =
+    cols === 1 ? OneInRowArticleHeadImage : TwoInRowArticleHeadImage;
   const excerptMaxLength = Math.floor(150 / cols);
   return (
     <ArticleItem>

@@ -5,10 +5,13 @@ import styled from "styled-components";
 const ImageSelectorDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
+  height: 24vh;
+  overflow-y: auto;
 `;
 
 const ImageSelectorImage = styled.img`
-  width: calc(33% - 2rem);
+  max-width: calc(33% - 2rem);
+  max-height: 20vh;
   padding: 1rem;
   object-fit: contain;
 `;
