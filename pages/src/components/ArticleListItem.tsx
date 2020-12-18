@@ -34,10 +34,12 @@ const ArticleTitle = styled.div`
   text-align: center;
   font-size: 1.1rem;
   color: #444444;
+  margin: 0.4vh auto;
 `;
 
 const ArticleHeadImageDiv = styled.div`
   text-align: center;
+  margin-bottom: 0.7vh;
 `;
 
 const OneInRowArticleHeadImage = styled.img`

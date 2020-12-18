@@ -3,7 +3,7 @@ body {
   justify-content: center;
   color: #444444;
   font-family: "Crimson Text", sans-serif, serif;
-  line-height: 1.6rem;
+  line-height: 1.6;
 }
 
 html,
@@ -51,14 +51,30 @@ a:hover {
 }
 .ql-editor p,
 .ql-editor ul li,
-.ql-editor ol li {
-  line-height: 1.6rem;
+.ql-editor ol li,
+.ql-editor blockquote {
+  line-height: 1.6;
 }
 .ql-editor p,
 .ql-editor ul,
-.ql-editor ol {
+.ql-editor ol,
+.ql-editor blockquote {
   margin-bottom: 1rem !important;
   font-size: 1rem;
+}
+.ql-editor blockquote {
+  text-align: justify;
+  margin: 5vh 0 !important;
+  border: 0 !important;
+}
+.ql-editor blockquote:before,
+.ql-editor blockquote:after {
+  display: block;
+  content: '';
+  position: relative;
+  width: 30px;
+  border-top: 2px solid #818181;
+  margin: 1em auto;
 }
 
 .ql-editor img {
@@ -73,7 +89,8 @@ a:hover {
 
   .ql-editor p,
   .ql-editor ul,
-  .ql-editor ol {
+  .ql-editor ol,
+  .ql-editor blockquote {
     font-size: 0.95rem;
   }
 
