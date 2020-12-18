@@ -31,7 +31,7 @@ const ArticleHeadImage = styled.img`
   width: auto;
   max-width: 50vw;
   @media (max-width: 800px) {
-    max-width: 95%;
+    max-width: 100%;
   }
 `;
 
