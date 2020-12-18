@@ -43,10 +43,21 @@ const ArticleHeadImageDiv = styled.div`
 `;
 
 const OneInRowArticleHeadImage = styled.img`
-  max-width: 100%;
+  width: 100%;
+  object-fit: cover;
+  @media (max-width: 800px) {
+    height: 14rem;
+    width: 100%;
+  }
 `;
 const TwoInRowArticleHeadImage = styled(OneInRowArticleHeadImage)`
-  max-height: 24vh;
+  height: 12rem;
+  width: 100%;
+  object-fit: cover;
+  @media (max-width: 800px) {
+    height: 14rem;
+    width: 100%;
+  }
 `;
 
 const ArticleWrittenDiv = styled.div`

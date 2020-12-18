@@ -95,7 +95,7 @@ a:hover {
   }
 
   .ql-editor img {
-    max-width: 95% !important;
+    max-width: 100% !important;
     max-height: 50vh !important;
   }
 }

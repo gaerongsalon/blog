@@ -14,7 +14,7 @@ import styled from "styled-components";
 const AppDiv = styled.div`
   margin: auto;
   width: 60vw;
-  max-width: 1280px;
+  max-width: 1024px;
   padding-top: 1rem;
   padding-bottom: 4rem;
 
