@@ -7,6 +7,7 @@ const formats = [
   "blockquote",
   "size",
   "color",
+  "background",
   "list",
   "bullet",
   "indent",
