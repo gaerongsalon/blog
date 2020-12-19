@@ -18,7 +18,6 @@ export default function ArticleEditor({
   preview: boolean;
   updateValue?: (newValue: string) => void;
 }) {
-  console.log(content);
   const [value, setValue] = React.useState(content ?? "");
   const quillRef = React.useRef<ReactQuill>(null);
 
