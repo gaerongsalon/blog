@@ -47,7 +47,6 @@ export default function ArticleEditView({
   function remove() {
     deleteArticle(article)
       .then((result) => {
-        console.log(result);
         historyReplace(`/`);
       })
       .catch(handleError);
