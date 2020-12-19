@@ -1,6 +1,6 @@
 import * as BetterSqlite3 from "better-sqlite3";
 
-import Article from "./article";
+import Article from "./entity/Article";
 
 const GetArticlesSQL = `SELECT * FROM article ORDER BY written DESC LIMIT @limit OFFSET @offset`;
 

@@ -1,6 +1,6 @@
 import * as BetterSqlite3 from "better-sqlite3";
 
-import Article from "./article";
+import Article from "./entity/Article";
 
 const GetArticleSQL = `SELECT * FROM article WHERE slug = @slug`;
 

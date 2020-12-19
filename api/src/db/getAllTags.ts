@@ -13,5 +13,7 @@ export default function getAllTags({
         .map(({ tags }) => (tags ?? "").trim().split(/\s+/g))
         .reduce((a, b) => a.concat(b), [])
     ),
-  ].sort((a, b) => a.localeCompare(b));
+  ]
+    .sort((a, b) => a.localeCompare(b))
+    .filter(Boolean);
 }

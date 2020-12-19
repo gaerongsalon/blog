@@ -1,5 +1,5 @@
-import articleRepository from "../../repository/articleRepository";
-import encodeSlug from "../../utils/encodeSlug";
+import articleRepository from "../../article/articleRepository";
+import encodeId from "../../article/encodeId";
 import queryCategories from "./queryCategories";
 import queryTags from "./queryTags";
 
@@ -20,10 +20,20 @@ export default async function queryResource({
       });
     case "categories":
       return await queryCategories();
+    case "category":
+      return await articleRepository().fetchArticlesByCategory({
+        category: id,
+      });
     case "tags":
       return await queryTags();
+    case "tag":
+      return await articleRepository().fetchArticlesByTag({
+        tag: id,
+      });
     case "article":
-      return await articleRepository().fetchArticle({ slug: encodeSlug(id) });
+      return await articleRepository().fetchArticleDocument({
+        slug: encodeId(id),
+      });
   }
   return true;
 }
