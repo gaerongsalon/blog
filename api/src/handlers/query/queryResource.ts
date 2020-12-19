@@ -22,13 +22,13 @@ export default async function queryResource({
       return await queryCategories();
     case "category":
       return await articleRepository().fetchArticlesByCategory({
-        category: id,
+        category: decodeURIComponent(id),
       });
     case "tags":
       return await queryTags();
     case "tag":
       return await articleRepository().fetchArticlesByTag({
-        tag: id,
+        tag: decodeURIComponent(id),
       });
     case "article":
       return await articleRepository().fetchArticleDocument({
