@@ -5,6 +5,7 @@ import LogInOutButton from "./LogInOutButton";
 import Logo from "../logo.png";
 import NavigationButtons from "./NavigationButtons";
 import hasWritePermission from "../apis/credential/hasWritePermission";
+import scroll from "../utils/scroll";
 import styled from "styled-components";
 
 const HeadDiv = styled.div`
@@ -31,7 +32,9 @@ export default function Head() {
   return (
     <HeadDiv className="Head">
       <NavigationsDiv>
-        <Link to="/">HOME</Link>
+        <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
+          HOME
+        </Link>
         <div>
           {hasWritePermission() ? (
             <>
@@ -43,7 +46,7 @@ export default function Head() {
         </div>
       </NavigationsDiv>
       <PageLine />
-      <Link to="/">
+      <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
         <LogoImage src={Logo} alt="Logo" />
       </Link>
       <PageLine />

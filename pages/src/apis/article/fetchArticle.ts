@@ -1,12 +1,12 @@
-import Article from "../../models/article/Article";
+import ArticleDocument from "../../models/article/ArticleDocument";
 import requestToServer from "../requestToServer";
 
 export default async function fetchArticle({
   slug,
 }: {
   slug: string;
-}): Promise<Article> {
-  return await requestToServer<Article>({
+}): Promise<ArticleDocument> {
+  return await requestToServer<ArticleDocument>({
     apiUrl: `/article/${slug}`,
     method: "GET",
   });

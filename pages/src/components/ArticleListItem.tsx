@@ -4,6 +4,7 @@ import Article from "../models/article/Article";
 import CategoryLink from "./CategoryLink";
 import { Link } from "react-router-dom";
 import formatWritten from "../utils/formatWritten";
+import scroll from "../utils/scroll";
 import styled from "styled-components";
 
 const OneInRowArticleItem = styled.div`
@@ -44,6 +45,7 @@ const ArticleHeadImageDiv = styled.div`
 
 const OneInRowArticleHeadImage = styled.img`
   width: 100%;
+  height: 18rem;
   object-fit: cover;
   @media (max-width: 800px) {
     height: 14rem;
@@ -84,7 +86,7 @@ export default function ArticleListItem({
     cols === 1 ? OneInRowArticleHeadImage : TwoInRowArticleHeadImage;
   const excerptMaxLength = Math.floor(150 / cols);
   return (
-    <ArticleItem>
+    <ArticleItem id={`a-${slug}`}>
       {image ? (
         <Link to={`/article/${slug}`}>
           <ArticleHeadImageDiv>
@@ -93,7 +95,10 @@ export default function ArticleListItem({
         </Link>
       ) : null}
       <CategoryLink category={category} />
-      <Link to={`/article/${slug}`}>
+      <Link
+        to={`/article/${slug}`}
+        onClick={() => scroll({ key: "articles" }).capture()}
+      >
         <ArticleTitle>{title}</ArticleTitle>
       </Link>
       <ArticleWrittenDiv>{formatWritten(written)}</ArticleWrittenDiv>

@@ -14,7 +14,9 @@ export default function ArticleEditPage() {
   React.useEffect(
     function () {
       if (hasWritePermission() && slug) {
-        fetchArticle({ slug }).then(setArticle).catch(handleError);
+        fetchArticle({ slug })
+          .then(({ article }) => setArticle(article))
+          .catch(handleError);
       }
     },
     [slug]

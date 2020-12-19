@@ -26,5 +26,12 @@ export default async function requestToServer<T>({
   if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
-  return await response.json();
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.error(text, error);
+    throw new Error(`Invalid JSON from server ${apiUrl}`);
+  }
+  // return await response.json();
 }

@@ -5,6 +5,7 @@ import ArticleListItem from "../components/ArticleListItem";
 import Loading from "../components/Loading";
 import handleError from "../utils/handleError";
 import listArticles from "../apis/article/listArticles";
+import scroll from "../utils/scroll";
 import styled from "styled-components";
 
 const ArticleListDiv = styled.div`
@@ -15,7 +16,12 @@ const ArticleListDiv = styled.div`
 export default function ArticleListPage() {
   const [articles, setArticles] = React.useState<Article[] | null>(null);
   React.useEffect(function () {
-    listArticles({}).then(setArticles).catch(handleError);
+    listArticles({})
+      .then((articles) => {
+        setArticles(articles);
+        scroll({ key: "articles" }).restore();
+      })
+      .catch(handleError);
   }, []);
   return articles === null ? <Loading /> : <Articles articles={articles} />;
 }

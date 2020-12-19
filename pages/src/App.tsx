@@ -6,9 +6,11 @@ import ArticleEditPage from "./pages/ArticleEditPage";
 import ArticleListPage from "./pages/ArticleListPage";
 import ArticleNewPage from "./pages/ArticleNewPage";
 import ArticleViewPage from "./pages/ArticleViewPage";
+import CategoryPage from "./pages/CategoryPage";
 import FirstPage from "./pages/FirstPage";
 import Head from "./components/Head";
 import React from "react";
+import TagPage from "./pages/TagPage";
 import styled from "styled-components";
 
 const AppDiv = styled.div`
@@ -46,6 +48,12 @@ export default function App() {
           </Route>
           <Route path="/article/:slug">
             <ArticleViewPage />
+          </Route>
+          <Route path="/category/:category">
+            <CategoryPage />
+          </Route>
+          <Route path="/tag/:tag">
+            <TagPage />
           </Route>
           <Route path="/">
             <FirstPage />

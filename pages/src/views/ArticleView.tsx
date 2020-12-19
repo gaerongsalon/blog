@@ -1,18 +1,19 @@
 import * as React from "react";
 
-import Article from "../models/article/Article";
-import ArticleContent from "../components/ArticleContent";
+import ArticleDocument from "../models/article/ArticleDocument";
 import CategoryLink from "../components/CategoryLink";
 import Hr from "../components/Hr";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import NavigationButtons from "../components/NavigationButtons";
+import Recommendations from "../components/Recommendations";
 import TagsLink from "../components/TagsLink";
 import fetchArticle from "../apis/article/fetchArticle";
 import formatWritten from "../utils/formatWritten";
 import handleError from "../utils/handleError";
 import hasWritePermission from "../apis/credential/hasWritePermission";
 import metadata from "../metadata.json";
+import scroll from "../utils/scroll";
 import styled from "styled-components";
 
 const ArticleTitle = styled.h1`
@@ -45,16 +46,22 @@ const ArticleWritten = styled.div`
 `;
 
 export default function ArticleView({ slug }: { slug: string }) {
-  const [article, setArticle] = React.useState<Article | null>(null);
+  const [doc, setDoc] = React.useState<ArticleDocument | null>(null);
   React.useEffect(
     function () {
-      fetchArticle({ slug }).then(setArticle).catch(handleError);
+      fetchArticle({ slug })
+        .then((doc) => {
+          setDoc(doc);
+          scroll({ key: "article" }).top();
+        })
+        .catch(handleError);
     },
     [slug]
   );
-  if (!article) {
+  if (!doc) {
     return <Loading />;
   }
+  const { article, recommendations } = doc;
   const { writer, title, image, category, tags, written, content } = article;
   return (
     <div>
@@ -69,14 +76,21 @@ export default function ArticleView({ slug }: { slug: string }) {
           <ArticleHeadImage src={image} alt={title} />
         </ArticleHeadImageDiv>
       ) : null}
-      <ArticleContent content={content} />
+      {/* <ArticleContent content={content} /> */}
+      <div
+        className="ql-editor"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
       <TagsLink tags={tags} />
       <Hr />
+      <Recommendations recommendations={recommendations} />
       <NavigationButtons>
         {hasWritePermission() ? (
           <Link to={`/article/${slug}/edit`}>EDIT</Link>
         ) : null}
-        <Link to={`/`}>HOME</Link>
+        <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
+          HOME
+        </Link>
       </NavigationButtons>
     </div>
   );
