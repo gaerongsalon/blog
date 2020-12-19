@@ -1,16 +1,17 @@
 import "source-map-support/register";
 
 import { ApiError, handleApi, throwError } from "./base";
-import Article, { validateArticle } from "../db/article";
+import Article, { validateArticle } from "../db/entity/Article";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
-import encodeSlug from "../utils/encodeSlug";
+import encodedId from "../article/encodeId";
 import { getLogger } from "@yingyeothon/slack-logger";
 import getPrivateS3cb from "../support/getPrivateS3cb";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
 import secrets from "../env/secrets";
+import trimTags from "../article/trimTags";
 import updateArticle from "../db/updateArticle";
 import useRedisLock from "../redis/useRedisLock";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
@@ -26,7 +27,7 @@ type ArticlePayload = Omit<Article, "serial" | "slug" | "writer"> & {
 export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
-    const slug = encodeSlug(
+    const slug = encodedId(
       (event.pathParameters ?? {}).slug ?? throwError(404)
     );
     const article = {
@@ -53,6 +54,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
             db,
             article: {
               ...article,
+              tags: trimTags(article.tags),
               serial: article.serial,
               writer: writer.name,
             },
@@ -62,6 +64,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
             db,
             article: {
               ...article,
+              tags: trimTags(article.tags),
               writer: writer.name,
             },
           });

@@ -113,12 +113,8 @@ functions:
     memorySize: 1024
     timeout: 15
     events:
-      - http:
-          method: GET
-          path: /api/{resource}
-      - http:
-          method: GET
-          path: /api/{resource}/{id}
+      - http: GET /api/{resource}
+      - http: GET /api/{resource}/{id}
     layers:
       - arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4
   upsertArticle:

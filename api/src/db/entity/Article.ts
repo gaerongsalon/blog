@@ -1,15 +1,7 @@
-export default interface Article {
-  serial: number;
-  slug: string;
-  writer: string;
-  title: string;
-  image: string;
-  excerpt: string;
-  category: string;
-  tags: string;
+import ArticleMeta from "./ArticleMeta";
+
+export default interface Article extends ArticleMeta {
   content: string;
-  written: string;
-  draft: number;
 }
 
 export const articlePropertyKeys: (keyof Article)[] = [

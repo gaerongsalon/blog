@@ -1,6 +1,6 @@
 import * as BetterSqlite3 from "better-sqlite3";
 
-import Article, { articlePropertyKeys } from "./article";
+import Article, { articlePropertyKeys } from "./entity/Article";
 
 const UpdateArticleSQL = `UPDATE article
 SET ${articlePropertyKeys
