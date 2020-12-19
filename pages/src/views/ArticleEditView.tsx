@@ -11,6 +11,7 @@ import LinkStyledButton from "../components/LinkStyledButton";
 import NavigationButtons from "../components/NavigationButtons";
 import deleteArticle from "../apis/article/deleteArticle";
 import handleError from "../utils/handleError";
+import scroll from "../utils/scroll";
 import updateArticle from "../apis/article/updateArticle";
 
 export default function ArticleEditView({
@@ -38,7 +39,6 @@ export default function ArticleEditView({
     article.draft++;
     updateArticle(article)
       .then((result) => {
-        console.log(result);
         historyReplace(`/article/${article.slug}`);
       })
       .catch(handleError);
@@ -90,7 +90,9 @@ export default function ArticleEditView({
         {article.serial ? (
           <Link to={() => `/article/${article.slug}`}>CANCEL</Link>
         ) : (
-          <Link to="/">HOME</Link>
+          <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
+            HOME
+          </Link>
         )}
       </NavigationButtons>
     </div>

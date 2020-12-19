@@ -1,5 +1,6 @@
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
+import "./quill/Video";
 
 import * as React from "react";
 
@@ -17,6 +18,7 @@ export default function ArticleEditor({
   preview: boolean;
   updateValue?: (newValue: string) => void;
 }) {
+  console.log(content);
   const [value, setValue] = React.useState(content ?? "");
   const quillRef = React.useRef<ReactQuill>(null);
 

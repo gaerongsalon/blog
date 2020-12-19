@@ -2,7 +2,6 @@ import * as React from "react";
 
 import Article from "../models/article/Article";
 import ArticleListItem from "../components/ArticleListItem";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const ArticleListDiv = styled.div`
@@ -11,11 +10,13 @@ const ArticleListDiv = styled.div`
 `;
 
 export default function ArticleListView({ articles }: { articles: Article[] }) {
+  if (articles.length === 0) {
+    return <div>No articles</div>;
+  }
   return (
     <ArticleListDiv>
-      <Link to="/article/new">Write new</Link>
       {articles.map((article) => (
-        <ArticleListItem article={article} cols={1} />
+        <ArticleListItem key={article.slug} article={article} cols={2} />
       ))}
     </ArticleListDiv>
   );

@@ -27,6 +27,10 @@ a:hover {
   color: #444444;
 }
 
+.ql-editor {
+  overflow: hidden;
+}
+
 @media (max-width: 800px) {
   .ql-editor {
     padding: 0px !important;
@@ -46,7 +50,6 @@ a:hover {
   margin-top: 0 !important;
 }
 .ql-editor p {
-  text-indent: 1rem;
   text-align: justify;
 }
 .ql-editor p,
@@ -58,7 +61,8 @@ a:hover {
 .ql-editor p,
 .ql-editor ul,
 .ql-editor ol,
-.ql-editor blockquote {
+.ql-editor blockquote,
+.ql-editor .ql-video {
   margin-bottom: 1rem !important;
   font-size: 1rem;
 }
@@ -70,7 +74,7 @@ a:hover {
 .ql-editor blockquote:before,
 .ql-editor blockquote:after {
   display: block;
-  content: '';
+  content: "";
   position: relative;
   width: 30px;
   border-top: 2px solid #818181;
@@ -87,17 +91,27 @@ a:hover {
     padding: 0px !important;
   }
 
-  .ql-editor p,
-  .ql-editor ul,
-  .ql-editor ol,
-  .ql-editor blockquote {
-    font-size: 0.95rem;
-  }
-
   .ql-editor img {
     max-width: 100% !important;
     max-height: 50vh !important;
   }
+}
+
+.ql-editor .ql-video {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+.ql-editor .ql-video iframe,
+.ql-editor .ql-video object,
+.ql-editor .ql-video embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .ArticleEdit {
@@ -118,5 +132,5 @@ a:hover {
 }
 
 .ArticleEdit .ql-editor {
-  overflow-y: visible; 
+  overflow-y: visible;
 }

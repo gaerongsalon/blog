@@ -13,6 +13,7 @@ const formats = [
   "indent",
   "link",
   "image",
+  "video",
   "align",
 ];
 
