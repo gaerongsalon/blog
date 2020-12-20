@@ -155,3 +155,11 @@ functions:
       - http: GET /static/css/{file}
       - http: GET /static/js/{file}
       - http: GET /static/media/{file}
+  sitemap:
+    handler: src/handlers/getSitemap.handle
+    memorySize: 1024
+    timeout: 15
+    events:
+      - http: GET /sitemap.xml
+    layers:
+      - arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4
