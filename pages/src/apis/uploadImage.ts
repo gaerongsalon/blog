@@ -10,9 +10,9 @@ interface ImageProcessed {
   desiredWidths: number[];
 }
 
-export default async function uploadImage(file: File): Promise<string> {
-  console.log(file);
-  const ext = file.name.substring(file.name.lastIndexOf("."));
+export default async function uploadImage(blob: Blob): Promise<string> {
+  console.log(blob);
+  const ext = "." + (blob.type.substring(blob.type.indexOf("/") + 1) ?? "png");
 
   const uploadTarget = await requestToServer<UploadTarget>({
     apiUrl: `/image/upload?type=${ext}`,
@@ -21,7 +21,7 @@ export default async function uploadImage(file: File): Promise<string> {
 
   const imageUploaded = await fetch(uploadTarget.url, {
     method: "PUT",
-    body: file,
+    body: blob,
   }).then((r) => r.text());
   console.log(imageUploaded);
 

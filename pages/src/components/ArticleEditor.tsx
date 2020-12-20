@@ -7,6 +7,7 @@ import * as React from "react";
 import ImageUploadPanel from "./ImageUploadPanel";
 import ReactQuill from "react-quill";
 import formats from "./quill/formats";
+import imagePaste from "./quill/imagePaste";
 import modules from "./quill/modules";
 
 export default function ArticleEditor({
@@ -33,6 +34,13 @@ export default function ArticleEditor({
     },
     [quillRef]
   );
+  React.useEffect(() => {
+    const quill = quillRef.current?.getEditor();
+    if (!quill) {
+      return;
+    }
+    imagePaste(quill);
+  }, [quillRef]);
   return (
     <>
       <ReactQuill
