@@ -5,6 +5,7 @@ const formats = [
   "underline",
   "strike",
   "blockquote",
+  "code-block",
   "size",
   "color",
   "background",

@@ -12,6 +12,7 @@ import NavigationButtons from "../components/NavigationButtons";
 import deleteArticle from "../apis/article/deleteArticle";
 import handleError from "../utils/handleError";
 import scroll from "../utils/scroll";
+import trimTags from "../utils/trimTags";
 import updateArticle from "../apis/article/updateArticle";
 
 export default function ArticleEditView({
@@ -80,7 +81,7 @@ export default function ArticleEditView({
       />
       <BindedLabelInput property="excerpt" article={article} type="textarea" />
       <BindedLabelInput property="category" article={article} />
-      <BindedLabelInput property="tags" article={article} />
+      <BindedLabelInput property="tags" article={article} asString={trimTags} />
       <NavigationButtons>
         <LinkStyledButton onClick={upload}>SAVE</LinkStyledButton>
         {article.serial ? (

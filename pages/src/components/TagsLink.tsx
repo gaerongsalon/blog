@@ -12,7 +12,7 @@ export default function TagsLink({ tags }: { tags: string }) {
     <ArticleTagsDiv>
       {(tags ?? "")
         .trim()
-        .split(/\s+/g)
+        .split(/,/g)
         .filter(Boolean)
         .map((tag) => (
           <Link key={tag} className="ArticleTag" to={`/tag/${tag}`}>

@@ -1,7 +1,8 @@
 const modules = {
+  syntax: true,
   toolbar: {
     container: [
-      ["bold", "italic", "underline", "strike", "blockquote"],
+      ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
 
       [{ header: 1 }, { header: 2 }], // custom button values
       [{ list: "ordered" }, { list: "bullet" }],

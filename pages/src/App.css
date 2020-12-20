@@ -114,6 +114,15 @@ a:hover {
   height: 100%;
 }
 
+.ql-snow .ql-editor .ql-syntax,
+.ql-editor .ql-syntax {
+  background-color: #011627 !important;
+  padding: 1rem;
+  color: #d6deeb !important;
+  border-radius: 8px;
+  margin: 0 1rem 1rem 1rem;
+}
+
 .ArticleEdit {
   margin: 1rem -2vw;
 }
