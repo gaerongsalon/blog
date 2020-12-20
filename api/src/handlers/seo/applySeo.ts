@@ -1,5 +1,6 @@
+import Article from "../../db/entity/Article";
 import ArticleMeta from "../../db/entity/ArticleMeta";
-import articleRepository from "../../article/articleRepository";
+import fetch from "node-fetch";
 import { getLogger } from "@yingyeothon/slack-logger";
 import metadata from "../../metadata.json";
 
@@ -16,7 +17,14 @@ export default async function applySeo(
     return fileContent;
   }
   logger.debug({ id }, "Apply SEO");
-  const article = await articleRepository().fetchArticleOrNull({ slug: id });
+  // We cannot call DB directly because it needs a huge base to use better-sqlite3.
+  // const article = await articleRepository().fetchArticleOrNull({ slug: id });
+  const serverPrefix = process.env.IS_OFFLINE
+    ? "http://localhost:3000"
+    : metadata.url;
+  const article = await fetch(`${serverPrefix}/api/article/${id}`)
+    .then((r) => r.json())
+    .then((doc) => doc.article as Article);
   if (!article) {
     return fileContent;
   }
