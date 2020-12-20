@@ -2,6 +2,7 @@ import Delta from "quill-delta";
 import { Quill } from "react-quill";
 import base64ImageToBlob from "../../utils/base64ImageToBlob";
 import handleError from "../../utils/handleError";
+import overlay from "../../utils/overlay";
 import uploadImage from "../../apis/uploadImage";
 
 export default function imagePaste(quill: Quill) {
@@ -24,13 +25,20 @@ function handlePastedImage(
     return delta;
   }
 
+  const ov = overlay();
   const blob = base64ImageToBlob(imageSource);
+  ov.show();
   uploadImage(blob)
     .then((imageUrl) => {
       // Insert new image after uploaded.
-      quill.updateContents(new Delta().insert({ image: imageUrl }) as any);
+      quill.updateContents(
+        new Delta()
+          .retain(quill.getSelection()?.index ?? 1)
+          .insert({ image: imageUrl }) as any
+      );
     })
-    .catch(handleError);
+    .catch(handleError)
+    .finally(() => ov.hide());
 
   // Do nothing until image uploaded.
   return new Delta();

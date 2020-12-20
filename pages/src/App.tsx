@@ -6,6 +6,7 @@ import ArticleEditPage from "./pages/ArticleEditPage";
 import ArticleListPage from "./pages/ArticleListPage";
 import ArticleNewPage from "./pages/ArticleNewPage";
 import ArticleViewPage from "./pages/ArticleViewPage";
+import { BeatLoader } from "react-spinners";
 import CategoryPage from "./pages/CategoryPage";
 import FirstPage from "./pages/FirstPage";
 import Head from "./components/Head";
@@ -60,6 +61,9 @@ export default function App() {
           </Route>
         </Switch>
       </AppDiv>
+      <div className="overlay">
+        <BeatLoader />
+      </div>
     </Router>
   );
 }
