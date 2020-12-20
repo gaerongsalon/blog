@@ -4,6 +4,7 @@ import Article from "../db/entity/Article";
 import ArticleDocument from "../db/entity/ArticleDocument";
 import ArticleMeta from "../db/entity/ArticleMeta";
 import createTables from "../db/createTables";
+import getAllArticleSlugs from "../db/getAllArticleSlugs";
 import getArticle from "../db/getArticle";
 import getArticles from "../db/getArticles";
 import getArticlesByCategory from "../db/getArticlesByCategory";
@@ -109,11 +110,16 @@ export default function articleRepository() {
     };
   }
 
+  async function fetchAllArticleSlugs(): Promise<{ slug: string }[]> {
+    return useDb((db) => getAllArticleSlugs({ db }));
+  }
+
   return {
     fetchArticles,
     fetchArticlesByCategory,
     fetchArticlesByTag,
     fetchArticleOrNull,
     fetchArticleDocument,
+    fetchAllArticleSlugs,
   };
 }
