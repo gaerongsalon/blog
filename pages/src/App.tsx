@@ -50,6 +50,9 @@ export default function App() {
           <Route path="/article/:slug">
             <ArticleViewPage />
           </Route>
+          <Route path="/:yyyy/:mm/:dd/:slug">
+            <ArticleViewPage />
+          </Route>
           <Route path="/category/:category">
             <CategoryPage />
           </Route>

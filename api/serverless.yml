@@ -155,6 +155,11 @@ functions:
       - http: GET /static/css/{file}
       - http: GET /static/js/{file}
       - http: GET /static/media/{file}
+      # For old url patterns
+      - http: GET /2017/{MM}/{dd}/{articleId}
+      - http: GET /2018/{MM}/{dd}/{articleId}
+      - http: GET /2019/{MM}/{dd}/{articleId}
+      - http: GET /2020/{MM}/{dd}/{articleId}
   sitemap:
     handler: src/handlers/getSitemap.handle
     memorySize: 1024
