@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { BeatLoader } from "react-spinners";
+import overlay from "../utils/overlay";
 import styled from "styled-components";
 import uploadImage from "../apis/uploadImage";
 import { useDropzone } from "react-dropzone";
@@ -27,16 +28,15 @@ export default function ImageDropZone({
         alert("Alreay uploading!");
         return;
       }
+      overlay().show();
       setUploading(true);
       try {
-        // Do something with the files
-        const result: string[] = [];
-        for (const file of acceptedFiles) {
-          result.push(await uploadImage(file));
-        }
-        updateImages(result);
+        updateImages(
+          await Promise.all(acceptedFiles.map((file) => uploadImage(file)))
+        );
       } finally {
         setUploading(false);
+        overlay().hide();
       }
     },
     [updateImages, uploading, setUploading]

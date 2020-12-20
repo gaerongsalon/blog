@@ -1,10 +1,12 @@
 import * as React from "react";
 
+import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import LogInOutButton from "./LogInOutButton";
 import Logo from "../logo.png";
 import NavigationButtons from "./NavigationButtons";
 import hasWritePermission from "../apis/credential/hasWritePermission";
+import metadata from "../metadata.json";
 import scroll from "../utils/scroll";
 import styled from "styled-components";
 
@@ -31,6 +33,9 @@ const LogoImage = styled.img`
 export default function Head() {
   return (
     <HeadDiv className="Head">
+      <Helmet>
+        <title>{metadata.title}</title>
+      </Helmet>
       <NavigationsDiv>
         <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
           HOME
