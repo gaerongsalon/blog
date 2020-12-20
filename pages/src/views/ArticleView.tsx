@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import ArticleDocument from "../models/article/ArticleDocument";
+import ArticleHelmet from "../components/ArticleHelmet";
 import CategoryLink from "../components/CategoryLink";
 import Hr from "../components/Hr";
 import { Link } from "react-router-dom";
@@ -15,6 +16,7 @@ import hasWritePermission from "../apis/credential/hasWritePermission";
 import metadata from "../metadata.json";
 import scroll from "../utils/scroll";
 import styled from "styled-components";
+import syntaxOn from "../utils/syntaxOn";
 
 const ArticleTitle = styled.h1`
   text-align: center;
@@ -54,6 +56,7 @@ export default function ArticleView({ slug }: { slug: string }) {
         .then((doc) => {
           setDoc(doc);
           scroll({ key: "article" }).top();
+          syntaxOn();
         })
         .catch(handleError);
     },
@@ -66,6 +69,7 @@ export default function ArticleView({ slug }: { slug: string }) {
   const { writer, title, image, category, tags, written, content } = article;
   return (
     <div>
+      <ArticleHelmet article={article} />
       <CategoryLink category={category} />
       <ArticleTitle>{title}</ArticleTitle>
       {!metadata.options?.hideWriter ? (
