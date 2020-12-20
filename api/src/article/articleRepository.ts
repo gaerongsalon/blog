@@ -85,12 +85,21 @@ export default function articleRepository() {
       .slice(0, count);
   }
 
+  async function fetchArticleOrNull({
+    slug,
+  }: {
+    slug: string;
+  }): Promise<Article | null> {
+    const article = await useDb((db) => getArticle({ db, slug }));
+    return article ?? null;
+  }
+
   async function fetchArticleDocument({
     slug,
   }: {
     slug: string;
   }): Promise<ArticleDocument> {
-    const article = await useDb((db) => getArticle({ db, slug }));
+    const article = await fetchArticleOrNull({ slug });
     if (!article) {
       throw new Error(`No article for ${slug}`);
     }
@@ -104,6 +113,7 @@ export default function articleRepository() {
     fetchArticles,
     fetchArticlesByCategory,
     fetchArticlesByTag,
+    fetchArticleOrNull,
     fetchArticleDocument,
   };
 }

@@ -4,3 +4,4 @@ node_modules
 .envrc
 .pages
 yarn*.log*
+src/metadata.json
