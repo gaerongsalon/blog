@@ -6,6 +6,7 @@ import * as path from "path";
 import { ApiError, handleApi } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
+import applySeo from "./seo/applySeo";
 import { contentType } from "mime-types";
 import { getLogger } from "@yingyeothon/slack-logger";
 
@@ -51,20 +52,28 @@ export const handle: APIGatewayProxyHandler = handleApi({
   handle: async (event) => {
     const resourceFilePath = resolveBundlePath(event.path);
     const toBase64 = !textTypes.some((ext) => resourceFilePath.endsWith(ext));
+    const fileContent = fs
+      .readFileSync(resourceFilePath)
+      .toString(toBase64 ? "base64" : "utf-8");
+    const seoable = resourceFilePath.endsWith(indexHtml);
+    const finalContent = seoable
+      ? await applySeo(event.path, fileContent)
+      : fileContent;
+    const fileSize = seoable
+      ? Buffer.from(finalContent, "utf-8").byteLength
+      : fs.lstatSync(resourceFilePath).size;
     return {
       statusCode: 200,
       headers: {
         "Content-Type":
           contentType(path.basename(resourceFilePath)) ||
           "application/octet-stream",
-        "Content-Length": fs.lstatSync(resourceFilePath).size,
+        "Content-Length": fileSize,
         "Cache-Control": `public, max-age=${
           resourceFilePath.endsWith(".html") ? 10 * 60 : 30 * 24 * 60 * 60
         }`,
       },
-      body: fs
-        .readFileSync(resourceFilePath)
-        .toString(toBase64 ? "base64" : "utf-8"),
+      body: finalContent,
       isBase64Encoded: toBase64,
     };
   },
