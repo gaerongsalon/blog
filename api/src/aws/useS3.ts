@@ -1,8 +1,10 @@
 import * as AWS from "aws-sdk";
 import * as fs from "fs";
+import * as path from "path";
 
 import S3, { S3Params } from "./S3";
 
+import { contentType as contentTypeFromMimeType } from "mime-types";
 import { getLogger } from "@yingyeothon/slack-logger";
 
 const log = getLogger("useS3", __filename);
@@ -50,17 +52,23 @@ export default function useS3({
   function uploadLocalFile({
     s3ObjectKey,
     localFile,
+    contentType,
   }: {
     s3ObjectKey: string;
     localFile: string;
+    contentType?: string;
   }) {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
     log.trace({ s3ObjectFullKey, localFile }, "s3:uploadLocalFile");
+    const contentTypeOrFalse =
+      contentType ?? contentTypeFromMimeType(path.extname(localFile));
     return s3
       .upload({
         Bucket: bucketName,
         Key: s3ObjectFullKey,
         Body: fs.createReadStream(localFile),
+        ContentType:
+          contentTypeOrFalse !== false ? contentTypeOrFalse : undefined,
       })
       .promise();
   }
