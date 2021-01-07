@@ -7,6 +7,7 @@ import Hr from "../components/Hr";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import NavigationButtons from "../components/NavigationButtons";
+import PageNotFoundPage from "../pages/PageNotFoundPage";
 import Recommendations from "../components/Recommendations";
 import TagsLink from "../components/TagsLink";
 import fetchArticle from "../apis/article/fetchArticle";
@@ -49,7 +50,7 @@ const ArticleWritten = styled.div`
 `;
 
 export default function ArticleView({ slug }: { slug: string }) {
-  const [doc, setDoc] = React.useState<ArticleDocument | null>(null);
+  const [doc, setDoc] = React.useState<ArticleDocument | false | null>(null);
   React.useEffect(
     function () {
       fetchArticle({ slug })
@@ -58,12 +59,18 @@ export default function ArticleView({ slug }: { slug: string }) {
           scroll({ key: "article" }).top();
           syntaxOn();
         })
-        .catch(handleError);
+        .catch((error) => {
+          console.error(error);
+          setDoc(false);
+        });
     },
     [slug]
   );
-  if (!doc) {
+  if (doc === null) {
     return <Loading />;
+  }
+  if (doc === false) {
+    return <PageNotFoundPage />;
   }
   const { article, recommendations } = doc;
   const { writer, title, image, category, tags, written, content } = article;
