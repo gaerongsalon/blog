@@ -87,13 +87,6 @@ export default function ArticleEditView({
         {article.serial ? (
           <LinkStyledButton onClick={remove}>DELETE</LinkStyledButton>
         ) : null}
-        {article.serial ? (
-          <Link to={() => `/article/${article.slug}`}>CANCEL</Link>
-        ) : (
-          <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
-            HOME
-          </Link>
-        )}
       </NavigationButtons>
     </div>
   );
