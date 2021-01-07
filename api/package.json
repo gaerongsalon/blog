@@ -22,7 +22,7 @@
     "execa": "^5.0.0",
     "image-size": "^0.9.3",
     "jsonwebtoken": "^8.5.1",
-    "mime-types": "^2.1.27",
+    "mime-types": "^2.1.28",
     "nanoid": "^3.1.20",
     "node-fetch": "^2.6.1",
     "serialize-error": "^7.0.1",

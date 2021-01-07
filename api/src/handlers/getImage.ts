@@ -28,6 +28,16 @@ export const handle: APIGatewayProxyHandler = handleApi({
         Key: s3ObjectKey,
       })
       .promise();
+    const body = s3Object.Body?.toString("base64") ?? "";
+    logger.debug(
+      {
+        base64Length: body.length,
+        contentLength: s3Object.ContentLength,
+        imageKey,
+        imageWidth,
+      },
+      "Get Image from key"
+    );
     return {
       statusCode: 200,
       headers: {
@@ -35,7 +45,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
         "Content-Length": s3Object.ContentLength!,
         "Cache-Control": `public, max-age=${30 * 24 * 60 * 60}`,
       },
-      body: s3Object.Body?.toString("base64") ?? "",
+      body,
       isBase64Encoded: true,
     };
   },

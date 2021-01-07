@@ -22,7 +22,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     const uploadKey = newFileKey(type);
     const signedUrl = getSignedUrl({
       s3ObjectKey: `image-upload/${uploadKey}`,
-      contentType: `application/${type.substring(1)}`,
+      contentType: `image/${type.substring(1)}`,
     });
 
     return {
