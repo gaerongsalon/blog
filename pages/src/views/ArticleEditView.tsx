@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as dateFns from "date-fns";
 
-import { Link, useHistory } from "react-router-dom";
-
 import Article from "../models/article/Article";
 import ArticleEditor from "../components/ArticleEditor";
 import ArticleHeadImageEditor from "../components/ArticleHeadImageEditor";
@@ -11,9 +9,9 @@ import LinkStyledButton from "../components/LinkStyledButton";
 import NavigationButtons from "../components/NavigationButtons";
 import deleteArticle from "../apis/article/deleteArticle";
 import handleError from "../utils/handleError";
-import scroll from "../utils/scroll";
 import trimTags from "../utils/trimTags";
 import updateArticle from "../apis/article/updateArticle";
+import { useHistory } from "react-router-dom";
 
 export default function ArticleEditView({
   article,
@@ -35,7 +33,7 @@ export default function ArticleEditView({
       article.written = new Date().toISOString();
     }
     article.slug = article.title
-      .replace(/[-!$%^&*()_+|~=`{}[\]:";'<>?,./]/g, "")
+      .replace(/[-!$%^&*()+|~=`{}[\]:";'<>?,./]/g, "")
       .replace(/\s+/g, "-");
     article.draft++;
     updateArticle(article)
