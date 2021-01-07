@@ -160,6 +160,9 @@ functions:
       - http: GET /2018/{MM}/{dd}/{articleId}
       - http: GET /2019/{MM}/{dd}/{articleId}
       - http: GET /2020/{MM}/{dd}/{articleId}
+      - http: GET /2021/{MM}/{dd}/{articleId}
+      - http: GET /2022/{MM}/{dd}/{articleId}
+      - http: GET /2023/{MM}/{dd}/{articleId}
   sitemap:
     handler: src/handlers/getSitemap.handle
     memorySize: 1024
