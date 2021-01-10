@@ -21,11 +21,12 @@ export const handle: APIGatewayProxyHandler = handleApi({
     }
     const { fetchAllArticleSlugs } = articleRepository();
     const allSlugs = await fetchAllArticleSlugs();
+    const input = decodeId(id);
     const allDistances = allSlugs
       .map(({ slug, title }) => ({
         slug,
         title,
-        distance: leven(id, decodeId(slug)),
+        distance: leven(input, decodeId(slug)),
       }))
       .sort((a, b) => a.distance - b.distance);
     const candidates = allDistances
@@ -34,7 +35,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
           distance <= enduranceDistance && distance < decodeId(slug).length
       )
       .slice(0, candidateCounts);
-    logger.debug({ allDistances, candidates, id }, "Find candidate");
+    logger.debug({ allDistances, candidates, input }, "Find candidate");
     if (!candidates) {
       throw new ApiError(404);
     }
