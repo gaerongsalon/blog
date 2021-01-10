@@ -14,6 +14,10 @@ import getPrivateS3cb from "../support/getPrivateS3cb";
 import secrets from "../env/secrets";
 import useS3Sqlite from "../sqlite/useS3Sqlite";
 
+export class NoArticleError {
+  constructor(public readonly slug: string) {}
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function articleRepository() {
   async function useDb<T>(
@@ -102,7 +106,7 @@ export default function articleRepository() {
   }): Promise<ArticleDocument> {
     const article = await fetchArticleOrNull({ slug });
     if (!article) {
-      throw new Error(`No article for ${slug}`);
+      throw new NoArticleError(slug);
     }
     return {
       article: article,
@@ -110,7 +114,7 @@ export default function articleRepository() {
     };
   }
 
-  async function fetchAllArticleSlugs(): Promise<{ slug: string }[]> {
+  async function fetchAllArticleSlugs() {
     return useDb((db) => getAllArticleSlugs({ db }));
   }
 

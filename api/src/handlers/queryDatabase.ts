@@ -15,20 +15,23 @@ export const handle: APIGatewayProxyHandler = handleApi({
     if (!resource || (resource === "article" && !id)) {
       throw new ApiError(404);
     }
-    const body = JSON.stringify(
-      await queryResource({
+    try {
+      const data = await queryResource({
         resource,
         id,
         queryParams: event.queryStringParameters ?? {},
-      })
-    );
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    };
+      });
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      };
+    } catch (error) {
+      logger.debug({ resource, id, error }, "Cannot query");
+      throw new ApiError(404);
+    }
   },
   options: {
     accesslog: true,
