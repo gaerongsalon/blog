@@ -24,7 +24,8 @@ export default async function applySeo(
     : metadata.url;
   const article = await fetch(`${serverPrefix}/api/article/${id}`)
     .then((r) => r.json())
-    .then((doc) => doc.article as Article);
+    .then((doc) => doc.article as Article)
+    .catch(() => null);
   if (!article) {
     return fileContent;
   }
