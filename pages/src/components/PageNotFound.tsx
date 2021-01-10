@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { Link } from "react-router-dom";
-import NavigationButtons from "../components/NavigationButtons";
+import NavigationButtons from "./NavigationButtons";
 
-export default function PageNotFoundPage() {
+export default function PageNotFound() {
   return (
     <div>
       <h1>Page not found :(</h1>

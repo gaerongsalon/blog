@@ -15,9 +15,11 @@ export default function TagsLink({ tags }: { tags: string }) {
         .split(/,/g)
         .filter(Boolean)
         .map((tag) => (
-          <Link key={tag} className="ArticleTag" to={`/tag/${tag}`}>
-            #{tag}
-          </Link>
+          <React.Fragment key={tag}>
+            <Link className="ArticleTag" to={`/tag/${tag}`}>
+              #{tag}
+            </Link>{" "}
+          </React.Fragment>
         ))}
     </ArticleTagsDiv>
   );

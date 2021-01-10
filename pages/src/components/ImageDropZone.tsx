@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { BeatLoader } from "react-spinners";
+import { ImageSize } from "../apis/uploadImage";
 import overlay from "../utils/overlay";
 import styled from "styled-components";
 import uploadImage from "../apis/uploadImage";
@@ -15,11 +16,13 @@ export default function ImageDropZone({
   maxFiles,
   DropZoneComponent = <DropZoneDiv>CHOOSE IMAGE FILES</DropZoneDiv>,
   updateImages,
+  imageSize = "lg",
 }: {
   maxFiles?: number;
   DragActiveComponent?: React.ReactElement;
   DropZoneComponent?: React.ReactElement;
   updateImages: (images: string[]) => unknown;
+  imageSize: ImageSize;
 }) {
   const [uploading, setUploading] = React.useState<boolean>(false);
   const onDrop = React.useCallback(
@@ -32,14 +35,16 @@ export default function ImageDropZone({
       setUploading(true);
       try {
         updateImages(
-          await Promise.all(acceptedFiles.map((file) => uploadImage(file)))
+          await Promise.all(
+            acceptedFiles.map((file) => uploadImage(file, imageSize))
+          )
         );
       } finally {
         setUploading(false);
         overlay().hide();
       }
     },
-    [updateImages, uploading, setUploading]
+    [updateImages, uploading, setUploading, imageSize]
   );
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,

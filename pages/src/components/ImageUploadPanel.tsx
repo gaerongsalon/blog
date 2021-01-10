@@ -53,6 +53,7 @@ export default function ImageUploadPanel({
         DropZoneComponent={
           <DropZoneDiv>CHOOSE IMAGE FILES ({images.length})</DropZoneDiv>
         }
+        imageSize="lg"
       />
       <ImageSelector images={images} onImageClick={onImageClick} />
     </Div>

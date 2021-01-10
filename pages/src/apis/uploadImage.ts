@@ -10,7 +10,12 @@ interface ImageProcessed {
   desiredWidths: number[];
 }
 
-export default async function uploadImage(blob: Blob): Promise<string> {
+export type ImageSize = "lg" | "sm" | "all";
+
+export default async function uploadImage(
+  blob: Blob,
+  size: ImageSize = "lg"
+): Promise<string> {
   console.log(blob);
   const ext = "." + (blob.type.substring(blob.type.indexOf("/") + 1) ?? "png");
 
@@ -26,7 +31,7 @@ export default async function uploadImage(blob: Blob): Promise<string> {
   console.log(imageUploaded);
 
   const processed = await requestToServer<ImageProcessed>({
-    apiUrl: `/image/${uploadTarget.uploadKey}`,
+    apiUrl: `/image/${uploadTarget.uploadKey}?size=${size}`,
     method: "POST",
   });
   console.log(processed);

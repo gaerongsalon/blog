@@ -5,14 +5,10 @@ import ArticleHelmet from "../components/ArticleHelmet";
 import CategoryLink from "../components/CategoryLink";
 import Hr from "../components/Hr";
 import { Link } from "react-router-dom";
-import Loading from "../components/Loading";
 import NavigationButtons from "../components/NavigationButtons";
-import PageNotFoundPage from "../pages/PageNotFoundPage";
 import Recommendations from "../components/Recommendations";
 import TagsLink from "../components/TagsLink";
-import fetchArticle from "../apis/article/fetchArticle";
 import formatWritten from "../utils/formatWritten";
-import handleError from "../utils/handleError";
 import hasWritePermission from "../apis/credential/hasWritePermission";
 import metadata from "../metadata.json";
 import scroll from "../utils/scroll";
@@ -49,31 +45,24 @@ const ArticleWritten = styled.div`
   margin-bottom: 2rem;
 `;
 
-export default function ArticleView({ slug }: { slug: string }) {
-  const [doc, setDoc] = React.useState<ArticleDocument | false | null>(null);
-  React.useEffect(
-    function () {
-      fetchArticle({ slug })
-        .then((doc) => {
-          setDoc(doc);
-          scroll({ key: "article" }).top();
-          syntaxOn();
-        })
-        .catch((error) => {
-          console.error(error);
-          setDoc(false);
-        });
-    },
-    [slug]
-  );
-  if (doc === null) {
-    return <Loading />;
-  }
-  if (doc === false) {
-    return <PageNotFoundPage />;
-  }
-  const { article, recommendations } = doc;
-  const { writer, title, image, category, tags, written, content } = article;
+export default function ArticleView({
+  document: { article, recommendations },
+}: {
+  document: ArticleDocument;
+}) {
+  const {
+    slug,
+    writer,
+    title,
+    image,
+    category,
+    tags,
+    written,
+    content,
+  } = article;
+  React.useEffect(function () {
+    syntaxOn();
+  }, []);
   return (
     <div>
       <ArticleHelmet article={article} />

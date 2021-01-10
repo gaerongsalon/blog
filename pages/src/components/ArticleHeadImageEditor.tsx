@@ -49,6 +49,7 @@ export default function ArticleHeadImageEditor({
           </LabelInputDiv>
         )
       }
+      imageSize="lg"
     />
   );
 }
