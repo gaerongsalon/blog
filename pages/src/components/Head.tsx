@@ -52,7 +52,7 @@ export default function Head() {
       </NavigationsDiv>
       <PageLine />
       <Link to="/" onClick={() => scroll({ key: "articles" }).reset()}>
-        <LogoImage src={Logo} alt="Logo" />
+        <LogoImage src={Logo} alt="Logo" height={150} width={150} />
       </Link>
       <PageLine />
     </HeadDiv>
