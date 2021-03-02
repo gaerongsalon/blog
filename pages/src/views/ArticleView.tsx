@@ -79,7 +79,11 @@ export default function ArticleView({
       <ArticleWritten>{formatWritten(written)}</ArticleWritten>
       {image ? (
         <ArticleHeadImageDiv>
-          <ArticleHeadImage src={buildImageCdnUrl(image)} alt={title} />
+          <ArticleHeadImage
+            src={buildImageCdnUrl(image)}
+            alt={title}
+            loading="lazy"
+          />
         </ArticleHeadImageDiv>
       ) : null}
       <div

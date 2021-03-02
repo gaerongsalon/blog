@@ -91,7 +91,11 @@ export default function ArticleListItem({
       {image ? (
         <Link to={`/article/${slug}`}>
           <ArticleHeadImageDiv>
-            <ArticleHeadImage src={buildImageCdnUrl(image)} alt={title} />
+            <ArticleHeadImage
+              src={buildImageCdnUrl(image)}
+              alt={title}
+              loading="lazy"
+            />
           </ArticleHeadImageDiv>
         </Link>
       ) : null}
