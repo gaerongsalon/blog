@@ -64,7 +64,9 @@ export default function ArticleView({
   const hasCode = content.includes("<pre");
   React.useEffect(
     function () {
-      return hasCode ? syntaxOn() : () => 0;
+      if (hasCode) {
+        syntaxOn();
+      }
     },
     [hasCode]
   );

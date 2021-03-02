@@ -8,6 +8,7 @@ import LinkStyledButton from "../components/LinkStyledButton";
 import NavigationButtons from "../components/NavigationButtons";
 import deleteArticle from "../apis/article/deleteArticle";
 import handleError from "../utils/handleError";
+import loadSyntaxModule from "../utils/loadSyntaxModule";
 import trimTags from "../utils/trimTags";
 import updateArticle from "../apis/article/updateArticle";
 import { useHistory } from "react-router-dom";
@@ -22,8 +23,20 @@ export default function ArticleEditView({
   mode: "new" | "edit";
   article: Article;
 }) {
+  const [syntaxModuleLoaded, setSyntaxModuleLoaded] = React.useState<boolean>(
+    false
+  );
   const [headImage, setHeadImage] = React.useState<string>(article.image);
   const { replace: historyReplace } = useHistory();
+
+  React.useEffect(() => {
+    loadSyntaxModule()
+      .then(() => setSyntaxModuleLoaded(true))
+      .catch((error) => {
+        console.error({ error }, "Cannot load syntax module");
+        setSyntaxModuleLoaded(false);
+      });
+  }, []);
 
   function updateHeadImage(images: string[]) {
     const [image] = images;
@@ -54,6 +67,9 @@ export default function ArticleEditView({
       .catch(handleError);
   }
 
+  if (!syntaxModuleLoaded) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="ArticleEdit">
       <BindedLabelInput property="title" article={article} />
