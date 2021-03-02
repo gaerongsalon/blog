@@ -3,6 +3,7 @@ import * as React from "react";
 import Article from "../models/article/Article";
 import CategoryLink from "./CategoryLink";
 import { Link } from "react-router-dom";
+import buildImageCdnUrl from "../utils/buildImageCdnUrl";
 import formatWritten from "../utils/formatWritten";
 import scroll from "../utils/scroll";
 import styled from "styled-components";
@@ -90,7 +91,7 @@ export default function ArticleListItem({
       {image ? (
         <Link to={`/article/${slug}`}>
           <ArticleHeadImageDiv>
-            <ArticleHeadImage src={image} alt={title} />
+            <ArticleHeadImage src={buildImageCdnUrl(image)} alt={title} />
           </ArticleHeadImageDiv>
         </Link>
       ) : null}

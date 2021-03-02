@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import NavigationButtons from "../components/NavigationButtons";
 import Recommendations from "../components/Recommendations";
 import TagsLink from "../components/TagsLink";
+import buildImageCdnUrl from "../utils/buildImageCdnUrl";
 import formatWritten from "../utils/formatWritten";
 import hasWritePermission from "../apis/credential/hasWritePermission";
 import metadata from "../metadata.json";
@@ -60,9 +61,13 @@ export default function ArticleView({
     written,
     content,
   } = article;
-  React.useEffect(function () {
-    syntaxOn();
-  }, []);
+  const hasCode = content.includes("<pre");
+  React.useEffect(
+    function () {
+      return hasCode ? syntaxOn() : () => 0;
+    },
+    [hasCode]
+  );
   return (
     <div>
       <ArticleHelmet article={article} />
@@ -74,10 +79,9 @@ export default function ArticleView({
       <ArticleWritten>{formatWritten(written)}</ArticleWritten>
       {image ? (
         <ArticleHeadImageDiv>
-          <ArticleHeadImage src={image} alt={title} />
+          <ArticleHeadImage src={buildImageCdnUrl(image)} alt={title} />
         </ArticleHeadImageDiv>
       ) : null}
-      {/* <ArticleContent content={content} /> */}
       <div
         className="ql-editor"
         dangerouslySetInnerHTML={{ __html: content }}

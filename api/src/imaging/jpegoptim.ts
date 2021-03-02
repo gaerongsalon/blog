@@ -36,13 +36,13 @@ export default async function jpegoptim({
         );
 
         // jpegoptim would return non-zero code if there are skipped images.
-        log.trace({ pngFiles: jpgFiles }, "jpegoptim: completed");
+        log.trace({ jpgFiles }, "jpegoptim: completed");
         resolve();
       })
       .catch((reason) => {
         clearTimeout(killer);
         // jpegoptim would return non-zero code if there are skipped images.
-        log.trace({ reason, pngFiles: jpgFiles }, "jpegoptim: completed");
+        log.trace({ reason, jpgFiles }, "jpegoptim: completed");
         resolve();
       });
   });

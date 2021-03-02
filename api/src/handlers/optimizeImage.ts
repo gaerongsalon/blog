@@ -13,7 +13,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
     const uploadKey = (event.pathParameters ?? {}).uploadKey ?? throwError(404);
-    const size = ((event.queryStringParameters ?? {}).size ?? "lg") as Size;
+    const size = ((event.queryStringParameters ?? {}).size ?? "all") as Size;
     const imageKeys = await processImage({
       uploadKey,
       desiredWidths:
