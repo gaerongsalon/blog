@@ -9,7 +9,6 @@ import PageNotFound from "../components/PageNotFound";
 import fetchArticle from "../apis/article/fetchArticle";
 import scroll from "../utils/scroll";
 import searchArticles from "../apis/article/searchArticles";
-import syntaxOn from "../utils/syntaxOn";
 import { useParams } from "react-router-dom";
 
 enum LoadingStage {
@@ -58,7 +57,6 @@ async function loadArticleState(
     const doc = await fetchArticle({ slug });
     updateState({ stage: LoadingStage.Loaded, document: doc });
     scroll({ key: "article" }).top();
-    syntaxOn();
   } catch (error) {
     console.error(error);
     try {

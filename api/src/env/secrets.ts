@@ -8,6 +8,7 @@ const secrets = {
     internalKeyPrefix: process.env.INTERNAL_FILE_S3_PREFIX!,
     internalBucketName: process.env.INTERNAL_FILE_BUCKET!,
     staticBucketName: process.env.STATIC_FILE_BUCKET!,
+    staticFileCdnUrlPrefix: process.env.STATIC_FILE_CDN_URL_PREFIX!,
   },
   s3cb: {
     url: process.env.S3CB_URL!,
