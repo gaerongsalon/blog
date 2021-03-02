@@ -14,7 +14,7 @@ export type ImageSize = "lg" | "sm" | "all";
 
 export default async function uploadImage(
   blob: Blob,
-  size: ImageSize = "lg"
+  size: ImageSize = "all"
 ): Promise<string> {
   console.log(blob);
   const ext = "." + (blob.type.substring(blob.type.indexOf("/") + 1) ?? "png");

@@ -16,7 +16,7 @@ export default function ImageDropZone({
   maxFiles,
   DropZoneComponent = <DropZoneDiv>CHOOSE IMAGE FILES</DropZoneDiv>,
   updateImages,
-  imageSize = "lg",
+  imageSize = "all",
 }: {
   maxFiles?: number;
   DragActiveComponent?: React.ReactElement;
