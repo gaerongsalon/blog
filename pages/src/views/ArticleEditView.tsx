@@ -2,7 +2,6 @@ import * as React from "react";
 import * as dateFns from "date-fns";
 
 import Article from "../models/article/Article";
-import ArticleEditor from "../components/ArticleEditor";
 import ArticleHeadImageEditor from "../components/ArticleHeadImageEditor";
 import BindedLabelInput from "../components/BindedLabelInput";
 import LinkStyledButton from "../components/LinkStyledButton";
@@ -12,6 +11,10 @@ import handleError from "../utils/handleError";
 import trimTags from "../utils/trimTags";
 import updateArticle from "../apis/article/updateArticle";
 import { useHistory } from "react-router-dom";
+
+const LazyArticleEditor = React.lazy(
+  () => import("../components/ArticleEditor")
+);
 
 export default function ArticleEditView({
   article,
@@ -54,11 +57,13 @@ export default function ArticleEditView({
   return (
     <div className="ArticleEdit">
       <BindedLabelInput property="title" article={article} />
-      <ArticleEditor
-        preview={false}
-        content={article.content}
-        updateValue={(newValue) => (article.content = newValue)}
-      />
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <LazyArticleEditor
+          preview={false}
+          content={article.content}
+          updateValue={(newValue) => (article.content = newValue)}
+        />
+      </React.Suspense>
       <ArticleHeadImageEditor
         headImage={headImage}
         updateHeadImage={updateHeadImage}
