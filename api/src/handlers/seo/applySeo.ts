@@ -6,8 +6,9 @@ import { getLogger } from "@yingyeothon/slack-logger";
 import metadata from "../../metadata.json";
 
 const logger = getLogger("applySeo", __filename);
+const blogTitle = process.env.BLOG_TITLE ?? "BLOG";
 
-const originalMeta = `<meta name="description" content="Blog"/><title>BLOG</title>`;
+const originalMeta = `<meta name="description" content="Blog"/><title>${blogTitle}</title>`;
 
 export default async function applySeo(
   requestUrl: string,
@@ -18,15 +19,22 @@ export default async function applySeo(
     return fileContent;
   }
   logger.debug({ id }, "Apply SEO");
+
   // We cannot call DB directly because it needs a huge base to use better-sqlite3.
   // const article = await articleRepository().fetchArticleOrNull({ slug: id });
   const serverPrefix = process.env.IS_OFFLINE
     ? "http://localhost:3000"
     : metadata.url;
-  const article = await fetch(`${serverPrefix}/api/article/${id}`)
+  const articleApiUrl = `${serverPrefix}/api/article/${id}`;
+  logger.debug({ articleApiUrl }, "Get article from api");
+
+  const article = await fetch(articleApiUrl)
     .then((r) => r.json())
     .then((doc) => doc.article as Article)
-    .catch(() => null);
+    .catch((error) => {
+      logger.error({ id, error }, "Cannot fetch article from api");
+      return null;
+    });
   if (!article) {
     return fileContent;
   }
