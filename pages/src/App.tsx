@@ -2,17 +2,18 @@ import "./App.css";
 
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
-import ArticleEditPage from "./pages/ArticleEditPage";
-import ArticleListPage from "./pages/ArticleListPage";
-import ArticleNewPage from "./pages/ArticleNewPage";
-import ArticleViewPage from "./pages/ArticleViewPage";
-import { BeatLoader } from "react-spinners";
-import CategoryPage from "./pages/CategoryPage";
-import FirstPage from "./pages/FirstPage";
+import BeatLoader from "react-spinners/BeatLoader";
 import Head from "./components/Head";
 import React from "react";
-import TagPage from "./pages/TagPage";
 import styled from "styled-components";
+
+const LazyArticleEditPage = React.lazy(() => import("./pages/ArticleEditPage"));
+const LazyArticleListPage = React.lazy(() => import("./pages/ArticleListPage"));
+const LazyArticleNewPage = React.lazy(() => import("./pages/ArticleNewPage"));
+const LazyArticleViewPage = React.lazy(() => import("./pages/ArticleViewPage"));
+const LazyCategoryPage = React.lazy(() => import("./pages/CategoryPage"));
+const LazyTagPage = React.lazy(() => import("./pages/TagPage"));
+const LazyFirstPage = React.lazy(() => import("./pages/FirstPage"));
 
 const AppDiv = styled.div`
   margin: auto;
@@ -37,32 +38,34 @@ export default function App() {
     <Router>
       <Head />
       <AppDiv>
-        <Switch>
-          <Route path="/articles">
-            <ArticleListPage />
-          </Route>
-          <Route path="/article/new">
-            <ArticleNewPage />
-          </Route>
-          <Route path="/article/:slug/edit">
-            <ArticleEditPage />
-          </Route>
-          <Route path="/article/:slug">
-            <ArticleViewPage />
-          </Route>
-          <Route path="/:yyyy/:mm/:dd/:slug">
-            <ArticleViewPage />
-          </Route>
-          <Route path="/category/:category">
-            <CategoryPage />
-          </Route>
-          <Route path="/tag/:tag">
-            <TagPage />
-          </Route>
-          <Route path="/">
-            <FirstPage />
-          </Route>
-        </Switch>
+        <React.Suspense fallback={<div></div>}>
+          <Switch>
+            <Route path="/articles">
+              <LazyArticleListPage />
+            </Route>
+            <Route path="/article/new">
+              <LazyArticleNewPage />
+            </Route>
+            <Route path="/article/:slug/edit">
+              <LazyArticleEditPage />
+            </Route>
+            <Route path="/article/:slug">
+              <LazyArticleViewPage />
+            </Route>
+            <Route path="/:yyyy/:mm/:dd/:slug">
+              <LazyArticleViewPage />
+            </Route>
+            <Route path="/category/:category">
+              <LazyCategoryPage />
+            </Route>
+            <Route path="/tag/:tag">
+              <LazyTagPage />
+            </Route>
+            <Route path="/">
+              <LazyFirstPage />
+            </Route>
+          </Switch>
+        </React.Suspense>
       </AppDiv>
       <div className="overlay">
         <BeatLoader />

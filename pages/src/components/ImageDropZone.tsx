@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { BeatLoader } from "react-spinners";
+import BeatLoader from "react-spinners/BeatLoader";
 import { ImageSize } from "../apis/uploadImage";
 import overlay from "../utils/overlay";
 import styled from "styled-components";
