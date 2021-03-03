@@ -123,6 +123,10 @@ a:hover {
   margin: 0 1rem 1rem 1rem;
 }
 
+p.ql-align-center {
+  text-align: center;
+}
+
 .ArticleEdit {
   margin: 1rem -2vw;
 }

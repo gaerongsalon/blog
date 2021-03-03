@@ -17,6 +17,7 @@ const ContainerDiv = styled.div`
 
 const ItemDiv = styled.div`
   padding: 0 1rem;
+  width: 33%;
   @media (max-width: 1024px) {
     margin-bottom: 2rem;
     &:last-child {
@@ -31,6 +32,7 @@ const ArticleTitle = styled.div`
   font-size: 1.1rem;
   color: #444444;
   margin: 0.4vh auto;
+  word-break: keep-all;
 `;
 
 const ArticleWrittenDiv = styled.div`
