@@ -2,7 +2,6 @@ import * as React from "react";
 
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
-import LogInOutButton from "./LogInOutButton";
 import Logo from "../logo.png";
 import NavigationButtons from "./NavigationButtons";
 import hasWritePermission from "../apis/credential/hasWritePermission";
@@ -30,6 +29,8 @@ const LogoImage = styled.img`
   margin: 2vh 0;
 `;
 
+const LazyLogInOutButton = React.lazy(() => import("./LogInOutButton"));
+
 export default function Head() {
   return (
     <HeadDiv className="Head">
@@ -47,7 +48,9 @@ export default function Head() {
               {" / "}
             </>
           ) : null}
-          <LogInOutButton />
+          <React.Suspense fallback={<div></div>}>
+            <LazyLogInOutButton />
+          </React.Suspense>
         </div>
       </NavigationsDiv>
       <PageLine />
