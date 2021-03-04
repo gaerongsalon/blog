@@ -6,7 +6,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import getImageFileNameWithDesiredWidth from "../imaging/getImageFileNameWithDesiredWidth";
 import { getLogger } from "@yingyeothon/slack-logger";
 import isMobile from "ismobilejs";
-import secrets from "../env/secrets";
+import redirectToCdnUrl from "./support/redirectToCdnUrl";
 
 const logger = getLogger("handle:getImage", __filename);
 
@@ -23,24 +23,15 @@ export const handle: APIGatewayProxyHandler = handleApi({
       inputFile: imageKey,
       desiredWidth: imagePreferredWidth,
     })}`;
-    const cdnUrl = `${secrets.s3.staticFileCdnUrlPrefix}/${imagePath}`;
     logger.debug(
       {
         imageKey,
         imageWidth,
         imagePreferredWidth,
         imagePath,
-        cdnUrl,
       },
-      "Get CDN URL of image from key"
+      "Touch an image"
     );
-
-    return {
-      statusCode: 301,
-      headers: {
-        Location: cdnUrl,
-      },
-      body: cdnUrl,
-    };
+    return redirectToCdnUrl(imagePath);
   },
 });

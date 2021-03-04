@@ -9,6 +9,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import applySeo from "./seo/applySeo";
 import { contentType } from "mime-types";
 import { getLogger } from "@yingyeothon/slack-logger";
+import redirectToCdnUrl from "./support/redirectToCdnUrl";
 
 const logger = getLogger("handle:serveHtml", __filename);
 const resourceRoot = ".pages";
@@ -50,6 +51,10 @@ function resolveBundlePath(requestUrl: string): string {
 export const handle: APIGatewayProxyHandler = handleApi({
   logger: logger,
   handle: async (event) => {
+    // Experimental: Use CDN for static files.
+    if (/^\/static\//.test(event.path)) {
+      return redirectToCdnUrl(event.path);
+    }
     const resourceFilePath = resolveBundlePath(event.path);
     const toBase64 = !textTypes.some((ext) => resourceFilePath.endsWith(ext));
     const fileContent = fs
