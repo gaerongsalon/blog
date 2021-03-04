@@ -25,14 +25,7 @@ module.exports = {
     __dirname: true,
     __filename: true,
   },
-  externals: [
-    /aws-sdk/,
-    /better-sqlite3/,
-    nodeExternals({
-      allowlist: (moduleName) => moduleName !== "sharp",
-      modulesFromFile: true,
-    }),
-  ],
+  externals: [/aws-sdk/, /better-sqlite3/, /sharp/],
   module: {
     rules: [
       {

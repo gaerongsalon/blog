@@ -12,6 +12,7 @@ custom:
       forceExclude:
         - aws-sdk
         - better-sqlite3
+        - sharp
   prune:
     automatic: true
     number: 7
@@ -20,7 +21,7 @@ custom:
       "webpack:package:packExternalModules": /bin/bash .prepackage.sh
 
 package:
-  excludeDevDependencies: true
+  excludeDevDependencies: false
   individually: true
 
 provider:
@@ -104,6 +105,8 @@ functions:
           method: POST
           path: /api/image/{uploadKey}
           authorizer: auth
+    layers:
+      - arn:aws:lambda:ap-northeast-2:467731270623:layer:sharp:1
   getImage:
     handler: src/handlers/getImage.handle
     memorySize: 256
