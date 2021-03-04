@@ -44,7 +44,9 @@
     "build": "react-scripts build",
     "postbuild": "rm -rf ../api/.pages && cp -r build ../api/.pages",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "yarn deploy:static",
+    "deploy:static": "aws s3 sync build/static \"s3://${STATIC_FILE_BUCKET}/static\""
   },
   "eslintConfig": {
     "extends": [
