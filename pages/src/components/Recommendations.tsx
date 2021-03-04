@@ -20,6 +20,7 @@ const ItemDiv = styled.div`
   width: 33%;
   @media (max-width: 1024px) {
     margin-bottom: 2rem;
+    width: auto;
     &:last-child {
       margin-bottom: 0;
     }
