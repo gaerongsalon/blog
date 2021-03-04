@@ -8,7 +8,7 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 if [ "${TARGET}" = "pages" ]; then
   echo "Deploy pages"
   pushd "${SCRIPT_PATH}/pages"
-    yarn && yarn build
+    yarn && yarn build && yarn deploy
   popd
   pushd "${SCRIPT_PATH}/api"
   yarn && yarn deploy -f serveHtml
