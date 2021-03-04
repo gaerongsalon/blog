@@ -1,5 +1,4 @@
-service:
-  name: ${env:BLOG_NAME}-blog-api
+service: ${env:BLOG_NAME}-blog-api
 
 plugins:
   - serverless-plugin-scripts
@@ -28,28 +27,32 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: ap-northeast-2
+  lambdaHashingVersion: 20201221
   apiGateway:
+    shouldStartNameWithService: true
     minimumCompressionSize: 1024
     binaryMediaTypes:
       - "image/*"
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:GetObject"
-        - "s3:GetObjectAcl"
-        - "s3:PutObject"
-        - "s3:PutObjectAcl"
-        - "s3:HeadObject"
-        - "s3:DeleteObject"
-      Resource:
-        - "arn:aws:s3:::${env:INTERNAL_FILE_BUCKET}/*"
-        - "arn:aws:s3:::${env:STATIC_FILE_BUCKET}/*"
-    - Effect: "Allow"
-      Action:
-        - "s3:ListBucket"
-      Resource:
-        - "arn:aws:s3:::${env:INTERNAL_FILE_BUCKET}"
-        - "arn:aws:s3:::${env:STATIC_FILE_BUCKET}"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:GetObjectAcl"
+            - "s3:PutObject"
+            - "s3:PutObjectAcl"
+            - "s3:HeadObject"
+            - "s3:DeleteObject"
+          Resource:
+            - "arn:aws:s3:::${env:INTERNAL_FILE_BUCKET}/*"
+            - "arn:aws:s3:::${env:STATIC_FILE_BUCKET}/*"
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+          Resource:
+            - "arn:aws:s3:::${env:INTERNAL_FILE_BUCKET}"
+            - "arn:aws:s3:::${env:STATIC_FILE_BUCKET}"
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     REDIS_HOST: ${env:REDIS_HOST}
