@@ -83,7 +83,7 @@ a:hover {
 
 .ql-editor img {
   max-width: 65vw !important;
-  max-height: 50vh !important;
+  max-height: 75vh !important;
 }
 
 @media (max-width: 800px) {
@@ -93,7 +93,7 @@ a:hover {
 
   .ql-editor img {
     max-width: 100% !important;
-    max-height: 50vh !important;
+    max-height: 75vh !important;
   }
 }
 

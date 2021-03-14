@@ -31,7 +31,7 @@ const ArticleHeadImageDiv = styled.div`
 const ArticleHeadImage = styled.img`
   width: auto;
   max-width: 50vw;
-  max-height: 50vh;
+  max-height: 75vh;
   @media (max-width: 800px) {
     max-width: 100%;
   }
