@@ -1,16 +1,20 @@
 import articleRepository from "../../article/articleRepository";
 import encodeId from "../../article/encodeId";
+import isbot from "isbot";
 import queryCategories from "./queryCategories";
+import queryOrIncreaseHits from "./queryOrIncreaseHits";
 import queryTags from "./queryTags";
 
 export default async function queryResource({
   resource,
   id,
   queryParams,
+  userAgent,
 }: {
   resource: string;
   id: string;
   queryParams: { [key: string]: string };
+  userAgent: string;
 }): Promise<unknown> {
   switch (resource) {
     case "articles":
@@ -31,9 +35,11 @@ export default async function queryResource({
         tag: decodeURIComponent(id),
       });
     case "article":
-      return await articleRepository().fetchArticleDocument({
+      const document = await articleRepository().fetchArticleDocument({
         slug: encodeId(id),
       });
+      const hits = await queryOrIncreaseHits(resource, id, isbot(userAgent));
+      return { ...document, article: { ...document.article, hits } };
   }
   return true;
 }

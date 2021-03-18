@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import ArticleCounter from "../components/ArticleCounter";
 import ArticleDocument from "../models/article/ArticleDocument";
 import ArticleHelmet from "../components/ArticleHelmet";
 import CategoryLink from "../components/CategoryLink";
@@ -93,6 +94,7 @@ export default function ArticleView({
         dangerouslySetInnerHTML={{ __html: content }}
       />
       <TagsLink tags={tags} />
+      <ArticleCounter hits={article.hits} />
       <Hr />
       <Recommendations recommendations={recommendations} />
       <NavigationButtons>
