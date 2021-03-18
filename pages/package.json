@@ -42,7 +42,7 @@
   "scripts": {
     "start": "PORT=\"3001\" react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "rm -rf ../api/.pages && cp -r build ../api/.pages",
+    "postbuild": "rm -rf ../api/pages && cp -r build ../api/pages",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn deploy:static",

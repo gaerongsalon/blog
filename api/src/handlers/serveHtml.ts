@@ -12,7 +12,7 @@ import { getLogger } from "@yingyeothon/slack-logger";
 import redirectToCdnUrl from "./support/redirectToCdnUrl";
 
 const logger = getLogger("handle:serveHtml", __filename);
-const resourceRoot = ".pages";
+const resourceRoot = "pages";
 
 const indexHtml = "index.html";
 const textTypes = [".css", ".html", ".js", ".json", ".map", ".svg", ".txt"];
