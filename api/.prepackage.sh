@@ -8,6 +8,8 @@ OPTIMIZE_IMAGE_DIR=".webpack/optimizeImage"
 
 # Step 1. Serve HTML
 if [ -d "${SERVE_DIR}" ]; then
+  # Static files would be served via CDN.
+  rm -rf "${SERVE_PAGES_DIR}/static"
   cp -r "${SERVE_PAGES_DIR}" "${SERVE_DIR}"
   echo "Add ${SERVE_PAGES_DIR} to ${SERVE_DIR}"
 else
