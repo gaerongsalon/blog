@@ -11,5 +11,6 @@ export default function newArticle() {
     content: "",
     written: "",
     draft: 0,
+    hits: 0,
   };
 }

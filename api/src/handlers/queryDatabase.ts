@@ -12,14 +12,20 @@ export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
     const { resource, id } = event.pathParameters ?? {};
-    if (!resource || (resource === "article" && !id)) {
+    if (
+      !resource ||
+      (["article", "category", "tag"].includes(resource) && !id)
+    ) {
       throw new ApiError(404);
     }
     try {
       const data = await queryResource({
         resource,
-        id,
-        queryParams: event.queryStringParameters ?? {},
+        id: id ?? "",
+        queryParams: (event.queryStringParameters ?? {}) as {
+          [key: string]: string;
+        },
+        userAgent: event.requestContext.identity.userAgent ?? "curl",
       });
       return {
         statusCode: 200,
