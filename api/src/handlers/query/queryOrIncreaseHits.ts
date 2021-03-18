@@ -1,5 +1,6 @@
 import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import { getLogger } from "@yingyeothon/slack-logger";
+import metadata from "../../metadata.json";
 import redisGet from "@yingyeothon/naive-redis/lib/get";
 import redisIncr from "@yingyeothon/naive-redis/lib/incr";
 import withRedisConnection from "../../redis/withRedisConnection";
@@ -33,5 +34,5 @@ export default async function queryOrIncreaseHits(
 }
 
 function buildRedisKeyForHit(resource: string, id: string) {
-  return `blog::hit/${resource}/${id}`;
+  return `blog/${metadata.blogId}::hit/${resource}/${id}`;
 }
