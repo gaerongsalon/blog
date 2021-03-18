@@ -1,9 +1,11 @@
 #!/bin/bash
 
-SERVE_PAGES_DIR=".pages"
+set -euxo pipefail
+
+SERVE_PAGES_DIR="pages"
 SERVE_DIR=".webpack/serveHtml"
 
-PNGQUANt_JPEGOPTIM_FILE=".external/exodus-pngquant-jpegoptim-bundle.tgz"
+PNGQUANT_JPEGOPTIM_FILE=".external/exodus-pngquant-jpegoptim-bundle.tgz"
 OPTIMIZE_IMAGE_DIR=".webpack/optimizeImage"
 
 # Step 1. Serve HTML
@@ -18,8 +20,8 @@ fi
 
 # Step 2. pdftoppm
 if [ -d "${OPTIMIZE_IMAGE_DIR}" ]; then
-  cp "${PNGQUANt_JPEGOPTIM_FILE}" "${OPTIMIZE_IMAGE_DIR}"
-  echo "Add ${PNGQUANt_JPEGOPTIM_FILE} to ${OPTIMIZE_IMAGE_DIR}"
+  cp "${PNGQUANT_JPEGOPTIM_FILE}" "${OPTIMIZE_IMAGE_DIR}"
+  echo "Add ${PNGQUANT_JPEGOPTIM_FILE} to ${OPTIMIZE_IMAGE_DIR}"
 else
   echo "Skip because ${OPTIMIZE_IMAGE_DIR} doesn't exist."
 fi
