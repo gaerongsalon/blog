@@ -1,6 +1,9 @@
 {
   "title": "BLOG_NAME",
   "locale": "en",
+  "url": "https://your.blog.url",
+  "cdnUrl": "https://cdn.your.blog.url",
+  "authUrl": "https://auth-api.your.domain/provider",
   "options": {
     "hideWriter": false
   }

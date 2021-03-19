@@ -1,7 +1,8 @@
+import metadata from "../../metadata.json";
 import secretStoreKey from "./secretStoreKey";
 
 export default async function authorize(token: string): Promise<boolean> {
-  const secret = await fetch("https://api.hoppipolla.me/auth/google", {
+  const secret = await fetch(metadata.authUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
