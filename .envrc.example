@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Import envrc from parent directory.
+type -t source_up > /dev/null
+if [ $? -eq 0 ]; then
+  source_up
+fi
+
+# Define common properties.
+export BLOG_NAME="Your-blog-name"
+export BLOG_TITLE="Your blog title"
+export STAGE="dev"
+
+# Define properties for backend.
+export INTERNAL_FILE_BUCKET="S3-bucket-to-store-internal-files"
+export INTERNAL_FILE_S3_PREFIX="blog-db-prefix/"
+export STATIC_FILE_BUCKET="S3-bucket-to-store-cdn-files"
+export DB_KEY="database-key-such-as-uuid"
+export STATIC_FILE_CDN_URL_PREFIX="https://your-cdn.blog.url"
+
+# Define properties for common backend system.
+export REDIS_HOST="redis-host"
+export REDIS_PASSWORD="redis-password"
+export JWT_SECRET_KEY='auth-api-jwt-secret-key'
+export S3CB_URL="http://s3.cache.bridge.url"
+export S3CB_ID="S3-cache-bridge-id"
+export S3CB_PASSWORD='S3-cache-bridge-password'
+
+# Define properties for backend logger.
+# export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/SLACK/HOOK/URL"
+# export SLACK_CHANNEL="Slack-channel-id"
+# export SLACK_LOG_LEVEL="warn"
+# export CONSOLE_LOG_LEVEL="trace"
+
+# Variables for React
+export REACT_APP_GOOGLE_CLIENT_ID="google-client-id-for-login.apps.googleusercontent.com"
+export REACT_APP_TITLE="${BLOG_TITLE}"
+
