@@ -1,8 +1,9 @@
 import { getLogger } from "@yingyeothon/slack-logger";
+import metadata from "../metadata.json";
 import withRedisCache from "../redis/withRedisCache";
 
 const cacheVersion = 1;
-const cacheKeyPrefix = `example::blog::${cacheVersion}::`;
+const cacheKeyPrefix = `blog/${metadata.blogId}::${cacheVersion}::`;
 
 const log = getLogger("cacheOr", __filename);
 

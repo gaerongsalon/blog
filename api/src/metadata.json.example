@@ -1,0 +1,8 @@
+{
+  "title": "Your blog title",
+  "url": "https://your.blog.url",
+  "blogId": "blog-unique-id",
+  "writers": [
+    { "email": "author@mail.address", "name": "author-name" }
+  ]
+}
