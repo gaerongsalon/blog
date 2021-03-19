@@ -46,7 +46,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn deploy:static",
-    "deploy:static": "aws s3 sync build/static \"s3://${STATIC_FILE_BUCKET}/static\""
+    "deploy:static": "aws s3 sync build \"s3://${STATIC_FILE_BUCKET}/\""
   },
   "eslintConfig": {
     "extends": [

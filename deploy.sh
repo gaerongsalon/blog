@@ -17,16 +17,16 @@ if [ "${TARGET}" = "pages" ]; then
 elif [ "${TARGET}" = "api" ]; then
   echo "Deploy api"
   pushd "${SCRIPT_PATH}/api"
-  yarn && yarn deploy
+    yarn && yarn deploy
   popd
 
 else
   echo "Deploy all"
   pushd "${SCRIPT_PATH}/pages"
-    yarn && yarn build
+    yarn && yarn build && yarn deploy
   popd
   pushd "${SCRIPT_PATH}/api"
-  yarn && yarn deploy
+    yarn && yarn deploy
   popd
 
 fi
