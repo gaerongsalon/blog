@@ -1,5 +1,5 @@
 import isMobile from "ismobilejs";
-import metadata from "../metadata.json";
+import metadata from "@config/metadata.json";
 
 export default function buildImageCdnUrl(imageUrl: string): string {
   const queryIndex = imageUrl.indexOf("?");

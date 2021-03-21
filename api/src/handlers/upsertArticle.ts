@@ -10,8 +10,7 @@ import { getLogger } from "@yingyeothon/slack-logger";
 import getPrivateS3cb from "../support/getPrivateS3cb";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
-import redisConfig from "../env/redisConfig";
-import secrets from "../env/secrets";
+import secrets from "@config/secrets.json";
 import trimTags from "../article/trimTags";
 import updateArticle from "../db/updateArticle";
 import useRedisLock from "@libs/redis/useRedisLock";
@@ -41,7 +40,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     }
 
     const writer = readWriter(event);
-    const { inLock } = useRedisLock(redisConfig);
+    const { inLock } = useRedisLock(secrets.redis);
     const { withDb } = useS3Sqlite(getPrivateS3cb());
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,

@@ -1,8 +1,8 @@
-import metadata from "../../metadata.json";
+import metadata from "@config/metadata.json";
 import secretStoreKey from "./secretStoreKey";
 
 export default async function authorize(token: string): Promise<boolean> {
-  const secret = await fetch(metadata.authUrl, {
+  const secret = await fetch(metadata.auth.url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

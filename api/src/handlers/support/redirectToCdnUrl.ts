@@ -1,14 +1,14 @@
 import { APIGatewayProxyResult } from "aws-lambda";
 import { URL } from "url";
 import { getLogger } from "@yingyeothon/slack-logger";
-import secrets from "../../env/secrets";
+import metadata from "@config/metadata.json";
 
 const logger = getLogger("redirectToCdnUrl", __filename);
 
 export default function redirectToCdnUrl(
   relativePath: string
 ): APIGatewayProxyResult {
-  const cdnUrl = new URL(relativePath, secrets.s3.staticFileCdnUrlPrefix).href;
+  const cdnUrl = new URL(relativePath, metadata.cdnUrl).href;
   logger.debug({ cdnUrl }, "Go to CDN");
   return {
     statusCode: 301,

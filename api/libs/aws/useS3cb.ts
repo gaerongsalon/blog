@@ -7,7 +7,7 @@ import S3cbEnv from "@yingyeothon/s3-cache-bridge-client/lib/env";
 import { getLogger } from "@yingyeothon/slack-logger";
 import { promisify } from "util";
 
-const log = getLogger("useS3", __filename);
+const log = getLogger("useS3cb", __filename);
 
 export default function useS3cb({
   keyPrefix = "",
@@ -29,7 +29,7 @@ export default function useS3cb({
     localFile: string;
   }): Promise<string> {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
-    log.trace({ s3ObjectFullKey, localFile }, "s3:downloadToLocal");
+    log.trace({ s3ObjectFullKey, localFile }, "s3cb:downloadToLocal");
     return cb.download(s3ObjectFullKey, localFile);
   }
 
@@ -41,14 +41,14 @@ export default function useS3cb({
     localFile: string;
   }) {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
-    log.trace({ s3ObjectFullKey, localFile }, "s3:uploadLocalFile");
+    log.trace({ s3ObjectFullKey, localFile }, "s3cb:uploadLocalFile");
     const buffer = await promisify(fs.readFile)(localFile);
     return cb.put(s3ObjectFullKey, buffer);
   }
 
   function deleteKey({ s3ObjectKey }: { s3ObjectKey: string }) {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
-    log.trace({ s3ObjectFullKey }, "s3:deleteKey");
+    log.trace({ s3ObjectFullKey }, "s3cb:deleteKey");
     return cb.del(s3ObjectFullKey);
   }
 
@@ -60,7 +60,7 @@ export default function useS3cb({
     value: T | null;
   }) {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
-    log.trace({ s3ObjectFullKey, value }, "s3:putJSON");
+    log.trace({ s3ObjectFullKey, value }, "s3cb:putJSON");
     return cb.put(s3ObjectFullKey, !value ? "" : JSON.stringify(value));
   }
 
@@ -71,7 +71,7 @@ export default function useS3cb({
     nullIfAbsent?: boolean;
   }): Promise<T | null> {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
-    log.trace({ s3ObjectFullKey }, "s3:getJSON");
+    log.trace({ s3ObjectFullKey }, "s3cb:getJSON");
     const body = await cb.get(s3ObjectFullKey);
     return JSON.parse(body) as T;
   }
@@ -82,7 +82,7 @@ export default function useS3cb({
     s3ObjectKey: string;
   }): Promise<boolean> {
     const s3ObjectFullKey = keyPrefix + s3ObjectKey;
-    log.trace({ s3ObjectFullKey }, "s3:exists");
+    log.trace({ s3ObjectFullKey }, "s3cb:exists");
     return cb.exists(s3ObjectFullKey);
   }
 

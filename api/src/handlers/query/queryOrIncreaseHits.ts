@@ -1,9 +1,8 @@
 import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
 import { getLogger } from "@yingyeothon/slack-logger";
-import metadata from "../../metadata.json";
-import redisConfig from "../../env/redisConfig";
 import redisGet from "@yingyeothon/naive-redis/lib/get";
 import redisIncr from "@yingyeothon/naive-redis/lib/incr";
+import secrets from "@config/secrets.json";
 import withRedisConnection from "@libs/redis/withRedisConnection";
 
 const logger = getLogger("queryOrIncreaseHits", __filename);
@@ -24,7 +23,7 @@ export default async function queryOrIncreaseHits(
 
   try {
     const hits = await withRedisConnection({
-      ...redisConfig,
+      ...secrets.redis,
       doIn: (connection) => (isBot ? query : increase)(connection),
     });
     logger.debug({ resource, id, isBot, hits }, "Query or increase hits");
@@ -36,5 +35,5 @@ export default async function queryOrIncreaseHits(
 }
 
 function buildRedisKeyForHit(resource: string, id: string) {
-  return `blog/${metadata.blogId}::hit/${resource}/${id}`;
+  return `blog/${secrets.name}::hit/${resource}/${id}`;
 }

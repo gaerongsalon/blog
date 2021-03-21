@@ -1,4 +1,5 @@
 import S3 from "../aws/S3";
+import secrets from "@config/secrets.json";
 import useRedisLock from "../redis/useRedisLock";
 import useS3JsonDb from "../jsondb/useS3JsonDb";
 
@@ -13,7 +14,7 @@ export default function useImageDb({
   dbKey?: string;
   dbRedisLock?: string;
 } & Pick<S3, "exists" | "getJSON" | "putJSON">) {
-  const { inLock } = useRedisLock();
+  const { inLock } = useRedisLock(secrets.redis);
   const { getDb, editDb } = useS3JsonDb({ exists, getJSON, putJSON });
 
   async function checkExists({

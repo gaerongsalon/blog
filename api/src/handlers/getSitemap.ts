@@ -4,7 +4,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import articleRepository from "../article/articleRepository";
 import { getLogger } from "@yingyeothon/slack-logger";
 import { handleApi } from "./base";
-import metadata from "../metadata.json";
+import metadata from "@config/metadata.json";
 
 const logger = getLogger("handle:sitemap", __filename);
 

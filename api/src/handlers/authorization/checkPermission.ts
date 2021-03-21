@@ -1,7 +1,7 @@
 import AuthorizerEvent from "./AuthorizerEvent";
 import Permission from "../models/Permission";
-import metadata from "../../metadata.json";
 import readAuthorization from "./readAuthorization";
+import secrets from "@config/secrets.json";
 
 export default function checkPermission(event: AuthorizerEvent): Permission {
   const context = readAuthorization(event);
@@ -10,6 +10,6 @@ export default function checkPermission(event: AuthorizerEvent): Permission {
   }
   return {
     readable: true,
-    writable: metadata.writers.some((writer) => writer.email === context.email),
+    writable: secrets.writers.some((writer) => writer.email === context.email),
   };
 }

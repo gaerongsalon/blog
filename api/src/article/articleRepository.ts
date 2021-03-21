@@ -10,7 +10,7 @@ import getArticlesByCategory from "../db/getArticlesByCategory";
 import getArticlesByTag from "../db/getArticlesByTag";
 import getNearArticles from "../db/getNearArticles";
 import getPrivateS3cb from "../support/getPrivateS3cb";
-import secrets from "../env/secrets";
+import secrets from "@config/secrets.json";
 import useS3Sqlite from "@libs/sqlite/useS3Sqlite";
 
 export class NoArticleError {
@@ -54,18 +54,20 @@ export default function articleRepository() {
     return useDb((db) => getArticlesByTag({ db, tag }));
   }
 
-  async function fetchRecommendArticles({
+  function findRecommendArticles({
+    db,
     article: { slug, category },
     count = 3,
   }: {
+    db: SqliteDatabase;
     article: Article;
     // category: string;
     count?: number;
-  }): Promise<ArticleMeta[]> {
-    const candidates = await useDb((db) => [
+  }): ArticleMeta[] {
+    const candidates = [
       ...(category ? getArticlesByCategory({ db, category }) : []),
       ...getNearArticles({ db, slug, around: Math.ceil(count / 2) }),
-    ]);
+    ];
     const result: ArticleMeta[] = [];
     for (const candidate of candidates) {
       if (result.some((a) => a.serial === candidate.serial)) {
@@ -87,13 +89,14 @@ export default function articleRepository() {
       .slice(0, count);
   }
 
-  async function fetchArticleOrNull({
+  function findArticleOrNull({
+    db,
     slug,
   }: {
+    db: SqliteDatabase;
     slug: string;
-  }): Promise<Article | null> {
-    const article = await useDb((db) => getArticle({ db, slug }));
-    return article ?? null;
+  }): Article | null {
+    return getArticle({ db, slug }) ?? null;
   }
 
   async function fetchArticleDocument({
@@ -101,14 +104,16 @@ export default function articleRepository() {
   }: {
     slug: string;
   }): Promise<ArticleDocument> {
-    const article = await fetchArticleOrNull({ slug });
-    if (!article) {
-      throw new NoArticleError(slug);
-    }
-    return {
-      article: article,
-      recommendations: await fetchRecommendArticles({ article }),
-    };
+    return await useDb((db) => {
+      const article = findArticleOrNull({ db, slug });
+      if (!article) {
+        throw new NoArticleError(slug);
+      }
+      return {
+        article: article,
+        recommendations: findRecommendArticles({ db, article }),
+      };
+    });
   }
 
   async function fetchAllArticleSlugs() {
@@ -119,7 +124,6 @@ export default function articleRepository() {
     fetchArticles,
     fetchArticlesByCategory,
     fetchArticlesByTag,
-    fetchArticleOrNull,
     fetchArticleDocument,
     fetchAllArticleSlugs,
   };

@@ -1,7 +1,7 @@
 import createTables from "../../db/createTables";
 import getAllTags from "../../db/getAllTags";
 import getPrivateS3cb from "../../support/getPrivateS3cb";
-import secrets from "../../env/secrets";
+import secrets from "@config/secrets.json";
 import useS3Sqlite from "@libs/sqlite/useS3Sqlite";
 
 export default async function queryTags(): Promise<string[]> {

@@ -3,12 +3,11 @@ import ArticleMeta from "../../db/entity/ArticleMeta";
 import buildImageCdnUrl from "./buildImageCdnUrl";
 import fetch from "node-fetch";
 import { getLogger } from "@yingyeothon/slack-logger";
-import metadata from "../../metadata.json";
+import metadata from "@config/metadata.json";
 
 const logger = getLogger("applySeo", __filename);
-const blogTitle = process.env.BLOG_TITLE ?? "BLOG";
 
-const originalMeta = `<meta name="description" content="Blog"/><title>${blogTitle}</title>`;
+const originalMeta = `<meta name="description" content="Blog"/><title>${metadata.title}</title>`;
 
 export default async function applySeo(
   requestUrl: string,

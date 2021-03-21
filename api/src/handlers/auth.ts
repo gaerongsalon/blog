@@ -3,8 +3,7 @@ import * as jwt from "jsonwebtoken";
 import { APIGatewayAuthorizerHandler } from "aws-lambda";
 import Authorization from "./models/Authorization";
 import { getLogger } from "@yingyeothon/slack-logger";
-
-const jwtSecretKey = process.env.JWT_SECRET_KEY!;
+import secrets from "@config/secrets.json";
 
 const logger = getLogger("handle:auth", __filename);
 
@@ -45,8 +44,7 @@ function decodeJWT(
     return null;
   }
   try {
-    const payload = jwt.verify(token, jwtSecretKey) as Authorization;
-    return payload;
+    return jwt.verify(token, secrets.jwtSecretKey) as Authorization;
   } catch (error) {
     (/jwt expired/.test(error.message) ? logger.debug : logger.warn)(
       { authorizationToken, error },

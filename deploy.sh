@@ -8,10 +8,10 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 if [ "${TARGET}" = "pages" ]; then
   echo "Deploy pages"
   pushd "${SCRIPT_PATH}/pages"
-    yarn && yarn build && yarn deploy
+    source .envrc && yarn && yarn build && yarn deploy
   popd
   pushd "${SCRIPT_PATH}/api"
-  yarn && yarn deploy -f serveHtml
+    yarn && yarn deploy -f serveHtml
   popd
 
 elif [ "${TARGET}" = "api" ]; then
@@ -23,7 +23,7 @@ elif [ "${TARGET}" = "api" ]; then
 else
   echo "Deploy all"
   pushd "${SCRIPT_PATH}/pages"
-    yarn && yarn build && yarn deploy
+    source .envrc && yarn && yarn build && yarn deploy
   popd
   pushd "${SCRIPT_PATH}/api"
     yarn && yarn deploy

@@ -1,7 +1,5 @@
 node_modules
 .serverless
 .webpack
-.envrc
 /pages
 yarn*.log*
-src/metadata.json
