@@ -12,7 +12,7 @@ import TagsLink from "../components/TagsLink";
 import buildImageCdnUrl from "../utils/buildImageCdnUrl";
 import formatWritten from "../utils/formatWritten";
 import hasWritePermission from "../apis/credential/hasWritePermission";
-import metadata from "../metadata.json";
+import metadata from "@config/metadata.json";
 import scroll from "../utils/scroll";
 import styled from "styled-components";
 import syntaxOn from "../utils/syntaxOn";
@@ -38,7 +38,12 @@ const ArticleHeadImage = styled.img`
   }
 `;
 
-const ArticleWriter = styled.div``;
+const ArticleWriter = styled.div`
+  text-align: center;
+  color: gray;
+  font-size: 0.9rem;
+  margin-bottom: 0.1rem;
+`;
 
 const ArticleWritten = styled.div`
   text-align: center;

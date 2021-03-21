@@ -1,0 +1,13 @@
+{
+  "locale": "en",
+  "title": "My Personal Blog",
+  "options": {
+    "hideWriter": false
+  },
+  "url": "https://blog.my.url",
+  "cdnUrl": "https://cdn.blog.my.url",
+  "auth": {
+    "url": "https://auth.blog.my.url/auth/google",
+    "googleClientId": "google-client-id.apps.googleusercontent.com"
+  }
+}

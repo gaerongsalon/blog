@@ -3,7 +3,7 @@ import * as React from "react";
 import ArticleMeta from "../models/article/ArticleMeta";
 import Helmet from "react-helmet";
 import buildImageCdnUrl from "../utils/buildImageCdnUrl";
-import metadata from "../metadata.json";
+import metadata from "@config/metadata.json";
 
 // https://metatags.io/
 // https://www.heymeta.com/

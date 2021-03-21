@@ -7,9 +7,8 @@ import handleError from "../utils/handleError";
 import handleGoogleResponse from "../apis/credential/handleGoogleResponse";
 import isLogged from "../apis/credential/isLogged";
 import logout from "../apis/credential/logout";
+import metadata from "@config/metadata.json";
 import { useHistory } from "react-router-dom";
-
-const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID!;
 
 export default function LogInOutButton() {
   return isLogged() ? <LogoutButton /> : <LoginButton />;
@@ -20,7 +19,7 @@ function LoginButton() {
   return (
     <GoogleLogin
       className="Login"
-      clientId={googleClientId}
+      clientId={metadata.auth.googleClientId}
       buttonText="Login"
       onSuccess={async (result) => {
         try {
@@ -50,7 +49,7 @@ function LogoutButton() {
   return (
     <GoogleLogout
       className="Logout"
-      clientId={googleClientId}
+      clientId={metadata.auth.googleClientId}
       buttonText="Logout"
       onLogoutSuccess={async () => {
         logout();

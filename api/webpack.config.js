@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const slsw = require("serverless-webpack");
-const nodeExternals = require("webpack-node-externals");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
@@ -17,7 +16,7 @@ module.exports = {
     cacheWithContext: false,
     plugins: [
       new TsconfigPathsPlugin({
-        configFile: "./tsconfig.json",
+        configFile: "./tsconfig.paths.json",
       }),
     ],
   },
