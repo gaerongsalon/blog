@@ -13,7 +13,7 @@ const allowedTypes = [".png", ".jpg", ".jpeg"];
 export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
-    const type = (event.queryStringParameters ?? {}).type ?? throwError(404);
+    const type = (event.queryStringParameters ?? {}).type! ?? throwError(404);
     if (!allowedTypes.includes(type)) {
       throw new ApiError(400);
     }

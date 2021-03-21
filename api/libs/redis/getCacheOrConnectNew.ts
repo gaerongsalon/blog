@@ -1,5 +1,7 @@
-import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
-import connectToRedis from "./connectToRedis";
+import redisConnect, {
+  RedisConfig,
+  RedisConnection,
+} from "@yingyeothon/naive-redis/lib/connection";
 
 const expirationMillis = 3 * 60 * 1000;
 const connectionCache: {
@@ -10,7 +12,7 @@ const connectionCache: {
   expired: 0,
 };
 
-export function getCacheOrConnectNew(): RedisConnection {
+export function getCacheOrConnectNew(config: RedisConfig): RedisConnection {
   if (
     connectionCache.connection !== null &&
     connectionCache.expired > Date.now()
@@ -21,7 +23,7 @@ export function getCacheOrConnectNew(): RedisConnection {
     connectionCache.connection.socket.disconnect();
   }
 
-  connectionCache.connection = connectToRedis();
+  connectionCache.connection = redisConnect(config);
   connectionCache.expired = Date.now() + expirationMillis;
   return connectionCache.connection;
 }

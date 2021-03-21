@@ -1,6 +1,5 @@
-import * as BetterSqlite3 from "better-sqlite3";
-
 import Article from "./entity/Article";
+import SqliteDatabase from "@libs/sqlite/SqliteDatabase";
 
 const GetNearArticlesSQL = `WITH rankNoView AS (
   SELECT RANK() OVER (ORDER BY written DESC) AS rankNo
@@ -22,7 +21,7 @@ export default function getNearArticles({
   slug,
   around,
 }: {
-  db: BetterSqlite3.Database;
+  db: SqliteDatabase;
   slug: string;
   around: number;
 }): Article[] {

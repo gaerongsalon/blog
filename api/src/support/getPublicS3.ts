@@ -1,5 +1,5 @@
 import secrets from "../env/secrets";
-import useS3 from "../aws/useS3";
+import useS3 from "@libs/aws/useS3";
 
 export default function getPublicS3(): ReturnType<typeof useS3> {
   return useS3({
