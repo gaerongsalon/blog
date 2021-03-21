@@ -1,6 +1,6 @@
-import S3 from "../aws/S3";
+import S3 from "@libs/aws/S3";
 import secrets from "../env/secrets";
-import useS3cb from "../aws/useS3cb";
+import useS3cb from "@libs/aws/useS3cb";
 
 export default function getPrivateS3cb(): S3 {
   return useS3cb({

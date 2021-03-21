@@ -1,16 +1,13 @@
 import redisAcquireLock, { AcquireParams } from "./redisAcquireLock";
 
-import { RedisConnection } from "@yingyeothon/naive-redis/lib/connection";
+import { RedisConfig } from "@yingyeothon/naive-redis/lib/connection";
 import getCacheOrConnectNew from "./getCacheOrConnectNew";
 import redisReleaseLock from "./redisReleaseLock";
 import withRedisLock from "./withRedisLock";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function useRedisLock({
-  redisConnection = getCacheOrConnectNew(),
-}: {
-  redisConnection?: RedisConnection;
-} = {}) {
+export default function useRedisLock(config: RedisConfig) {
+  const redisConnection = getCacheOrConnectNew(config);
   const acquireLock = redisAcquireLock({ connection: redisConnection });
   const releaseLock = redisReleaseLock({ connection: redisConnection });
   const withLock = withRedisLock({ acquireLock, releaseLock });
@@ -30,5 +27,5 @@ export default function useRedisLock({
       return result!;
     };
   }
-  return { acquireLock, releaseLock, withLock, inLock };
+  return { withLock, inLock };
 }

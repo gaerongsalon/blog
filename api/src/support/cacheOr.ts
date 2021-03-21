@@ -1,6 +1,7 @@
 import { getLogger } from "@yingyeothon/slack-logger";
 import metadata from "../metadata.json";
-import withRedisCache from "../redis/withRedisCache";
+import redisConfig from "@api/env/redisConfig";
+import withRedisCache from "@libs/redis/withRedisCache";
 
 const cacheVersion = 1;
 const cacheKeyPrefix = `blog/${metadata.blogId}::${cacheVersion}::`;
@@ -19,6 +20,7 @@ export default async function cacheOr<T>({
   const fullCacheKey = cacheKeyPrefix + cacheKey;
   log.trace({ fullCacheKey, expirationMillis }, "Cache or compute");
   return await withRedisCache({
+    ...redisConfig,
     cacheKey: fullCacheKey,
     compute,
     expirationMillis,

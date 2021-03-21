@@ -1,6 +1,6 @@
-import * as BetterSqlite3 from "better-sqlite3";
-
 import Article from "./entity/Article";
+import RunResult from "@libs/sqlite/RunResult";
+import SqliteDatabase from "@libs/sqlite/SqliteDatabase";
 
 const DeleteArticleSQL = `DELETE FROM article
 WHERE slug = @slug
@@ -11,8 +11,8 @@ export default function deleteArticle({
   db,
   article: { slug },
 }: {
-  db: BetterSqlite3.Database;
+  db: SqliteDatabase;
   article: Pick<Article, "slug">;
-}): BetterSqlite3.RunResult {
+}): RunResult {
   return db.prepare(DeleteArticleSQL).run({ slug });
 }

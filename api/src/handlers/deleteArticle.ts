@@ -8,9 +8,10 @@ import deleteArticle from "../db/deleteArticle";
 import encodedId from "../article/encodeId";
 import { getLogger } from "@yingyeothon/slack-logger";
 import getPrivateS3cb from "../support/getPrivateS3cb";
+import redisConfig from "../env/redisConfig";
 import secrets from "../env/secrets";
-import useRedisLock from "../redis/useRedisLock";
-import useS3Sqlite from "../sqlite/useS3Sqlite";
+import useRedisLock from "@libs/redis/useRedisLock";
+import useS3Sqlite from "@libs/sqlite/useS3Sqlite";
 
 const logger = getLogger("handle:deleteArticle", __filename);
 
@@ -20,11 +21,11 @@ export const handle: APIGatewayProxyHandler = handleApi({
   logger: logger,
   handle: async (event) => {
     const slug = encodedId(
-      (event.pathParameters ?? {}).slug ?? throwError(404)
+      (event.pathParameters ?? {})?.slug! ?? throwError(404)
     );
     logger.debug({ slug }, "Article to delete");
 
-    const { inLock } = useRedisLock();
+    const { inLock } = useRedisLock(redisConfig);
     const { withDb } = useS3Sqlite(getPrivateS3cb());
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,

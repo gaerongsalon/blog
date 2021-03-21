@@ -16,7 +16,13 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "target": "es2017",
-    "outDir": "lib"
+    "outDir": "lib",
+    "baseUrl": "..",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@api/*": ["api/src/*"],
+      "@libs/*": ["api/libs/*"]
+    }
   },
   "include": ["./**/*.ts"],
   "exclude": [

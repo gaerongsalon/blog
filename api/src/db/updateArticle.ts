@@ -1,6 +1,7 @@
-import * as BetterSqlite3 from "better-sqlite3";
-
 import Article, { articlePropertyKeys } from "./entity/Article";
+
+import RunResult from "@libs/sqlite/RunResult";
+import SqliteDatabase from "@libs/sqlite/SqliteDatabase";
 
 const UpdateArticleSQL = `UPDATE article
 SET ${articlePropertyKeys
@@ -16,8 +17,8 @@ export default function updateArticle({
   db,
   article,
 }: {
-  db: BetterSqlite3.Database;
+  db: SqliteDatabase;
   article: Article;
-}): BetterSqlite3.RunResult {
+}): RunResult {
   return db.prepare(UpdateArticleSQL).run({ ...article });
 }

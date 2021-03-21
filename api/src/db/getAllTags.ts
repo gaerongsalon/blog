@@ -1,12 +1,8 @@
-import * as BetterSqlite3 from "better-sqlite3";
+import SqliteDatabase from "@libs/sqlite/SqliteDatabase";
 
 const GetTagsSQL = `SELECT DISTINCT tags FROM article`;
 
-export default function getAllTags({
-  db,
-}: {
-  db: BetterSqlite3.Database;
-}): string[] {
+export default function getAllTags({ db }: { db: SqliteDatabase }): string[] {
   return [
     ...new Set(
       (db.prepare(GetTagsSQL).all() as { tags: string }[])

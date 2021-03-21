@@ -1,6 +1,7 @@
-import * as BetterSqlite3 from "better-sqlite3";
-
 import Article, { articlePropertyKeys } from "./entity/Article";
+
+import RunResult from "@libs/sqlite/RunResult";
+import SqliteDatabase from "@libs/sqlite/SqliteDatabase";
 
 const InsertArticleSQL = `INSERT INTO article
   (${articlePropertyKeys.filter((p) => p !== "serial").join(",")})
@@ -16,8 +17,8 @@ export default function insertArticle({
   db,
   article,
 }: {
-  db: BetterSqlite3.Database;
+  db: SqliteDatabase;
   article: Omit<Article, "serial">;
-}): BetterSqlite3.RunResult {
+}): RunResult {
   return db.prepare(InsertArticleSQL).run({ ...article });
 }

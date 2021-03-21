@@ -1,6 +1,5 @@
-import * as BetterSqlite3 from "better-sqlite3";
-
 import Article from "./entity/Article";
+import SqliteDatabase from "@libs/sqlite/SqliteDatabase";
 
 const GetArticleByCategorySQL = `SELECT * FROM article WHERE category = @category ORDER BY written DESC`;
 
@@ -8,7 +7,7 @@ export default function getArticlesByCategory({
   db,
   category,
 }: {
-  db: BetterSqlite3.Database;
+  db: SqliteDatabase;
   category: string;
 }): Article[] {
   return (

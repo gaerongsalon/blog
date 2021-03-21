@@ -1,8 +1,7 @@
-import * as BetterSqlite3 from "better-sqlite3";
-
 import Article from "../db/entity/Article";
 import ArticleDocument from "../db/entity/ArticleDocument";
 import ArticleMeta from "../db/entity/ArticleMeta";
+import SqliteDatabase from "../../libs/sqlite/SqliteDatabase";
 import createTables from "../db/createTables";
 import getAllArticleSlugs from "../db/getAllArticleSlugs";
 import getArticle from "../db/getArticle";
@@ -12,7 +11,7 @@ import getArticlesByTag from "../db/getArticlesByTag";
 import getNearArticles from "../db/getNearArticles";
 import getPrivateS3cb from "../support/getPrivateS3cb";
 import secrets from "../env/secrets";
-import useS3Sqlite from "../sqlite/useS3Sqlite";
+import useS3Sqlite from "@libs/sqlite/useS3Sqlite";
 
 export class NoArticleError {
   constructor(public readonly slug: string) {}
@@ -20,9 +19,7 @@ export class NoArticleError {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function articleRepository() {
-  async function useDb<T>(
-    delegate: (db: BetterSqlite3.Database) => T
-  ): Promise<T> {
+  async function useDb<T>(delegate: (db: SqliteDatabase) => T): Promise<T> {
     const { withDb } = useS3Sqlite(getPrivateS3cb());
     return withDb({
       dbId: secrets.dbKey,

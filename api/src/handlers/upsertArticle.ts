@@ -10,11 +10,12 @@ import { getLogger } from "@yingyeothon/slack-logger";
 import getPrivateS3cb from "../support/getPrivateS3cb";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
+import redisConfig from "../env/redisConfig";
 import secrets from "../env/secrets";
 import trimTags from "../article/trimTags";
 import updateArticle from "../db/updateArticle";
-import useRedisLock from "../redis/useRedisLock";
-import useS3Sqlite from "../sqlite/useS3Sqlite";
+import useRedisLock from "@libs/redis/useRedisLock";
+import useS3Sqlite from "@libs/sqlite/useS3Sqlite";
 
 const logger = getLogger("handle:upsertArticle", __filename);
 
@@ -28,7 +29,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
     const slug = encodedId(
-      (event.pathParameters ?? {}).slug ?? throwError(404)
+      (event.pathParameters ?? {}).slug! ?? throwError(404)
     );
     const article = {
       ...(JSON.parse(event.body ?? "{}") as ArticlePayload),
@@ -40,7 +41,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     }
 
     const writer = readWriter(event);
-    const { inLock } = useRedisLock();
+    const { inLock } = useRedisLock(redisConfig);
     const { withDb } = useS3Sqlite(getPrivateS3cb());
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,
