@@ -17,7 +17,8 @@ export default async function applySeo(
   if (resource !== "article" || !id) {
     return fileContent;
   }
-  logger.debug({ id }, "Apply SEO");
+  const decodedId = decodeURIComponent(id);
+  logger.debug({ id, decodedId }, "Apply SEO");
 
   // We cannot call DB directly because it needs a huge base to use better-sqlite3.
   // const article = await articleRepository().fetchArticleOrNull({ slug: id });
@@ -25,19 +26,32 @@ export default async function applySeo(
     ? "http://localhost:3000"
     : metadata.url;
   const articleApiUrl = `${serverPrefix}/api/article/${id}`;
-  logger.debug({ articleApiUrl }, "Get article from api");
+  logger.debug({ articleApiUrl, decodedId }, "Get article from api");
 
-  const article = await fetch(articleApiUrl)
-    .then((r) => r.json())
-    .then((doc) => doc.article as Article)
-    .catch((error) => {
-      logger.error({ id, error }, "Cannot fetch article from api");
-      return null;
-    });
-  if (!article) {
-    return fileContent;
+  try {
+    const response = await fetch(articleApiUrl);
+    if (!response.ok) {
+      logger.warn({ id, decodedId }, "Cannot fetch article using API");
+      return fileContent;
+    }
+    const text = await response.text();
+    if (!text) {
+      logger.warn({ id, decodedId }, "Server returns empty response");
+      return fileContent;
+    }
+    try {
+      const article: Article = JSON.parse(text);
+      return fileContent.replace(originalMeta, injectMeta(article));
+    } catch (error) {
+      logger.warn(
+        { id, decodedId, error, text },
+        "Server returns invalid JSON"
+      );
+    }
+  } catch (error) {
+    logger.error({ id, decodedId }, "Cannot access to server API");
   }
-  return fileContent.replace(originalMeta, injectMeta(article));
+  return fileContent;
 }
 
 function injectMeta({ title, slug, image, excerpt }: ArticleMeta): string {
