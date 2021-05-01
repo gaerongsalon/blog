@@ -40,7 +40,7 @@ export default async function applySeo(
       return fileContent;
     }
     try {
-      const article: Article = JSON.parse(text);
+      const { article }: { article: Article } = JSON.parse(text);
       return fileContent.replace(originalMeta, injectMeta(article));
     } catch (error) {
       logger.warn(
