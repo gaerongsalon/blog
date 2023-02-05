@@ -49,7 +49,7 @@ export default function ImageDropZone({
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,
     onDrop,
-    accept: ["image/jpg", "image/jpeg", "image/png"],
+    accept: ["image/jpg", "image/jpeg", "image/png", "image/gif"],
   });
 
   return uploading ? (
