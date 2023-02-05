@@ -1,9 +1,12 @@
 import * as path from "path";
 
+import { getLogger } from "@yingyeothon/slack-logger";
 import { imageSize } from "image-size";
 import jpegoptim from "./jpegoptim";
 import pngquant from "./pngquant";
 import resizeOrCopy from "./resizeOrCopy";
+
+const log = getLogger("resizeAndOptimize", __filename);
 
 export default async function resizeAndOptimize({
   inputFile,
@@ -38,6 +41,8 @@ export default async function resizeAndOptimize({
       pngFiles: resizedFiles,
       timeout,
     });
+  } else if (ext === ".gif") {
+    log.debug({inputFile, ext}, "Skip to optimize gif file")
   } else {
     throw new Error("Not supported type: " + ext);
   }
