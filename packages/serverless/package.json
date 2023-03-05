@@ -1,0 +1,8 @@
+{
+  "name": "@blog/serverless",
+  "private": true,
+  "license": "ISC",
+  "devDependencies": {
+    "@types/serverless": "^3.12.11"
+  }
+}

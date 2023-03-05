@@ -1,0 +1,47 @@
+{
+  "name": "@blog/pages",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "postbuild": "rm -rf ../api/pages && cp -r build ../api/pages",
+    "preview": "vite preview",
+    "deploy": "pnpm run deploy:static",
+    "deploy:static": "aws s3 sync build \"s3://${STATIC_FILE_BUCKET}/\""
+  },
+  "dependencies": {
+    "@blog/config": "workspace:*",
+    "date-fns": "^2.29.3",
+    "highlight.js": "^11.7.0",
+    "ismobilejs": "^1.1.1",
+    "lzutf8": "^0.6.3",
+    "quick-lru": "^6.1.1",
+    "quill-delta": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-google-login": "^5.1.25",
+    "react-helmet": "^6.1.0",
+    "react-query": "^3.39.3",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.8.2",
+    "react-spinners": "^0.13.8",
+    "styled-components": "^5.3.8",
+    "tailwindcss": "^3.2.7",
+    "web-vitals": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-helmet": "^6.1.6",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^3.1.0",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.0",
+    "vite-plugin-html-env": "^1.2.7"
+  }
+}

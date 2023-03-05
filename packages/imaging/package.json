@@ -1,0 +1,22 @@
+{
+  "name": "@blog/imaging",
+  "private": true,
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "18",
+    "@types/sharp": "^0.31.1",
+    "@types/tar": "^6.1.4"
+  },
+  "dependencies": {
+    "@blog/aws": "workspace:*",
+    "@blog/config": "workspace:*",
+    "@blog/jsondb": "workspace:*",
+    "@blog/redis": "workspace:*",
+    "@yingyeothon/slack-logger": "^1.0.1",
+    "execa": "^7.0.0",
+    "image-size": "^1.0.2",
+    "sharp": "^0.31.3",
+    "tar": "^6.1.13",
+    "tempy": "^3.0.0"
+  }
+}

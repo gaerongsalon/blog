@@ -1,0 +1,10 @@
+{
+  "name": "@blog/redis",
+  "private": true,
+  "license": "ISC",
+  "dependencies": {
+    "@blog/utils": "workspace:*",
+    "@yingyeothon/naive-redis": "^0.3.4",
+    "nanoid": "^4.0.1"
+  }
+}
