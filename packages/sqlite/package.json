@@ -1,0 +1,13 @@
+{
+  "name": "@blog/sqlite",
+  "private": true,
+  "license": "ISC",
+  "dependencies": {
+    "@blog/aws": "workspace:*",
+    "better-sqlite3": "^8.1.0",
+    "tempy": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.3"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@blog/jsondb",
+  "private": true,
+  "license": "ISC",
+  "dependencies": {
+    "@blog/aws": "workspace:*"
+  }
+}

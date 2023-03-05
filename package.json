@@ -1,0 +1,10 @@
+{
+  "name": "@blog/root",
+  "private": true,
+  "license": "ISC",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=7"
+  }
+}
+

@@ -1,0 +1,15 @@
+{
+  "name": "@blog/aws",
+  "private": "true",
+  "license": "ISC",
+  "dependencies": {
+    "@yingyeothon/s3-cache-bridge-client": "^1.3.0",
+    "@yingyeothon/slack-logger": "^1.0.1",
+    "mime-types": "^2.1.35"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "3.188.0",
+    "@aws-sdk/s3-request-presigner": "3.188.0",
+    "@types/node": "18"
+  }
+}
