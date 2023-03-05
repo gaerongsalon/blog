@@ -5,6 +5,7 @@ set -euxo pipefail
 TARGET="${1:-"pages"}"
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+source "${HOME}/.nvm/nvm.sh"
 nvm use 12
 
 if [ "${TARGET}" = "pages" ]; then
