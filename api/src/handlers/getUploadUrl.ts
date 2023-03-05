@@ -8,7 +8,7 @@ import getPrivateS3 from "../support/getPrivateS3";
 import { nanoid } from "nanoid";
 
 const logger = getLogger("handle:getUploadUrl", __filename);
-const allowedTypes = [".png", ".jpg", ".jpeg"];
+const allowedTypes = [".png", ".jpg", ".jpeg", ".gif"];
 
 export const handle: APIGatewayProxyHandler = handleApi({
   logger,
