@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "postbuild": "rm -rf ../api/pages && cp -r build ../api/pages",
+    "postbuild": "rm -rf ../api/pages && cp -r dist ../api/pages",
     "preview": "vite preview",
     "deploy": "pnpm run deploy:static",
-    "deploy:static": "aws s3 sync build \"s3://${STATIC_FILE_BUCKET}/\""
+    "deploy:static": "aws s3 sync dist \"s3://${STATIC_FILE_BUCKET}/\""
   },
   "dependencies": {
     "@blog/config": "workspace:*",

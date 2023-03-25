@@ -6,14 +6,12 @@ import handleGoogleResponse from "../apis/credential/handleGoogleResponse";
 import isLogged from "../apis/credential/isLogged";
 import logout from "../apis/credential/logout";
 import metadata from "@blog/config/lib/metadata";
-import { useNavigate } from "react-router-dom";
 
 export default function LogInOutButton() {
   return isLogged() ? <LogoutButton /> : <LoginButton />;
 }
 
 function LoginButton() {
-  const navigate = useNavigate();
   return (
     <GoogleLogin
       className="Login"
@@ -22,7 +20,7 @@ function LoginButton() {
       onSuccess={async (result) => {
         try {
           await handleGoogleResponse(result);
-          navigate("/");
+          window.location.reload();
         } catch (error: any) {
           handleError(error);
         }
@@ -43,7 +41,6 @@ function LoginButton() {
 }
 
 function LogoutButton() {
-  const navigate = useNavigate();
   return (
     <GoogleLogout
       className="Logout"
@@ -51,7 +48,7 @@ function LogoutButton() {
       buttonText="Logout"
       onLogoutSuccess={async () => {
         logout();
-        navigate("/");
+        window.location.replace("/");
       }}
       render={({ onClick, disabled }) => (
         <LinkStyledButton disabled={disabled} onClick={onClick}>
