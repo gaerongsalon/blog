@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import { ApiError, handleApi, throwError } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
@@ -18,7 +20,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
 
     const { getSignedUrl } = getPrivateS3();
     const uploadKey = newFileKey(type);
-    const signedUrl = getSignedUrl({
+    const signedUrl = await getSignedUrl({
       s3ObjectKey: `image-upload/${uploadKey}`,
       contentType: `image/${type.substring(1)}`,
     });

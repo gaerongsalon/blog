@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import { ApiError, handleApi, throwError } from "./base";
 import Article, { validateArticle } from "../db/entity/Article";
 
