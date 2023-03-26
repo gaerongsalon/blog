@@ -7,12 +7,12 @@ const resources = {
   sharp: {
     memorySize: 1024,
     timeout: 28,
-    layer: "arn:aws:lambda:ap-northeast-2:467731270623:layer:sharp:1",
+    layer: "arn:aws:lambda:ap-northeast-2:467731270623:layer:sharp:2",
   },
   betterSqlite: {
     memorySize: 1024,
     timeout: 15,
-    layer: "arn:aws:lambda:ap-northeast-2:467731270623:layer:BetterSqlite3:4",
+    layer: "arn:aws:lambda:ap-northeast-2:467731270623:layer:better-sqlite3:3",
   },
 };
 
