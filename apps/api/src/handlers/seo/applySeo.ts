@@ -8,13 +8,14 @@ import metadata from "@blog/config/lib/metadata";
 const logger = getLogger("applySeo", __filename);
 
 const originalMeta = `<meta name="description" content="Blog"/><title>${metadata.title}</title>`;
+const predefinedIds = ["new"];
 
 export default async function applySeo(
   requestUrl: string,
   fileContent: string
 ): Promise<string> {
   const [, resource, id] = requestUrl.split(/\//g);
-  if (resource !== "article" || !id) {
+  if (resource !== "article" || !id || predefinedIds.includes(id)) {
     return fileContent;
   }
   const decodedId = decodeURIComponent(id);
