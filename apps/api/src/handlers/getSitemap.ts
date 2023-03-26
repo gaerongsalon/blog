@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import { APIGatewayProxyHandler } from "aws-lambda";
 import articleRepository from "../article/articleRepository";
 import { getLogger } from "@yingyeothon/slack-logger";

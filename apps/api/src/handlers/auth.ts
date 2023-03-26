@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import * as jwt from "jsonwebtoken";
 
 import { APIGatewayAuthorizerHandler } from "aws-lambda";

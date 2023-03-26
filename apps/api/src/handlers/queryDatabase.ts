@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import { ApiError, handleApi } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
