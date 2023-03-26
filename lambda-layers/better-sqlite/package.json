@@ -1,0 +1,12 @@
+{
+  "name": "better-sqlite-lambda-layer",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "bash deploy.sh"
+  },
+  "author": "jaeyoung.choi <lactrious@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^8.1.0"
+  }
+}
