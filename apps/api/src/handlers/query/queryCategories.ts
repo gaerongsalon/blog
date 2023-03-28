@@ -2,6 +2,7 @@ import createTables from "../../db/createTables";
 import getCategories from "../../db/getCategories";
 import getPrivateS3cb from "../../support/getPrivateS3cb";
 import secrets from "@blog/config/lib/secrets";
+import sortUniqueStrings from "@blog/utils/lib/sortUniqueStrings";
 import useS3Sqlite from "@blog/sqlite/lib/useS3Sqlite";
 
 export default async function queryCategories(): Promise<string[]> {
@@ -9,6 +10,11 @@ export default async function queryCategories(): Promise<string[]> {
   return withDb({
     dbId: secrets.dbKey,
     createTableQuery: createTables,
-    doIn: ({ db }) => getCategories({ db }),
+    doIn: ({ db }) =>
+      sortUniqueStrings(
+        getCategories({ db })
+          .map((category) => category.trim())
+          .filter(Boolean)
+      ),
   });
 }

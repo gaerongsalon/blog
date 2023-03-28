@@ -18,6 +18,7 @@
     "@blog/redis": "workspace:*",
     "@blog/serverless": "workspace:*",
     "@blog/sqlite": "workspace:*",
+    "@blog/utils": "workspace:*",
     "@yingyeothon/naive-redis": "^0.3.4",
     "@yingyeothon/slack-logger": "^1.0.1",
     "isbot": "^3.6.6",

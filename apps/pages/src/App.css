@@ -146,6 +146,7 @@ p.ql-align-center {
 
 .ArticleEdit .ql-editor {
   overflow-y: visible;
+  min-height: 80vh;
 }
 
 .overlay {
@@ -165,4 +166,15 @@ p.ql-align-center {
 
 .overlay-show {
   width: 100% !important;
+}
+
+.ArticleEdit .References {
+  display: flex;
+  column-gap: 16px;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+.ArticleEdit .References span {
+  display: block;
+  font-size: 0.8rem;
 }

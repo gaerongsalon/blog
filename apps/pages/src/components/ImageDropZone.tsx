@@ -50,7 +50,9 @@ export default function ImageDropZone({
     maxFiles,
     onDrop,
     accept: {
-      image: ["image/jpg", "image/jpeg", "image/png", "image/gif"],
+      "image/jpg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+      "image/gif": [".gif"],
     },
   });
 
