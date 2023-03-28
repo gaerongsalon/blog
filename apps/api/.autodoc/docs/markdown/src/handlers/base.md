@@ -1,0 +1,26 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/src/handlers/base.ts)
+
+This code defines a set of functions and classes that are used to handle API requests in the larger blog project. The `handleApi` function is the main entry point for handling API requests. It takes a `HandlerContext` object as input, which contains a `logger`, a `handle` function, and an optional `options` object. The `logger` is an instance of the `Logger` class from the `@yingyeothon/slack-logger` package, which is used to log events to Slack. The `handle` function is a delegate function that takes an `APIGatewayProxyEvent` object as input and returns a `Promise` that resolves to an `APIGatewayProxyResult` object. The `options` object is used to configure the behavior of the `handleApi` function, including whether to log access events and whether to perform authorization checks.
+
+The `handleApi` function returns an `APIGatewayProxyHandler` function, which is a function that takes an `APIGatewayProxyEvent` object as input and returns a `Promise` that resolves to an `APIGatewayProxyResult` object. This function performs the following steps:
+
+1. If authorization is enabled, it calls the `authorize` function from the `./authorization/authorize` module to perform an authorization check on the incoming request.
+2. It logs the start of the API event using the `logger` object.
+3. It calls the `delegate` function to handle the API event and waits for the result.
+4. It logs the completion of the API event using the `logger` object.
+5. If an `ApiError` is thrown during the handling of the API event, it logs the error using the `logger` object and returns an `APIGatewayProxyResult` object with the error status code and body.
+6. If any other error is thrown during the handling of the API event, it logs the error using the `logger` object and returns an `APIGatewayProxyResult` object with a 404 status code and "Not Found" body.
+7. It flushes the `logger` object to send any pending log messages to Slack.
+
+The `ApiError` class is used to represent errors that occur during the handling of API events. It takes a status code and an optional `body` and `unexpected` flag as input and stores them as properties of the object. The `throwError` function is a utility function that returns a function that throws an `ApiError` with the specified status code and body.
+
+Overall, this code provides a flexible and extensible framework for handling API requests in the larger blog project. It allows for easy configuration of access logging and authorization checks, and provides a consistent error handling mechanism.
+## Questions: 
+ 1. What is the purpose of the `authorize` function imported from the `./authorization/authorize` module?
+- The `authorize` function is used to check authorization for the API event, and is called if the `authorization` option is set to `true`.
+
+2. What is the purpose of the `ApiError` class?
+- The `ApiError` class is used to create an error object with a specified status code and body, which is then thrown by the `throwError` function.
+
+3. What is the purpose of the `handleApi` function and what does it return?
+- The `handleApi` function takes a `delegate` function that handles the API event, and returns an async function that handles the API event by calling the `delegate` function, logging the event, and catching and handling any errors that occur.

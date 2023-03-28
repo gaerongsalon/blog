@@ -1,0 +1,31 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/src/handlers/query/queryTags.ts)
+
+The code in this file is a function called `queryTags` that exports a Promise that resolves to an array of strings. The purpose of this function is to query a SQLite database for all the tags associated with blog posts. 
+
+The function imports several modules to accomplish this task. The `createTables` module is used to create the necessary tables in the SQLite database. The `getAllTags` module is used to retrieve all the tags from the database. The `getPrivateS3cb` module is used to retrieve the credentials needed to access the database. Finally, the `secrets` module is used to retrieve the database key.
+
+The `useS3Sqlite` function is used to connect to the SQLite database using the credentials retrieved from `getPrivateS3cb`. This function returns an object with a `withDb` method that takes an object with three properties: `dbId`, `createTableQuery`, and `doIn`. 
+
+The `dbId` property is set to the database key retrieved from `secrets`. The `createTableQuery` property is set to the `createTables` module, which contains the SQL query to create the necessary tables in the database. The `doIn` property is set to a function that takes an object with a `db` property, which is the SQLite database connection. This function calls the `getAllTags` module with the `db` connection to retrieve all the tags from the database.
+
+Overall, this function is a high-level abstraction that allows other parts of the blog/api project to easily retrieve all the tags associated with blog posts from the SQLite database. Here is an example of how this function might be used in the larger project:
+
+```
+import queryTags from "./queryTags";
+
+async function getTags() {
+  const tags = await queryTags();
+  console.log(tags);
+}
+
+getTags(); // logs an array of all the tags in the database
+```
+## Questions: 
+ 1. What does this code do?
+   This code exports a function called `queryTags` that retrieves all tags from a SQLite database using the `getAllTags` function and returns them as an array of strings.
+
+2. What dependencies does this code rely on?
+   This code relies on several dependencies, including `createTables` from a file located at `../../db/createTables`, `getAllTags` from a file located at `../../db/getAllTags`, `getPrivateS3cb` from a file located at `../../support/getPrivateS3cb`, `secrets` from a file located at `@blog/config/lib/secrets`, and `useS3Sqlite` from a file located at `@blog/sqlite/lib/useS3Sqlite`.
+
+3. What is the expected output of this code?
+   The expected output of this code is an array of strings representing all tags in the SQLite database.

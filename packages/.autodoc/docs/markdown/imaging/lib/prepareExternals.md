@@ -1,0 +1,35 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/imaging/lib/prepareExternals.ts)
+
+The code in this file is responsible for preparing external executables for use in the larger project. Specifically, it creates and returns a Promise that resolves to an object containing the paths to two executables: pngquant and jpegoptim. 
+
+To accomplish this, the code first checks if these executables already exist in the temporary directory. If they do, it simply resolves the Promise with their paths. If they do not exist, the code attempts to extract them from a tarball file named "exodus-pngquant-jpegoptim-bundle.tgz". If this file exists in the current directory, it is used. Otherwise, the code looks for it in a subdirectory named ".external". 
+
+If the tarball file is found, the code creates a read stream from it and pipes it to the "tar" module's "x" function, which extracts the contents of the tarball to the "/tmp" directory. Once this extraction is complete, the code checks again if the executables now exist in the temporary directory. If they do, it resolves the Promise with their paths. If they still do not exist, it rejects the Promise with an error message.
+
+This code is likely used in the larger project to ensure that the required external executables are available for use. For example, the project may need to optimize images using pngquant and jpegoptim, but these executables may not be installed on the user's system. By using this code to extract and prepare the executables, the project can ensure that they are available for use regardless of the user's system configuration.
+
+Example usage:
+
+```
+import prepareExternals from "./packages";
+
+prepareExternals()
+  .then(({ pngquantPath, jpegoptimPath }) => {
+    // Use pngquantPath and jpegoptimPath to optimize images
+  })
+  .catch((error) => {
+    console.error("Error preparing external executables:", error);
+  });
+```
+## Questions: 
+ 1. What is the purpose of this code?
+   
+   This code exports a function called `prepareExternals` that returns a promise which resolves to an object containing paths to two executables, `jpegoptim` and `pngquant`.
+
+2. What dependencies does this code have?
+   
+   This code imports `fs`, `os`, and `path` from the Node.js standard library, as well as the `tar` package.
+
+3. What happens if the `jpegoptim` and `pngquant` executables are not found?
+   
+   If the executables are not found, the code attempts to extract them from a `.tgz` file located in the `.external` directory or in the current working directory. If extraction is successful, the paths to the executables are returned in the resolved promise. If extraction fails, the promise is rejected with an error.

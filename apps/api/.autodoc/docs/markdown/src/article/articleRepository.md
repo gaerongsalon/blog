@@ -1,0 +1,24 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/src/article/articleRepository.ts)
+
+This code defines an article repository for a blog API. It exports a default function that returns an object with several methods for fetching articles and article-related data from a SQLite database. The repository uses the `@blog/sqlite` library to interact with the database, and the `@blog/config` library to access configuration secrets.
+
+The `fetchArticles` method returns an array of `Article` objects, which represent articles in the database. The method takes an object with `offset` and `limit` properties, which determine the range of articles to fetch. The `fetchArticlesByCategory` and `fetchArticlesByTag` methods are similar, but filter articles by category or tag, respectively.
+
+The `fetchArticleDocument` method returns an object with an `article` property and a `recommendations` property. The `article` property is an `Article` object for the specified article slug, and the `recommendations` property is an array of `ArticleMeta` objects, which represent recommended articles based on the category and proximity of the specified article. If no article is found for the specified slug, the method throws a `NoArticleError`.
+
+The `fetchAllArticleSlugs` method returns an array of strings, which are the slugs of all articles in the database.
+
+The repository uses the `useDb` function to execute database queries. This function takes a delegate function that receives a `SqliteDatabase` object and returns a value. The `useDb` function uses the `withDb` function from the `@blog/sqlite` library to create a database connection and execute the delegate function. The `withDb` function takes an object with a `dbId` property, which is the name of the database file in the S3 bucket, and a `createTableQuery` property, which is a SQL query for creating the necessary tables in the database.
+
+The repository also defines a `NoArticleError` class, which is thrown by the `fetchArticleDocument` method when no article is found for a specified slug.
+
+Overall, this article repository provides a simple interface for fetching articles and related data from a SQLite database. It can be used by other parts of the blog API to provide article-related functionality, such as displaying articles on a website or generating recommendations for users.
+## Questions: 
+ 1. What is the purpose of the `Article`, `ArticleDocument`, and `ArticleMeta` entities?
+- `Article`, `ArticleDocument`, and `ArticleMeta` are entities used in the database to represent articles and their metadata.
+
+2. What is the role of the `NoArticleError` class?
+- The `NoArticleError` class is used to represent an error that occurs when an article with a given slug cannot be found.
+
+3. What is the purpose of the `fetchArticles`, `fetchArticlesByCategory`, `fetchArticlesByTag`, `fetchArticleDocument`, and `fetchAllArticleSlugs` functions?
+- These functions are used to fetch articles and their metadata from the database based on various criteria such as category, tag, and slug. `fetchArticleDocument` returns an `ArticleDocument` object that includes the article and its recommendations. `fetchAllArticleSlugs` returns an array of all article slugs in the database.

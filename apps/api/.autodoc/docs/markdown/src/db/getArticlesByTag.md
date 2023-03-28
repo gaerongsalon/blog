@@ -1,0 +1,18 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/src/db/getArticlesByTag.ts)
+
+The code in this file is responsible for retrieving articles from a SQLite database based on a given tag. It imports the Article class from the `./entity/Article` file and the `SqliteDatabase` class from the `@blog/sqlite/lib/SqliteDatabase` library. 
+
+The `GetArticleByTagSQL` constant is a SQL query that selects all columns from the `article` table where the `tags` column contains the given tag. The `INSTR` function is used to check if the tag is a substring of the `tags` column. The results are ordered by the `written` column in descending order.
+
+The `getArticlesByTag` function takes an object with two properties: `db` and `tag`. `db` is an instance of the `SqliteDatabase` class and `tag` is a string representing the tag to search for. The function prepares the SQL query using the `prepare` method of the `db` object and passes the `tag` parameter as a named parameter. The `all` method is then called on the prepared statement to execute the query and return an array of results. The results are cast to an array of `Article` objects using the `as` keyword. If there are no results, an empty array is returned.
+
+This code can be used in the larger project to retrieve articles based on a specific tag. For example, if the user wants to view all articles with the tag "technology", they can call this function with the `tag` parameter set to "technology" and the function will return an array of `Article` objects that have the "technology" tag. This function can be used in conjunction with other functions to display articles on a webpage or in an API response.
+## Questions: 
+ 1. What is the purpose of the `Article` and `SqliteDatabase` imports?
+- The `Article` import is likely a custom entity class for articles, while the `SqliteDatabase` import is likely a library for interacting with SQLite databases.
+
+2. What does the SQL query in `GetArticleByTagSQL` do?
+- The SQL query selects all columns from the `article` table where the `tags` column contains the specified `tag`, ordered by the `written` column in descending order.
+
+3. What is the expected output of the `getArticlesByTag` function?
+- The function expects a `db` object of type `SqliteDatabase` and a `tag` string as input, and returns an array of `Article` objects that match the specified `tag`. If no matches are found, an empty array is returned.

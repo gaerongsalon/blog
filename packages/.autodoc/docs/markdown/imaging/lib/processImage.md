@@ -1,0 +1,18 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/imaging/lib/processImage.ts)
+
+The `processImage` function in the `blog/packages` project is responsible for optimizing and resizing images uploaded to the project's S3 bucket. The function takes in an object with several parameters, including the `uploadKey` of the image to be processed, an array of `desiredWidths` for the output images, and a `timeout` value for the image processing. The function also expects a `storage` object with two properties: `private` and `public`, which are used to interact with the project's S3 bucket.
+
+The function first creates a temporary directory to store the image files during processing. It then downloads the original image file from S3 to the temporary directory. The function checks the binary hash of the image file to see if it has already been processed and optimized. If the image has already been processed, the function returns the image key and desired widths. If not, the function resizes and optimizes the image using the `resizeAndOptimize` function and uploads the output files to S3. The function also updates the image database to reflect the newly processed images.
+
+Finally, the function clears the temporary directory and deletes the original image file from S3. The function logs its progress and errors using the `@yingyeothon/slack-logger` package.
+
+This function is a critical part of the image processing pipeline for the `blog/packages` project. It ensures that uploaded images are optimized and resized for efficient storage and fast loading times. The function can be called from other parts of the project to process images as needed. For example, the function could be called when a new blog post is created that includes images. The function could also be used to process images uploaded by users of the project.
+## Questions: 
+ 1. What is the purpose of this code?
+- This code processes an image by downloading it from S3, resizing and optimizing it, and uploading the resulting images back to S3.
+
+2. What external dependencies does this code rely on?
+- This code relies on several external dependencies, including "@blog/aws/lib/S3", "@yingyeothon/slack-logger", "tempy", and several local modules.
+
+3. What is the expected input and output of the `processImage` function?
+- The `processImage` function expects an object with an `uploadKey` string, an array of `desiredWidths` numbers, an optional `timeout` number, and a `storage` object with `private` and `public` properties that contain methods for interacting with S3. The function returns a Promise that resolves to an object with an `imageKey` string and an array of `desiredWidths` numbers.

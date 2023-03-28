@@ -1,0 +1,34 @@
+[View code on GitHub](https://github.com/gaerongsalon/blog/src/handlers/authorization/checkPermission.ts)
+
+The code in this file is responsible for checking whether a user has permission to perform certain actions within the blog API. It exports a function called `checkPermission` that takes an `AuthorizerEvent` object as its argument and returns a `Permission` object.
+
+The `AuthorizerEvent` object contains information about the user making the request, such as their email address and the HTTP method being used. The `checkPermission` function first calls the `readAuthorization` function, passing in the `AuthorizerEvent` object, to extract the user's authorization context. If no context is found, the function returns a `Permission` object with `readable` set to `true` and `writable` set to `false`, indicating that the user has read-only access.
+
+If a context is found, the function checks whether the user's email address matches any of the email addresses in the `writers` array in the `secrets` module. If there is a match, the function returns a `Permission` object with `readable` set to `true` and `writable` set to `true`, indicating that the user has both read and write access. If there is no match, the function returns a `Permission` object with `readable` set to `true` and `writable` set to `false`, indicating that the user has read-only access.
+
+This function is likely used in the larger project to enforce access control for certain API endpoints. For example, if there is an endpoint for creating new blog posts, the `checkPermission` function could be called to ensure that only authorized users are able to create new posts. Here is an example of how this function might be used:
+
+```
+import checkPermission from "./checkPermission";
+
+app.post("/posts", (req, res) => {
+  const permission = checkPermission(req);
+  if (!permission.writable) {
+    res.status(403).send("You do not have permission to create new posts.");
+    return;
+  }
+  // create new post
+  res.send("Post created successfully.");
+});
+```
+
+In this example, the `checkPermission` function is called with the `req` object from the `POST /posts` endpoint. If the user does not have write permission, a 403 Forbidden response is sent. Otherwise, the new post is created and a success response is sent.
+## Questions: 
+ 1. **What is the purpose of this code?** 
+This code exports a function called `checkPermission` that takes an `AuthorizerEvent` object as input and returns a `Permission` object based on whether the event context has permission to read and/or write to the blog.
+
+2. **What is the `readAuthorization` function used for?** 
+The `readAuthorization` function is imported from another file and is used to extract the context information from the `AuthorizerEvent` object.
+
+3. **What is the `secrets` object used for?** 
+The `secrets` object is imported from a configuration file and is used to check if any of the writers listed in the `writers` array have the same email as the user in the event context, in order to determine if the user has permission to write to the blog.
