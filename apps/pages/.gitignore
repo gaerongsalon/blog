@@ -26,3 +26,6 @@ dist-ssr
 # User custom
 /public/favicon.*
 /public/google*.html
+
+# Environment file for "vite-plugin-html-env"
+.env
