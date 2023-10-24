@@ -15,7 +15,7 @@ if [ "${TARGET}" = "pages" ]; then
     source .envrc && pnpm run build && pnpm run deploy
   popd
   pushd "${SCRIPT_PATH}/apps/api"
-    yarn && yarn deploy -f serveHtml
+    pnpm i && pnpm run deploy -f serveHtml
   popd
 
 elif [ "${TARGET}" = "api" ]; then
