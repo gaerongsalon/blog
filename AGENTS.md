@@ -2,7 +2,7 @@
 
 ## Project Shape
 
-- This repository deploys `https://example.com`, a pnpm monorepo with a Serverless API in `apps/api`, a Vite/React frontend in `apps/pages`, and shared packages in `packages/*`.
+- This repository deploys the production blog domain supplied by the operator. It is a pnpm monorepo with a Serverless API in `apps/api`, a Vite/React frontend in `apps/pages`, and shared packages in `packages/*`.
 - Runtime configuration lives in ignored local files under `packages/config`; do not commit real secrets, metadata overrides, or generated env files.
 
 ## Required Rule Lookup

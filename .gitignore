@@ -3,3 +3,7 @@ build
 yarn*.log*
 data
 .eslintcache
+
+# Local editor settings
+**/.vscode/*
+!**/.vscode/extensions.json
