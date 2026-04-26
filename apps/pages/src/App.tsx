@@ -1,8 +1,8 @@
 import "./App.css";
 
+import { BeatLoader } from "react-spinners";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import BeatLoader from "react-spinners/BeatLoader";
 import Head from "./components/Head";
 import React from "react";
 import styled from "styled-components";

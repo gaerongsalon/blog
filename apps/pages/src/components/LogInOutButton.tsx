@@ -1,4 +1,4 @@
-import GoogleLogin, { GoogleLogout } from "react-google-login";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 import LinkStyledButton from "./LinkStyledButton";
 import handleError from "../utils/handleError";
