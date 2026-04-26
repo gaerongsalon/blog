@@ -19,7 +19,7 @@ const serverlessConfiguration: AWS = {
   },
   provider: {
     name: "aws",
-    runtime: "nodejs22.x",
+    runtime: "nodejs24.x",
     region: "ap-northeast-2",
     stage: process.env.STAGE ?? "dev",
     versionFunctions: false,

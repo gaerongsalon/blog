@@ -3,10 +3,10 @@
 set -euo pipefail
 
 source "${HOME}/.nvm/nvm.sh"
-nvm install 22.22.2
-nvm use 22.22.2
+nvm install 24.15.0
+nvm use 24.15.0
 
-LAMBDA_LAYER_IMAGE="${LAMBDA_LAYER_IMAGE:-public.ecr.aws/lambda/nodejs:22}"
+LAMBDA_LAYER_IMAGE="${LAMBDA_LAYER_IMAGE:-public.ecr.aws/lambda/nodejs:24}"
 AWS_REGION="${AWS_REGION:-ap-northeast-2}"
 
 rm -rf nodejs node_modules layer.zip && mkdir -p nodejs
@@ -27,6 +27,6 @@ aws lambda publish-layer-version \
   --region "${AWS_REGION}" \
   --layer-name sharp \
   --zip-file fileb://./layer.zip \
-  --compatible-runtimes nodejs22.x \
+  --compatible-runtimes nodejs24.x \
   --compatible-architectures x86_64 \
   "$@"

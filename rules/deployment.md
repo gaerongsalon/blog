@@ -13,8 +13,8 @@
 - `serveHtml` applies SEO by calling the production-domain `/api/article/{slug}` endpoint for article pages, so DB read failures can also break article page HTML.
 - Missing article API responses are normal 404s, not SEO fetch failures. `serveHtml` should return 404 HTML for missing article routes so crawlers stop treating stale slugs as valid pages.
 - `serveHtml` must only read packaged files. Directory-like static paths such as `/assets/` must return normal 404 responses, not reach `readFileSync`, or the Lambda logs `EISDIR` as `Error occurred in handling API event`.
-- Deploy with Node 22.13.0 or newer. `deploy.sh` pins the current Node 22 runtime through nvm and enables Corepack for pnpm.
+- Deploy with Node 24.15.0. `deploy.sh` pins the current Node 24 runtime through nvm and enables Corepack for pnpm.
 - Serverless Framework v4 uses built-in esbuild; do not re-add `serverless-esbuild` or `serverless-prune-plugin`.
 - Lambda function versioning is disabled in the Serverless manifest to avoid accumulating versions after the prune plugin removal.
-- Native Lambda layers must be built in a Lambda-compatible Node 22 container and published with explicit compatible architecture.
-- Node 22 layer ARNs are local deployment configuration in ignored `packages/config/secrets.json`; do not hard-code account-specific layer ARNs in source.
+- Native Lambda layers must be built in a Lambda-compatible Node 24 container and published with explicit compatible architecture.
+- Node 24 layer ARNs are local deployment configuration in ignored `packages/config/secrets.json`; do not hard-code account-specific layer ARNs in source.

@@ -3,7 +3,7 @@
   "private": true,
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.19.1",
+    "@types/node": "^24.12.2",
     "@types/sharp": "^0.32.0",
     "@types/tar": "^7.0.87"
   },

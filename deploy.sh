@@ -6,8 +6,8 @@ TARGET="${1:-"pages"}"
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 source "${HOME}/.nvm/nvm.sh"
-nvm install 22.22.2
-nvm use 22.22.2
+nvm install 24.15.0
+nvm use 24.15.0
 corepack enable
 pnpm i
 

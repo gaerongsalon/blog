@@ -36,7 +36,7 @@
     "@types/aws-lambda": "^8.10.161",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mime-types": "^3.0.1",
-    "@types/node": "^22.19.1",
+    "@types/node": "^24.12.2",
     "@types/source-map-support": "^0.5.10",
     "@typescript-eslint/eslint-plugin": "^8.59.0",
     "@typescript-eslint/parser": "^8.59.0",
