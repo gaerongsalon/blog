@@ -11,7 +11,7 @@ import { contentType } from "mime-types";
 import { getLogger } from "@yingyeothon/slack-logger";
 
 const logger = getLogger("handle:serveHtml", __filename);
-const resourceRoot = "pages";
+const resourceRoot = path.resolve("pages");
 
 const indexHtml = "index.html";
 const textTypes = [".css", ".html", ".js", ".json", ".map", ".svg", ".txt"];
@@ -26,13 +26,20 @@ function translateToBundlePath(requestUrl: string): string {
 
 function resolveBundlePath(requestUrl: string): string {
   const requestPath = translateToBundlePath(requestUrl);
-  const resourceFilePath = path.join(resourceRoot, requestPath);
+  const resourceFilePath = path.resolve(resourceRoot, requestPath);
   logger.trace(
     { requestPath, resourceFilePath },
     "Find a static resource to serve"
   );
+  const relativePath = path.relative(resourceRoot, resourceFilePath);
+  if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
+    throw new ApiError(404);
+  }
   if (fs.existsSync(resourceFilePath)) {
-    return resourceFilePath;
+    if (fs.statSync(resourceFilePath).isFile()) {
+      return resourceFilePath;
+    }
+    throw new ApiError(404);
   }
   const extname = path.extname(resourceFilePath);
   if (extname !== "" && extname !== ".html") {
