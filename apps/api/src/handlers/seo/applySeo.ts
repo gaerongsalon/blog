@@ -9,13 +9,18 @@ const logger = getLogger("applySeo", __filename);
 
 const predefinedIds = ["new"];
 
+export interface SeoResult {
+  content: string;
+  statusCode?: number;
+}
+
 export default async function applySeo(
   requestUrl: string,
   fileContent: string,
-): Promise<string> {
+): Promise<SeoResult> {
   const [, resource, id] = requestUrl.split(/\//g);
   if (resource !== "article" || !id || predefinedIds.includes(id)) {
-    return fileContent;
+    return { content: fileContent };
   }
   const decodedId = decodeURIComponent(id);
   logger.debug({ id, decodedId }, "Apply SEO");
@@ -35,20 +40,27 @@ export default async function applySeo(
     const response = await fetch(articleApiUrl, { signal: controller.signal });
     const durationMillis = Date.now() - startedAt;
     if (!response.ok) {
+      if (response.status === 404) {
+        logger.trace(
+          { id, decodedId, durationMillis },
+          "Article is not found for SEO",
+        );
+        return { content: fileContent, statusCode: 404 };
+      }
       logger.warn(
         { id, decodedId, status: response.status, durationMillis },
         "Cannot fetch article using API",
       );
-      return fileContent;
+      return { content: fileContent };
     }
     const text = await response.text();
     if (!text) {
       logger.warn({ id, decodedId }, "Server returns empty response");
-      return fileContent;
+      return { content: fileContent };
     }
     try {
       const { article }: { article: Article } = JSON.parse(text);
-      return injectMeta(fileContent, article);
+      return { content: injectMeta(fileContent, article) };
     } catch (error) {
       logger.warn(
         { id, decodedId, error, text },
@@ -63,7 +75,7 @@ export default async function applySeo(
   } finally {
     clearTimeout(timeout);
   }
-  return fileContent;
+  return { content: fileContent };
 }
 
 function injectMeta(

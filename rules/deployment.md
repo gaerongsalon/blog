@@ -11,6 +11,7 @@
 - After direct endpoint calls, inspect matching Lambda logs for `queryDatabase` and `serveHtml`; do not infer health from build success alone.
 - A healthy article list returns JSON quickly. A 502 after about 15 seconds has previously meant the DB Lambda timed out before reading SQLite from S3.
 - `serveHtml` applies SEO by calling the production-domain `/api/article/{slug}` endpoint for article pages, so DB read failures can also break article page HTML.
+- Missing article API responses are normal 404s, not SEO fetch failures. `serveHtml` should return 404 HTML for missing article routes so crawlers stop treating stale slugs as valid pages.
 - `serveHtml` must only read packaged files. Directory-like static paths such as `/assets/` must return normal 404 responses, not reach `readFileSync`, or the Lambda logs `EISDIR` as `Error occurred in handling API event`.
 - Deploy with Node 22.13.0 or newer. `deploy.sh` pins the current Node 22 runtime through nvm and enables Corepack for pnpm.
 - Serverless Framework v4 uses built-in esbuild; do not re-add `serverless-esbuild` or `serverless-prune-plugin`.

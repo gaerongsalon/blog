@@ -67,14 +67,14 @@ export const handle: APIGatewayProxyHandler = handleApi({
       .readFileSync(resourceFilePath)
       .toString(toBase64 ? "base64" : "utf-8");
     const seoable = resourceFilePath.endsWith(indexHtml);
-    const finalContent = seoable
+    const seoResult = seoable
       ? await applySeo(event.path, fileContent)
-      : fileContent;
+      : { content: fileContent };
     const fileSize = seoable
-      ? Buffer.from(finalContent, "utf-8").byteLength
+      ? Buffer.from(seoResult.content, "utf-8").byteLength
       : fs.lstatSync(resourceFilePath).size;
     return {
-      statusCode: 200,
+      statusCode: seoResult.statusCode ?? 200,
       headers: {
         "Content-Type":
           contentType(path.basename(resourceFilePath)) ||
@@ -84,7 +84,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
           resourceFilePath.endsWith(".html") ? 10 * 60 : 30 * 24 * 60 * 60
         }`,
       },
-      body: finalContent,
+      body: seoResult.content,
       isBase64Encoded: toBase64,
     };
   },
