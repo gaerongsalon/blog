@@ -18,3 +18,4 @@
 - Lambda function versioning is disabled in the Serverless manifest to avoid accumulating versions after the prune plugin removal.
 - Native Lambda layers must be built in a Lambda-compatible Node 24 container and published with explicit compatible architecture.
 - Node 24 layer ARNs are local deployment configuration in ignored `packages/config/secrets.json`; do not hard-code account-specific layer ARNs in source.
+- After runtime or stack migrations, audit and remove obsolete Serverless stacks, API Gateway custom-domain mappings, stale Lambda function versions, and unreferenced Lambda layer versions.
