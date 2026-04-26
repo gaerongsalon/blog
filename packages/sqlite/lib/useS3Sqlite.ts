@@ -1,8 +1,10 @@
 import S3 from "@blog/aws/lib/S3";
 import closeSqliteDatabase from "./closeSqliteDatabase";
+import * as os from "os";
+import * as path from "path";
+import * as fs from "fs";
 import getSqliteDatabase from "./getSqliteDatabase";
 import putSqliteDatabase from "./putSqliteDatabase";
-import { temporaryFile } from "tempy";
 import withSqliteDatabase from "./withSqliteDatabase";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -16,7 +18,10 @@ export default function useS3Sqlite({
 } & Pick<S3, "exists" | "downloadToLocal" | "uploadLocalFile">) {
   async function getDbFile({ dbId }: { dbId: string }) {
     const s3ObjectKey = dbIdToS3Key(dbId);
-    const localDbFile = temporaryFile({ extension: ".db" });
+    const localDbFile = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), "blog-sqlite-")),
+      "database.db",
+    );
     const hasOldData = await exists({ s3ObjectKey });
     if (hasOldData) {
       await downloadToLocal({

@@ -7,12 +7,11 @@ import metadata from "@blog/config/lib/metadata";
 
 const logger = getLogger("applySeo", __filename);
 
-const originalMeta = `<meta name="description" content="Blog"/><title>${metadata.title}</title>`;
 const predefinedIds = ["new"];
 
 export default async function applySeo(
   requestUrl: string,
-  fileContent: string
+  fileContent: string,
 ): Promise<string> {
   const [, resource, id] = requestUrl.split(/\//g);
   if (resource !== "article" || !id || predefinedIds.includes(id)) {
@@ -29,10 +28,17 @@ export default async function applySeo(
   const articleApiUrl = `${serverPrefix}/api/article/${id}`;
   logger.debug({ articleApiUrl, decodedId }, "Get article from api");
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3500);
+  const startedAt = Date.now();
   try {
-    const response = await fetch(articleApiUrl);
+    const response = await fetch(articleApiUrl, { signal: controller.signal });
+    const durationMillis = Date.now() - startedAt;
     if (!response.ok) {
-      logger.warn({ id, decodedId }, "Cannot fetch article using API");
+      logger.warn(
+        { id, decodedId, status: response.status, durationMillis },
+        "Cannot fetch article using API",
+      );
       return fileContent;
     }
     const text = await response.text();
@@ -42,23 +48,74 @@ export default async function applySeo(
     }
     try {
       const { article }: { article: Article } = JSON.parse(text);
-      return fileContent.replace(originalMeta, injectMeta(article));
+      return injectMeta(fileContent, article);
     } catch (error) {
       logger.warn(
         { id, decodedId, error, text },
-        "Server returns invalid JSON"
+        "Server returns invalid JSON",
       );
     }
   } catch (error) {
-    logger.error({ id, decodedId }, "Cannot access to server API");
+    logger.error(
+      { id, decodedId, durationMillis: Date.now() - startedAt, error },
+      "Cannot access to server API",
+    );
+  } finally {
+    clearTimeout(timeout);
   }
   return fileContent;
 }
 
-function injectMeta({ title, slug, image, excerpt }: ArticleMeta): string {
+function injectMeta(
+  fileContent: string,
+  { title, slug, image, excerpt }: ArticleMeta,
+): string {
   const sitePrefix = metadata.url;
   const siteTitle = `[${metadata.title}] ${title}`;
   const siteUrl = `${sitePrefix}/article/${decodeURIComponent(slug)}`;
   const siteImage = buildImageCdnUrl(image);
-  return `<head><meta name="title" content="${title}"><meta name="description" content="${excerpt}"><meta itemprop="name" content="${siteTitle}"><meta itemprop="description" content="${excerpt}"><meta itemprop="image" content="${siteImage}"><meta property="og:url" content="${siteUrl}"><meta property="og:type" content="website"><meta property="og:title" content="${siteTitle}"><meta property="og:description" content="${excerpt}"><meta property="og:image" content="${siteImage}"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="${siteUrl}"><meta property="twitter:title" content="${siteTitle}"><meta property="twitter:description" content="${excerpt}"><meta property="twitter:image" content="${siteImage}"></head>`;
+  const meta = [
+    ["name", "title", title],
+    ["itemprop", "name", siteTitle],
+    ["itemprop", "description", excerpt],
+    ["itemprop", "image", siteImage],
+    ["property", "og:url", siteUrl],
+    ["property", "og:type", "website"],
+    ["property", "og:title", siteTitle],
+    ["property", "og:description", excerpt],
+    ["property", "og:image", siteImage],
+    ["property", "twitter:card", "summary_large_image"],
+    ["property", "twitter:url", siteUrl],
+    ["property", "twitter:title", siteTitle],
+    ["property", "twitter:description", excerpt],
+    ["property", "twitter:image", siteImage],
+  ]
+    .map(
+      ([key, name, content]) =>
+        `<meta ${key}="${escapeAttribute(name)}" content="${escapeAttribute(
+          content,
+        )}">`,
+    )
+    .join("");
+
+  return fileContent
+    .replace(
+      /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="description" content="${escapeAttribute(excerpt)}">`,
+    )
+    .replace(
+      /<title>.*?<\/title>/i,
+      `${meta}<title>${escapeText(siteTitle)}</title>`,
+    );
+}
+
+function escapeAttribute(value: string): string {
+  return escapeText(value).replace(/"/g, "&quot;");
+}
+
+function escapeText(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }

@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
 
 import S3 from "@blog/aws/lib/S3";
@@ -6,7 +7,6 @@ import getImageFileNameWithDesiredWidth from "./getImageFileNameWithDesiredWidth
 import { getLogger } from "@yingyeothon/slack-logger";
 import hashFile from "./hashFile";
 import resizeAndOptimize from "./resizeAndOptimize";
-import { temporaryDirectory } from "tempy";
 import useImageDb from "./useImageDb";
 
 const log = getLogger("handle:processImage", __filename);
@@ -33,37 +33,39 @@ export default async function processImage({
   timeout?: number;
   storage: Storage;
 }): Promise<{ imageKey: string; desiredWidths: number[] }> {
-  const workspacePath = temporaryDirectory();
-
-  // Step 1. Download an image file from S3.
-  const localTempFile = await downloadToLocal({
-    s3ObjectKey: `image-upload/${uploadKey}`,
-    localFile: path.join(workspacePath, path.basename(uploadKey)),
-  });
-
-  // Step 2. Check binary hash to deduplicate.
-  const imageHash = await hashFile(localTempFile);
-  const imageKey = imageHash + path.extname(uploadKey);
-  const inputFile = path.join(workspacePath, imageKey);
-  fs.renameSync(localTempFile, inputFile);
-  log.info(
-    { uploadKey, imageHash, inputFile, workspacePath },
-    "Start to optimize image"
-  );
-
-  // Step 3. Check if already exists and fast exit.
-  const imageDb = useImageDb({ exists, getJSON, putJSON });
-  if (
-    await imageDb.checkExists({
-      imageKeys: desiredWidths.map((desiredWidth) =>
-        getImageFileNameWithDesiredWidth({ inputFile, desiredWidth })
-      ),
-    })
-  ) {
-    return { imageKey, desiredWidths };
-  }
+  const workspacePath = fs.mkdtempSync(path.join(os.tmpdir(), "blog-image-"));
+  let shouldDeleteUpload = false;
 
   try {
+    // Step 1. Download an image file from S3.
+    const localTempFile = await downloadToLocal({
+      s3ObjectKey: `image-upload/${uploadKey}`,
+      localFile: path.join(workspacePath, path.basename(uploadKey)),
+    });
+
+    // Step 2. Check binary hash to deduplicate.
+    const imageHash = await hashFile(localTempFile);
+    const imageKey = imageHash + path.extname(uploadKey);
+    const inputFile = path.join(workspacePath, imageKey);
+    fs.renameSync(localTempFile, inputFile);
+    log.info(
+      { uploadKey, imageHash, inputFile, workspacePath },
+      "Start to optimize image",
+    );
+
+    // Step 3. Check if already exists and fast exit.
+    const imageDb = useImageDb({ exists, getJSON, putJSON });
+    if (
+      await imageDb.checkExists({
+        imageKeys: desiredWidths.map((desiredWidth) =>
+          getImageFileNameWithDesiredWidth({ inputFile, desiredWidth }),
+        ),
+      })
+    ) {
+      shouldDeleteUpload = true;
+      return { imageKey, desiredWidths };
+    }
+
     // Step 4. Resize and optimize the input image.
     const outputFiles = await resizeAndOptimize({
       inputFile,
@@ -73,7 +75,7 @@ export default async function processImage({
     });
     log.info(
       { uploadKey, inputFile, desiredWidths, outputFiles },
-      "Optimization completed"
+      "Optimization completed",
     );
 
     // Step 5. Upload all outputs to S3.
@@ -86,19 +88,26 @@ export default async function processImage({
         uploadLocalFile({
           s3ObjectKey: outputKey,
           localFile: outputFile,
-        })
-      )
+        }),
+      ),
     );
 
     // Step 6. Update image db.
     await imageDb.add({ imageKeys: outputPairs.map((pair) => pair.outputKey) });
 
+    shouldDeleteUpload = true;
     return { imageKey, desiredWidths };
   } finally {
     // Step 7. Clear workspace.
-    fs.rmdirSync(workspacePath, { recursive: true });
-    await deleteKey({
-      s3ObjectKey: `image-upload/${uploadKey}`,
-    });
+    fs.rmSync(workspacePath, { recursive: true, force: true });
+    if (shouldDeleteUpload) {
+      try {
+        await deleteKey({
+          s3ObjectKey: `image-upload/${uploadKey}`,
+        });
+      } catch (error) {
+        log.warn({ uploadKey, error }, "Cannot delete staged upload");
+      }
+    }
   }
 }

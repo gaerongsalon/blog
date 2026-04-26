@@ -1,18 +1,21 @@
-import type { Functions } from "serverless/aws";
+import type { AWS } from "@serverless/typescript";
 import asHttpEndpoints from "@blog/serverless/lib/functions/asHttpEndpoints";
 import define from "@blog/serverless/lib/functions/define";
 import generateDatePatternUrls from "./support/generateDatePatternUrls";
+import secrets from "@blog/config/lib/secrets";
+
+type Functions = NonNullable<AWS["functions"]>;
 
 const resources = {
   sharp: {
     memorySize: 1024,
     timeout: 28,
-    layer: "arn:aws:lambda:ap-northeast-2:467731270623:layer:sharp:2",
+    layer: secrets.lambdaLayers.sharp,
   },
   betterSqlite: {
     memorySize: 1024,
     timeout: 15,
-    layer: "arn:aws:lambda:ap-northeast-2:467731270623:layer:better-sqlite3:3",
+    layer: secrets.lambdaLayers.betterSqlite3,
   },
 };
 

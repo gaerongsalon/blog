@@ -1,6 +1,7 @@
+import { ApiError } from "../base";
 import articleRepository from "../../article/articleRepository";
 import encodeId from "../../article/encodeId";
-import isbot from "isbot";
+import { isbot } from "isbot";
 import queryCategories from "./queryCategories";
 import queryOrIncreaseHits from "./queryOrIncreaseHits";
 import queryTags from "./queryTags";
@@ -41,5 +42,5 @@ export default async function queryResource({
       const hits = await queryOrIncreaseHits(resource, id, isbot(userAgent));
       return { ...document, article: { ...document.article, hits } };
   }
-  return true;
+  throw new ApiError(404);
 }

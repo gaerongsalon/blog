@@ -3,6 +3,7 @@ import "source-map-support/register";
 import { ApiError, handleApi } from "./base";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
+import { NoArticleError } from "../article/articleRepository";
 import { getLogger } from "@yingyeothon/slack-logger";
 import queryResource from "./query/queryResource";
 
@@ -35,8 +36,18 @@ export const handle: APIGatewayProxyHandler = handleApi({
         body: JSON.stringify(data),
       };
     } catch (error) {
-      logger.debug({ resource, id, error }, "Cannot query");
-      throw new ApiError(404);
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      if (error instanceof NoArticleError) {
+        logger.debug({ resource, id }, "Article is not found");
+        throw new ApiError(404);
+      }
+      logger.warn({ resource, id, error }, "Cannot query");
+      throw new ApiError(500, {
+        body: "Internal Server Error",
+        unexpected: true,
+      });
     }
   },
   options: {

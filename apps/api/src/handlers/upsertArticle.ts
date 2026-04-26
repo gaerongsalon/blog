@@ -7,7 +7,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import createTables from "../db/createTables";
 import encodedId from "../article/encodeId";
 import { getLogger } from "@yingyeothon/slack-logger";
-import getPrivateS3cb from "../support/getPrivateS3cb";
+import getPrivateS3 from "../support/getPrivateS3";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
 import secrets from "@blog/config/lib/secrets";
@@ -28,7 +28,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
   logger,
   handle: async (event) => {
     const slug = encodedId(
-      (event.pathParameters ?? {}).slug! ?? throwError(404)
+      (event.pathParameters ?? {}).slug! ?? throwError(404),
     );
     const article = {
       ...(JSON.parse(event.body ?? "{}") as ArticlePayload),
@@ -41,7 +41,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
 
     const writer = readWriter(event);
     const { inLock } = useRedisLock(secrets.redis);
-    const { withDb } = useS3Sqlite(getPrivateS3cb());
+    const { withDb } = useS3Sqlite(getPrivateS3());
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,
     })({

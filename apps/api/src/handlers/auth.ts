@@ -2,7 +2,10 @@ import "source-map-support/register";
 
 import * as jwt from "jsonwebtoken";
 
-import { APIGatewayAuthorizerHandler } from "aws-lambda";
+import {
+  APIGatewayAuthorizerHandler,
+  APIGatewayAuthorizerResult,
+} from "aws-lambda";
 import Authorization from "./models/Authorization";
 import { getLogger } from "@yingyeothon/slack-logger";
 import secrets from "@blog/config/lib/secrets";
@@ -15,7 +18,7 @@ export const handle: APIGatewayAuthorizerHandler = async (event) => {
       ? event.authorizationToken
       : (event.queryStringParameters ?? {}).authorization;
   const context = decodeJWT(token);
-  const policy = {
+  const policy: APIGatewayAuthorizerResult = {
     principalId: "user",
     policyDocument: {
       Version: "2012-10-17",
@@ -27,16 +30,22 @@ export const handle: APIGatewayAuthorizerHandler = async (event) => {
         },
       ],
     },
-    context,
+    context: context as any,
   };
-  logger.info({ policy, token }, `auth`);
+  logger.info(
+    {
+      effect: context !== null ? "Allow" : "Deny",
+      hasToken: Boolean(token?.trim()),
+    },
+    `auth`,
+  );
 
   await logger.flushSlack();
   return policy;
 };
 
 function decodeJWT(
-  authorizationToken: string | undefined
+  authorizationToken: string | undefined,
 ): Authorization | null {
   const trimmed = (authorizationToken ?? "").trim();
   const token = trimmed.startsWith("Bearer ")
@@ -47,10 +56,15 @@ function decodeJWT(
   }
   try {
     return jwt.verify(token, secrets.jwtSecretKey) as Authorization;
-  } catch (error) {
-    (/jwt expired/.test(error.message) ? logger.debug : logger.warn)(
-      { authorizationToken, error },
-      `Invalid JWT`
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    (/jwt expired/.test(message) ? logger.debug : logger.warn)(
+      {
+        hasToken: token.length > 0,
+        errorName: error instanceof Error ? error.name : "UnknownError",
+        message,
+      },
+      `Invalid JWT`,
     );
     return null;
   }

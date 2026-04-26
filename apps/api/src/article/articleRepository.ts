@@ -9,7 +9,7 @@ import getArticles from "../db/getArticles";
 import getArticlesByCategory from "../db/getArticlesByCategory";
 import getArticlesByTag from "../db/getArticlesByTag";
 import getNearArticles from "../db/getNearArticles";
-import getPrivateS3cb from "../support/getPrivateS3cb";
+import getPrivateS3 from "../support/getPrivateS3";
 import secrets from "@blog/config/lib/secrets";
 import useS3Sqlite from "@blog/sqlite/lib/useS3Sqlite";
 
@@ -20,7 +20,7 @@ export class NoArticleError {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function articleRepository() {
   async function useDb<T>(delegate: (db: SqliteDatabase) => T): Promise<T> {
-    const { withDb } = useS3Sqlite(getPrivateS3cb());
+    const { withDb } = useS3Sqlite(getPrivateS3());
     return withDb({
       dbId: secrets.dbKey,
       createTableQuery: createTables,
@@ -83,8 +83,8 @@ export default function articleRepository() {
         a.category === category && b.category !== category
           ? -1
           : a.category !== category && b.category === category
-          ? 1
-          : b.written.localeCompare(a.written)
+            ? 1
+            : b.written.localeCompare(a.written),
       )
       .slice(0, count);
   }

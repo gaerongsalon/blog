@@ -31,11 +31,11 @@ export default async function pngquant({
       reject(new Error("pngquant: Timeout occurred"));
     }, timeout);
     subprocess
-      .then(({ exitCode, failed, killed, stdout, stderr }) => {
+      .then(({ exitCode, failed, stdout, stderr }) => {
         clearTimeout(killer);
         log.trace(
-          { stdout, stderr, exitCode, failed, killed },
-          "pngquant: process is completed"
+          { stdout, stderr, exitCode, failed },
+          "pngquant: process is completed",
         );
 
         // pngquant would return non-zero code if there are skipped images.

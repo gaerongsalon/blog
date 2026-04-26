@@ -1,7 +1,7 @@
 import * as path from "path";
 
 import { getLogger } from "@yingyeothon/slack-logger";
-import { imageSize } from "image-size";
+import { imageSizeFromFile } from "image-size/fromFile";
 import jpegoptim from "./jpegoptim";
 import pngquant from "./pngquant";
 import resizeOrCopy from "./resizeOrCopy";
@@ -20,7 +20,7 @@ export default async function resizeAndOptimize({
   timeout: number;
 }): Promise<string[]> {
   const ext = path.extname(inputFile).toLowerCase();
-  const size = imageSize(inputFile);
+  const size = await imageSizeFromFile(inputFile);
   const resizedFiles = await Promise.all(
     desiredWidths.map((desiredWidth) =>
       resizeOrCopy({
@@ -28,8 +28,8 @@ export default async function resizeAndOptimize({
         inputWidth: size.width,
         desiredWidth,
         outputPath,
-      })
-    )
+      }),
+    ),
   );
   if ([".jpg", ".jpeg"].includes(ext)) {
     await jpegoptim({
@@ -42,7 +42,7 @@ export default async function resizeAndOptimize({
       timeout,
     });
   } else if (ext === ".gif") {
-    log.debug({inputFile, ext}, "Skip to optimize gif file")
+    log.debug({ inputFile, ext }, "Skip to optimize gif file");
   } else {
     throw new Error("Not supported type: " + ext);
   }

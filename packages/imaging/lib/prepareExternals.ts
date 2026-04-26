@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 
-import tar from "tar";
+import { extract } from "tar";
 
 interface Executables {
   pngquantPath: string;
@@ -22,17 +22,16 @@ export default function prepareExternals(): Promise<Executables> {
       : path.join(".external", externalTgzName);
     fs.createReadStream(externalTgzPath)
       .pipe(
-        tar
-          .x({
-            strip: 1,
-            C: "/tmp",
-          })
+        extract({
+          strip: 1,
+          C: "/tmp",
+        })
           .on("error", reject)
           .on("close", () =>
             fs.existsSync(jpegoptimPath)
               ? resolve({ jpegoptimPath, pngquantPath })
-              : reject(new Error(`Cannot extract ${externalTgzPath}`))
-          )
+              : reject(new Error(`Cannot extract ${externalTgzPath}`)),
+          ),
       )
       .on("error", reject);
   });

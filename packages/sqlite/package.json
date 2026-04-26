@@ -4,10 +4,9 @@
   "license": "ISC",
   "dependencies": {
     "@blog/aws": "workspace:*",
-    "better-sqlite3": "^8.1.0",
-    "tempy": "^3.0.0"
+    "better-sqlite3": "^12.9.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.3"
+    "@types/better-sqlite3": "^7.6.13"
   }
 }

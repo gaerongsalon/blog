@@ -17,10 +17,14 @@ export interface Secrets {
     internalBucketName: string;
     staticBucketName: string;
   };
-  s3cb: {
+  s3cb?: {
     url: string;
     id: string;
     password: string;
+  };
+  lambdaLayers: {
+    sharp: string;
+    betterSqlite3: string;
   };
   dbKey: string;
   logger: {
