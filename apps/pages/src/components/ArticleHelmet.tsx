@@ -1,5 +1,5 @@
 import ArticleMeta from "../models/article/ArticleMeta";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import buildImageCdnUrl from "../utils/buildImageCdnUrl";
 import metadata from "@blog/config/lib/metadata";
 

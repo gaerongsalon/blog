@@ -10,7 +10,6 @@ const formats = [
   "color",
   "background",
   "list",
-  "bullet",
   "indent",
   "link",
   "image",

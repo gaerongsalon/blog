@@ -1,10 +1,23 @@
-import { Quill } from "react-quill";
+import { Quill } from "react-quill-new";
 
-const BlockEmbed = Quill.import("blots/block/embed");
+type BlockEmbedConstructor = {
+  new (...args: any[]): {
+    domNode: HTMLElement;
+  };
+  create(value: string): HTMLElement;
+};
+
+const BlockEmbed = Quill.import(
+  "blots/block/embed",
+) as BlockEmbedConstructor;
 
 class Video extends BlockEmbed {
+  static blotName = "video";
+  static className = "ql-video";
+  static tagName = "div";
+
   static create(value: string) {
-    const node = super.create(value);
+    const node = super.create(value) as HTMLElement;
     const iframe = document.createElement("iframe");
     iframe.setAttribute("frameborder", "0");
     iframe.setAttribute("allowfullscreen", "true");
@@ -20,10 +33,10 @@ class Video extends BlockEmbed {
     return (domNode.firstChild as HTMLElement).getAttribute("src");
   }
 }
-Video.blotName = "video";
-Video.className = "ql-video";
-Video.tagName = "div";
 
-Quill.register({
-  "formats/video": Video,
-});
+Quill.register(
+  {
+    "formats/video": Video,
+  },
+  true,
+);

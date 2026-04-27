@@ -1,26 +1,27 @@
 import Delta from "quill-delta";
-import { Quill } from "quill";
+import type ReactQuill from "react-quill-new";
 import base64ImageToBlob from "../../utils/base64ImageToBlob";
 import handleError from "../../utils/handleError";
 import overlay from "../../utils/overlay";
 import uploadImage from "../../apis/uploadImage";
 
-export default function imagePaste(quill: Quill) {
-  quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) =>
-    handlePastedImage(quill, node, delta)
+type QuillEditor = ReturnType<ReactQuill["getEditor"]>;
+
+export default function imagePaste(quill: QuillEditor) {
+  quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node: Node, delta: Delta) =>
+    handlePastedImage(quill, node, delta),
   );
 }
 
 function handlePastedImage(
-  quill: Quill,
-  node: HTMLElement,
-  delta: unknown
-): any {
-  if (node.tagName !== "IMG") {
+  quill: QuillEditor,
+  node: Node,
+  delta: Delta,
+): Delta {
+  if (!(node instanceof HTMLImageElement)) {
     return delta;
   }
-  const imageElement = node as HTMLImageElement;
-  const imageSource = imageElement.src;
+  const imageSource = node.src;
   if (!imageSource || !imageSource.startsWith("data:")) {
     return delta;
   }
@@ -35,7 +36,7 @@ function handlePastedImage(
         quill.updateContents(
           new Delta()
             .retain(quill.getSelection()?.index ?? 1)
-            .insert({ image: imageUrl }) as any
+            .insert({ image: imageUrl }) as any,
         );
       })
       .catch(handleError)

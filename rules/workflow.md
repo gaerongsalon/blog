@@ -3,6 +3,7 @@
 - Check `git status --short --untracked-files=all` before editing and preserve unrelated user changes.
 - The known unrelated local change at task start was `apps/api/.vscode/settings.json`; do not overwrite it unless asked.
 - Use Node 24.15.0 and pnpm 10+ for this repository.
+- Keep Node-facing type packages on the Node 24 major line because the local runtime and AWS Lambda runtime are `nodejs24.x`.
 - Use `pnpm install` after dependency manifest changes and keep `pnpm-lock.yaml` in sync.
 - Build order is frontend first, then API packaging, because `apps/pages` copies `dist` into `apps/api/pages`.
 - For Serverless changes, run `cd apps/api && pnpm run build` before deploy.

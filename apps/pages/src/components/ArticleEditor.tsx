@@ -1,11 +1,11 @@
-import "react-quill/dist/quill.snow.css";
-import "react-quill/dist/quill.bubble.css";
+import "react-quill-new/dist/quill.snow.css";
+import "react-quill-new/dist/quill.bubble.css";
 import "./quill/Video";
 
 import * as React from "react";
 
 import ImageUploadPanel from "./ImageUploadPanel";
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill-new";
 import formats from "./quill/formats";
 import imagePaste from "./quill/imagePaste";
 import modules from "./quill/modules";
@@ -32,7 +32,7 @@ export default function ArticleEditor({
       quill.insertEmbed(range?.index ?? 0, "image", imageUrl);
       quill.focus();
     },
-    [quillRef]
+    [quillRef],
   );
   React.useEffect(() => {
     const quill = quillRef.current?.getEditor();
@@ -57,7 +57,6 @@ export default function ArticleEditor({
           }
         }}
         readOnly={preview}
-        scrollingContainer="#root"
       />
       {!preview ? <ImageUploadPanel onImageClick={addImage} /> : null}
     </>
