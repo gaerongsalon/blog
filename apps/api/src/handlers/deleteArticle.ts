@@ -9,6 +9,7 @@ import encodedId from "../article/encodeId";
 import { getLogger } from "@yingyeothon/slack-logger";
 import getPrivateS3 from "../support/getPrivateS3";
 import secrets from "@blog/config/lib/secrets";
+import { tombstoneArticleSeoCache } from "./seo/articleSeoCache";
 import useRedisLock from "@blog/redis/lib/useRedisLock";
 import useS3Sqlite from "@blog/sqlite/lib/useS3Sqlite";
 
@@ -36,6 +37,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
         deleteArticle({ db, article: { slug } });
       },
     });
+    await tombstoneArticleSeoCache(slug, { strict: true });
     return {
       statusCode: 200,
       body: JSON.stringify({ ok: true }),

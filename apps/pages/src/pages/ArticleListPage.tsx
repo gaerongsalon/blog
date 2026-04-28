@@ -31,12 +31,22 @@ function Articles({ articles }: { articles: Article[] }) {
     return <div>No articles</div>;
   }
   const [first, ...remain] = articles;
+  const firstImageSlug = articles.find(({ image }) => image)?.slug;
   return (
     <>
-      <ArticleListItem article={first} cols={1} />
+      <ArticleListItem
+        article={first}
+        cols={1}
+        priority={first.slug === firstImageSlug}
+      />
       <ArticleListDiv>
         {remain.map((article) => (
-          <ArticleListItem key={article.slug} article={article} cols={2} />
+          <ArticleListItem
+            key={article.slug}
+            article={article}
+            cols={2}
+            priority={article.slug === firstImageSlug}
+          />
         ))}
       </ArticleListDiv>
     </>

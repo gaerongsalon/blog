@@ -29,7 +29,7 @@ function resolveBundlePath(requestUrl: string): string {
   const resourceFilePath = path.resolve(resourceRoot, requestPath);
   logger.trace(
     { requestPath, resourceFilePath },
-    "Find a static resource to serve"
+    "Find a static resource to serve",
   );
   const relativePath = path.relative(resourceRoot, resourceFilePath);
   if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
@@ -49,9 +49,24 @@ function resolveBundlePath(requestUrl: string): string {
   const indexFilePath = path.join(resourceRoot, indexHtml);
   logger.trace(
     { requestPath, indexFilePath },
-    "Resolve as index due to not exist"
+    "Resolve as index due to not exist",
   );
   return indexFilePath;
+}
+
+function cacheControl(resourceFilePath: string): string {
+  const relativePath = path.relative(resourceRoot, resourceFilePath);
+  const normalizedPath = relativePath.split(path.sep).join("/");
+  const fileName = path.basename(normalizedPath);
+  if (
+    normalizedPath.startsWith("assets/") &&
+    /-[A-Za-z0-9_-]{8,}\.[^.]+$/.test(fileName)
+  ) {
+    return "public, max-age=31536000, immutable";
+  }
+  return `public, max-age=${
+    resourceFilePath.endsWith(".html") ? 10 * 60 : 30 * 24 * 60 * 60
+  }`;
 }
 
 export const handle: APIGatewayProxyHandler = handleApi({
@@ -80,9 +95,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
           contentType(path.basename(resourceFilePath)) ||
           "application/octet-stream",
         "Content-Length": fileSize,
-        "Cache-Control": `public, max-age=${
-          resourceFilePath.endsWith(".html") ? 10 * 60 : 30 * 24 * 60 * 60
-        }`,
+        "Cache-Control": cacheControl(resourceFilePath),
       },
       body: seoResult.content,
       isBase64Encoded: toBase64,

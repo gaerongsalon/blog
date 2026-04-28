@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
@@ -6,11 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#7aaeff" />
     <meta name="description" content="Blog" />
+    <link
+      rel="preconnect"
+      href="https://pagead2.googlesyndication.com"
+      crossorigin
+    />
+    <link
+      rel="preconnect"
+      href="https://googleads.g.doubleclick.net"
+      crossorigin
+    />
     <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<{ VITE_APP_GOOGLE_ADS_CLIENT }>"
-      crossorigin="anonymous"
-    ></script>
+      id="adsbygoogle-loader"
+      data-client="<{ VITE_APP_GOOGLE_ADS_CLIENT }>"
+    >
+      window.addEventListener("load", function () {
+        var loadAds = function () {
+          var client = document
+            .getElementById("adsbygoogle-loader")
+            .getAttribute("data-client");
+          var script = document.createElement("script");
+          script.async = true;
+          script.crossOrigin = "anonymous";
+          script.src =
+            "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" +
+            encodeURIComponent(client);
+          document.head.appendChild(script);
+        };
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(loadAds, { timeout: 3000 });
+        } else {
+          window.setTimeout(loadAds, 1500);
+        }
+      });
+    </script>
     <title><{ VITE_APP_TITLE }></title>
   </head>
   <body>

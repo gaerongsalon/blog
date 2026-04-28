@@ -11,10 +11,16 @@ export default function ArticleListView({ articles }: { articles: Article[] }) {
   if (articles.length === 0) {
     return <div>No articles</div>;
   }
+  const firstImageSlug = articles.find(({ image }) => image)?.slug;
   return (
     <ArticleListDiv>
       {articles.map((article) => (
-        <ArticleListItem key={article.slug} article={article} cols={2} />
+        <ArticleListItem
+          key={article.slug}
+          article={article}
+          cols={2}
+          priority={article.slug === firstImageSlug}
+        />
       ))}
     </ArticleListDiv>
   );

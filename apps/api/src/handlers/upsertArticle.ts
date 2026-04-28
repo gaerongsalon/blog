@@ -11,6 +11,10 @@ import getPrivateS3 from "../support/getPrivateS3";
 import insertArticle from "../db/insertArticle";
 import readWriter from "./authorization/readWriter";
 import secrets from "@blog/config/lib/secrets";
+import {
+  cacheArticleSeoMeta,
+  tombstoneArticleSeoCache,
+} from "./seo/articleSeoCache";
 import trimTags from "../article/trimTags";
 import updateArticle from "../db/updateArticle";
 import useRedisLock from "@blog/redis/lib/useRedisLock";
@@ -42,6 +46,7 @@ export const handle: APIGatewayProxyHandler = handleApi({
     const writer = readWriter(event);
     const { inLock } = useRedisLock(secrets.redis);
     const { withDb } = useS3Sqlite(getPrivateS3());
+    let previousSlug: string | null = null;
     await inLock(withDb, {
       lockRedisKey: dbLockRedisKey,
     })({
@@ -50,6 +55,14 @@ export const handle: APIGatewayProxyHandler = handleApi({
       autoCommit: true,
       doIn: ({ db }) => {
         if (article.serial !== undefined && article.serial > 0) {
+          previousSlug =
+            (
+              db
+                .prepare("SELECT slug FROM article WHERE serial = @serial")
+                .get({ serial: article.serial }) as
+                | { slug?: string }
+                | undefined
+            )?.slug ?? null;
           updateArticle({
             db,
             article: {
@@ -71,6 +84,10 @@ export const handle: APIGatewayProxyHandler = handleApi({
         }
       },
     });
+    if (previousSlug && previousSlug !== article.slug) {
+      await tombstoneArticleSeoCache(previousSlug, { strict: true });
+    }
+    await cacheArticleSeoMeta(article, { strict: true });
     return {
       statusCode: 200,
       body: JSON.stringify({ ok: true }),

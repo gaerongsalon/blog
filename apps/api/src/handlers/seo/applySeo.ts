@@ -1,5 +1,10 @@
-import Article from "../../db/entity/Article";
-import ArticleMeta from "../../db/entity/ArticleMeta";
+import type Article from "../../db/entity/Article";
+import {
+  SeoArticleMeta,
+  cacheArticleSeoMeta,
+  getArticleSeoCache,
+  toSeoArticleMeta,
+} from "./articleSeoCache";
 import buildImageCdnUrl from "./buildImageCdnUrl";
 import fetch from "node-fetch";
 import { getLogger } from "@yingyeothon/slack-logger";
@@ -24,6 +29,14 @@ export default async function applySeo(
   }
   const decodedId = decodeURIComponent(id);
   logger.debug({ id, decodedId }, "Apply SEO");
+
+  const cachedArticle = await getArticleSeoCache(id);
+  if (cachedArticle.kind === "deleted") {
+    return { content: fileContent, statusCode: 404 };
+  }
+  if (cachedArticle.kind === "article") {
+    return { content: injectMeta(fileContent, cachedArticle.article) };
+  }
 
   // We cannot call DB directly because it needs a huge base to use better-sqlite3.
   // const article = await articleRepository().fetchArticleOrNull({ slug: id });
@@ -60,7 +73,9 @@ export default async function applySeo(
     }
     try {
       const { article }: { article: Article } = JSON.parse(text);
-      return { content: injectMeta(fileContent, article) };
+      const meta = toSeoArticleMeta(article);
+      void cacheArticleSeoMeta(meta);
+      return { content: injectMeta(fileContent, meta) };
     } catch (error) {
       logger.warn(
         { id, decodedId, error, text },
@@ -80,7 +95,7 @@ export default async function applySeo(
 
 function injectMeta(
   fileContent: string,
-  { title, slug, image, excerpt }: ArticleMeta,
+  { title, slug, image, excerpt }: SeoArticleMeta,
 ): string {
   const sitePrefix = metadata.url;
   const siteTitle = `[${metadata.title}] ${title}`;

@@ -76,9 +76,11 @@ const ArticleExcerpt = styled.div`
 export default function ArticleListItem({
   article: { slug, title, image, category, excerpt, written },
   cols,
+  priority = false,
 }: {
   article: Article;
   cols: 1 | 2;
+  priority?: boolean;
 }) {
   const ArticleItem = cols === 1 ? OneInRowArticleItem : TwoInRowArticleItem;
   const ArticleHeadImage =
@@ -92,7 +94,8 @@ export default function ArticleListItem({
             <ArticleHeadImage
               src={buildImageCdnUrl(image)}
               alt={title}
-              loading="lazy"
+              loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : "auto"}
             />
           </ArticleHeadImageDiv>
         </Link>
