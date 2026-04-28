@@ -24,3 +24,4 @@
 - Follow `rules/deployment.md` before changing AWS resources or Serverless configuration.
 - Follow `rules/data.md` before any operation that can overwrite S3 or SQLite data.
 - Follow `rules/workflow.md` for dependency, build, review, and commit flow.
+- Before every git commit, run the secret and local-configuration checks in `rules/workflow.md`; do not commit leaked keys, real local config, or operator-specific values unless the rule explicitly allows them.

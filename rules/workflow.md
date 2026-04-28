@@ -12,4 +12,7 @@
 - Prefer package-root named exports over default subpath imports for CommonJS packages when Vite interop returns objects instead of component functions.
 - Keep generated build outputs, `.serverless`, `.esbuild`, local logs, and ignored secret files out of commits.
 - Keep local editor folders such as `.vscode/` untracked unless the file is intentionally shared and reviewed.
+- Before every git commit, run `gitleaks detect --source . --redact --no-banner` from the repository root and resolve any finding before staging or committing.
+- Before every git commit, inspect the staged diff and tracked source for local-only/operator-specific values that `gitleaks` may not classify as secrets. Pay special attention to real domains such as `example.com`, local account/user names such as `lacti`, AWS profile names, bucket names, account IDs, private endpoints, and generated config copied out of `packages/config`.
+- If a value such as the production blog domain is intentionally part of the product surface, keep it only when the surrounding rule or code path makes that intent clear; otherwise move it back to ignored configuration or replace it with a placeholder.
 - For requested reviews, use fresh-context subagents and synthesize only verified findings.
