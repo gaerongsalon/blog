@@ -3,8 +3,9 @@
 - Use the deployment AWS profile supplied by the operator and region `ap-northeast-2` for this project unless a command explicitly targets ACM/CloudFront global resources.
 - Production site domain comes from the operator and must not be hard-coded into public repository guidance.
 - The current REST API stack is derived from `packages/config/secrets.json` and deployed to stage `dev`.
-- The production site is an API Gateway edge-optimized custom domain mapped to the `dev` stage with base path `(none)`.
-- Route53 hosts the production apex record, which aliases to the API Gateway CloudFront distribution.
+- The production site is the operator-supplied blog subdomain, exposed as an API Gateway edge-optimized custom domain mapped to the `dev` stage with base path `(none)`.
+- The apex domain and `www` host are reserved for other pages; this blog deployment must not create API Gateway mappings or Route53 application records for them.
+- Route53 hosts the production blog subdomain record, which aliases to the API Gateway CloudFront distribution.
 - A separate CDN domain points to the static file bucket.
 - An auxiliary API domain exists for other services and auth-related paths; this blog's frontend calls same-origin `/api/*`.
 - Validate deployment with direct public endpoint calls against the operator-supplied production domain: `/`, `/api/articles`, and one concrete `/api/article/{slug}` from the article list.
